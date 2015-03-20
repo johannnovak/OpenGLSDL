@@ -25,3 +25,8 @@ void LogManager::showError(const char* _msg)
 	if (s_errorCount > LOGMANAGER_ERROR_LIMIT)
 		exit(1);
 }
+
+void LogManager::print(std::string _str)
+{
+	std::cout << _str << std::endl;
+}

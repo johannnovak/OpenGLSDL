@@ -72,6 +72,12 @@ MouseMotion& SDLInputManager::getMouseMotion()
 	return m_mouseMotion;
 }
 
+void SDLInputManager::resetMouseMotion()
+{
+	m_mouseMotion.dx = 0;
+	m_mouseMotion.dy = 0;
+}
+
 void SDLInputManager::handleEvent(SDL_Event& _event)
 {
 	KeyId keyId;
@@ -102,7 +108,7 @@ void SDLInputManager::handleEvent(SDL_Event& _event)
 	case SDL_MOUSEBUTTONUP:
 		mouseButton = _event.button.button;
 		mouseButtonId = SDLMouseButtonToMouseButtonId(mouseButton);
-		m_mouseButtonPressed[mouseButtonId] = true;
+		m_mouseButtonPressed[mouseButtonId] = false;
 		break;
 
 	case SDL_MOUSEMOTION:
@@ -110,6 +116,7 @@ void SDLInputManager::handleEvent(SDL_Event& _event)
 		m_mouseMotion.y = _event.motion.y;
 		m_mouseMotion.dx = _event.motion.xrel;
 		m_mouseMotion.dy = _event.motion.yrel;
+
 		break;
 	}
 }

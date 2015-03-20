@@ -23,6 +23,7 @@ public:
 	bool isMouseButtonUp(MouseButtonId _mouseId);
 
 	MouseMotion& getMouseMotion();
+	void resetMouseMotion();
 
 	void handleEvent(SDL_Event& _event);
 	std::vector<SDL_EventType>& getMasks();

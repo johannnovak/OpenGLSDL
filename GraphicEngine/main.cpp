@@ -105,10 +105,12 @@ int main(int argc, char* argv[])
 
 	while (!quitEventHandler->m_quit)
 	{
+		InputManager* inputManager = InputManager::getInstance();
+		inputManager->resetMouseMotion();
+
 		// Handle Events
 		SDLEventManager::pollSDLEvents();
 
-		InputManager* inputManager = InputManager::getInstance();
 		if (inputManager->isKeyDown(IM_KEY_RIGHT))
 			theta += 0.01f;
 
@@ -124,7 +126,15 @@ int main(int argc, char* argv[])
 		if (inputManager->isKeyDown(IM_KEY_ESCAPE))
 			quitEventHandler->externQuit();
 
+		if (inputManager->isMouseButtonDown(IM_MOUSE_LEFT))
+		{
+			theta += inputManager->getMouseMotion().dx * 0.01f;
+		}
+
+		LogManager::print("MouseMotion DX : " + std::to_string(inputManager->getMouseMotion().dx));
+
 		// Update
+
 		camera->setPosition(r * sin(theta), 0, r*cos(theta));
 		// camera->setRotation(rx, ry, 0);
 

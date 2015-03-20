@@ -102,6 +102,7 @@ public:
 	virtual bool isMouseButtonUp(MouseButtonId _mouseId) = 0;
 
 	virtual MouseMotion& getMouseMotion() = 0;
+	virtual void resetMouseMotion() = 0;
 
 protected:
 	static InputManager* s_instance;
