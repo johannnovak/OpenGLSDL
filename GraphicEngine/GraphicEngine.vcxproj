@@ -86,11 +86,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="SDLEventHandler.cpp" />
     <ClCompile Include="SDLEventManager.cpp" />
     <ClCompile Include="SDLInputManager.cpp" />
@@ -98,10 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="Object3D.h" />
     <ClInclude Include="SDLEventHandler.h" />
     <ClInclude Include="SDLEventManager.h" />
     <ClInclude Include="SDLInputManager.h" />

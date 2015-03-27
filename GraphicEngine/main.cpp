@@ -129,9 +129,8 @@ int main(int argc, char* argv[])
 		if (inputManager->isMouseButtonDown(IM_MOUSE_LEFT))
 		{
 			theta += inputManager->getMouseMotion().dx * 0.01f;
-		}
 
-		LogManager::print("MouseMotion DX : " + std::to_string(inputManager->getMouseMotion().dx));
+		}
 
 		// Update
 
