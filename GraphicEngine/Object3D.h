@@ -19,8 +19,30 @@ public:
 	Object3D();
 	~Object3D();
 
-	virtual float* getWorld() = 0;
-	virtual GLuint getBuffer(BufferType _type) = 0;
+	GLushort* getIndices();
+	unsigned int getIndiceCount();
+
+	GLfloat* getVertices();
+	unsigned int getVertexCount();
+
+	GLfloat* getNormals();
+	GLfloat* getUVs();
+	GLfloat* getColors();
+
+	virtual bool defineNormals();
+	virtual bool defineUVs();
+	virtual bool defineColors();
+
+protected:
+	GLushort* m_indices;
+	unsigned int m_indexCount;
+
+	GLfloat* m_vertices;
+	unsigned int m_vertexCount;
+
+	GLfloat* m_normals;
+	GLfloat* m_uvs;
+	GLfloat* m_colors;
 
 };
 

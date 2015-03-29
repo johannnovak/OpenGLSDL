@@ -12,12 +12,8 @@ public:
 	~Cube();
 
 public:
-	float* getWorld();
-	GLuint getBuffer(BufferType _type);
-
-private:
-	glm::mat4 m_world;
-
-	GLuint* m_buffers;
+	bool defineNormals();
+	bool defineUVs();
+	bool defineColors();
 };
 

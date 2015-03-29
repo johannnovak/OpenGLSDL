@@ -1,69 +1,180 @@
 #include "Cube.h"
 
 
-Cube::Cube() : m_world(1)
+Cube::Cube() : Object3D()
 {
-	m_buffers = new GLuint[3];
-
-	glCreateBuffers(3, m_buffers);
 	float s = 0.5f;
+
+	m_vertices = new GLfloat[72];
+	m_vertexCount = 72;
+
+	m_indices = new GLushort[36];
+	m_indexCount = 36;
+
+	m_normals = new GLfloat[72];
+	m_colors = new GLfloat[72];
+
 	float vertices[] = {
-		-s, -s, s, // 0 FRONT LEFT DOWN
-		-s, s, s,  // 1 FRONT LEFT UP
-		s, s, s,   // 2 FRONT RIGHT UP
-		s, -s, s,  // 3 FRONT RIGHT DOWN
+		-s, -s, s, // Front
+		-s, s, s,
+		s, -s, s,
+		s, s, s,
 
-		-s, -s, -s,// 4 BACK LEFT DOWN
-		-s, s, -s, // 5 BACK LEFT UP
-		s, s, -s,  // 6 BACK RIGHT UP
-		s, -s, -s, // 7 BACK RIGHT DOWN
+		s, -s, s, // Right
+		s, s, s,
+		s, -s, -s,
+		s, s, -s,
+
+		s, -s, -s, // Back
+		s, s, -s,
+		-s, -s, -s,
+		-s, s, -s,
+
+		-s, -s, -s, // Left
+		-s, s, -s,
+		-s, -s, s,
+		-s, s, s,
+
+		-s, s, s, // Top
+		-s, s, -s,
+		s, s, s,
+		s, s, -s,
+
+		-s, -s, -s, // Bottom
+		-s, -s, s,
+		s, -s, -s,
+		s, -s, s
 	};
 
-	short indices[] = {
-		0, 1, 2, // FRONT
-		0, 2, 3,
+	float normals[] = {
+		// FRONT
+		0, 0, 1,
+		0, 0, 1,
+		0, 0, 1,
+		0, 0, 1,
 
-		3, 2, 6, // RIGHT
-		3, 6, 7,
+		// RIGHT
+		1, 0, 0,
+		1, 0, 0,
+		1, 0, 0,
+		1, 0, 0,
 
-		7, 6, 5, // BACK
-		7, 5, 4,
+		// BACK
+		0, 0, -1,
+		0, 0, -1,
+		0, 0, -1,
+		0, 0, -1,
 
-		4, 5, 1, // LEFT
-		4, 1, 0,
+		// LEFT
+		-1, 0, 0,
+		-1, 0, 0,
+		-1, 0, 0,
+		-1, 0, 0,
 
-		1, 5, 6, // TOP
-		1, 6, 2,
+		// TOP
+		0, 1, 0,
+		0, 1, 0,
+		0, 1, 0,
+		0, 1, 0,
 
-		4, 0, 3, // BACK
-		4, 3, 7,
+		// BOTTOM
+		0, -1, 0,
+		0, -1, 0,
+		0, -1, 0,
+		0, -1, 0,
+
 	};
 
+	GLfloat colors[] = {
+		// FRONT
+		1, 0, 0,
+		1, 0, 0,
+		1, 0, 0,
+		1, 0, 0,
+
+		// RIGHT
+		0, 1, 0,
+		0, 1, 0,
+		0, 1, 0,
+		0, 1, 0,
+
+		// BACK
+		0, 0, 1,
+		0, 0, 1,
+		0, 0, 1,
+		0, 0, 1,
+
+		// LEFT
+		1, 0, 1,
+		1, 0, 1,
+		1, 0, 1,
+		1, 0, 1,
+
+		// TOP
+		0, 1, 1,
+		0, 1, 1,
+		0, 1, 1,
+		0, 1, 1,
+
+		// BOTTOM
+		1, 1, 0,
+		1, 1, 0,
+		1, 1, 0,
+		1, 1, 0,
+	};
+
+	unsigned short indices[] = {
+		0, 1, 2, // Front
+		1, 2, 3,
+
+		4, 5, 6, // Right
+		5, 6, 7,
+
+		8, 9, 10, // Back
+		9, 10, 11,
+
+		12, 13, 14, // Left
+		13, 14, 15,
+
+		16, 17, 18, // Top
+		17, 18, 19,
+
+		20, 21, 22, // Bottom
+		21, 22, 23,
+	};
+
+	for (unsigned int i = 0; i < m_vertexCount; ++i)
+	{
+		m_vertices[i] = vertices[i];
+		m_normals[i] = normals[i];
+		m_colors[i] = colors[i];
+	}
+
+	for (unsigned int i = 0; i < m_indexCount; ++i)
+	{
+		m_indices[i] = indices[i];
+	}
 }
 
 
 Cube::~Cube()
 {
+	delete[] m_vertices;
+	delete[] m_colors;
+	delete[] m_normals;
+	delete[] m_indices;
+	delete[] m_uvs;
 }
 
-float* Cube::getWorld()
+bool Cube::defineNormals()
 {
-	return &m_world[0][0];
+	return true;
 }
-
-GLuint Cube::getBuffer(BufferType _type)
+bool Cube::defineUVs()
 {
-	switch (_type)
-	{
-	case BufferType::COLOR_BUFFER:
-		return m_buffers[2];
-
-	case BufferType::INDEX_BUFFER:
-		return m_buffers[1];
-
-	case BufferType::VERTEX_BUFFER:
-		return m_buffers[0];
-	}
-
-	return 0;
+	return false;
+}
+bool Cube::defineColors()
+{
+	return true;
 }

@@ -19,6 +19,8 @@
 #include "LogManager.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Cube.h"
+#include "Object3D.h"
 
 using namespace std;
 
@@ -38,10 +40,13 @@ float fov = M_PI / 4.0f;
 Shader* cellShader = NULL;
 Shader* shader = NULL;
 Shader* outline = NULL;
+Shader* light = NULL;
 
 Shader* activeShader = NULL;
 
 Camera* camera = NULL;
+
+Cube* cube = NULL;
 
 class QuitEventHandler : public SDLEventHandler
 {
@@ -200,8 +205,19 @@ bool initialize()
 	outline->registerAttribute("position");
 	outline->registerAttribute("normal");
 
+	light = new Shader("Shaders/light");
+	light->registerUniform("P");
+	light->registerUniform("V");
+	light->registerUniform("W");
+
+	light->registerAttribute("pos");
+	light->registerAttribute("col");
+	light->registerAttribute("norm");
+
 	camera = new Camera();
 	camera->setPosition(0, 0, -2);
+
+	cube = new Cube();
 
 	return true;
 }
@@ -442,6 +458,22 @@ void drawCube()
 	glDeleteBuffers(1, &buffer);
 }
 
+void drawObject(Object3D& _object)
+{
+	light->activate();
+	
+	light->transmitAttrVect3("pos", _object.getVertices());
+	light->transmitAttrVect3("col", _object.getColors());
+	light->transmitAttrVect3("norm", _object.getNormals());
+
+
+	light->enableAllAttrib();
+
+	glDrawElements(GL_TRIANGLES, _object.getIndiceCount(), GL_UNSIGNED_SHORT, _object.getIndices());
+
+	light->disableAllAttrib();
+}
+
 void drawGround()
 {
 	GLfloat positions[] = {
@@ -548,9 +580,15 @@ void draw()
 	outline->transmitUniformMat4("V", &camera->getView()[0][0], GL_FALSE);
 	outline->transmitUniformMat4("W", &World[0][0], GL_FALSE);
 
+	light->activate();
+	light->transmitUniformMat4("P", &camera->getProjection()[0][0], GL_FALSE);
+	light->transmitUniformMat4("V", &View[0][0], GL_FALSE);
+	light->transmitUniformMat4("W", &World[0][0], GL_FALSE);
+
 	// drawAxis();
 	drawGround();
-	drawCube();
+	// drawCube();
+	drawObject(*cube);
 
 	// drawPyramide();
 
