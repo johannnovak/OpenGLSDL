@@ -210,6 +210,9 @@ bool initialize()
 	light->registerUniform("V");
 	light->registerUniform("W");
 
+	light->registerUniform("LightDir");
+	light->registerUniform("LightColor");
+
 	light->registerAttribute("pos");
 	light->registerAttribute("col");
 	light->registerAttribute("norm");
@@ -581,9 +584,19 @@ void draw()
 	outline->transmitUniformMat4("W", &World[0][0], GL_FALSE);
 
 	light->activate();
+
+	GLfloat lightDir[] = {
+		cos(theta), 2, sin(theta),
+	};
+	GLfloat lightColor[] = {
+		1, 1, 1,
+	};
+
 	light->transmitUniformMat4("P", &camera->getProjection()[0][0], GL_FALSE);
 	light->transmitUniformMat4("V", &View[0][0], GL_FALSE);
 	light->transmitUniformMat4("W", &World[0][0], GL_FALSE);
+	light->transmitUniformVect3("LightDir", lightDir);
+	light->transmitUniformVect3("LightColor", lightColor);
 
 	// drawAxis();
 	drawGround();
