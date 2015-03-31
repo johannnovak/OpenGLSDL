@@ -1,21 +1,25 @@
-﻿La génération a démarré 20/03/2015 18:54:13.
+﻿La génération a démarré 31/03/2015 23:49:20.
      1>Projet "C:\Users\Sharundaar\Documents\Visual Studio 2013\Projects\OpenGLSDL\GraphicEngine\GraphicEngine.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Sharundaar\Documents\Visual Studio 2013\SDL2-2.0.3\include" /I"C:\Users\Sharundaar\Documents\Visual Studio 2013\glm" /I"C:\Users\Sharundaar\Documents\Visual Studio 2013\glew\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(36): warning C4305: 'initialisation' : troncation de 'double' à 'float'
-     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(203): warning C4316: 'Camera' : l'objet alloué sur le tas n'est peut-être pas aligné 16
-     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(261): warning C4244: '=' : conversion de 'double' en 'GLfloat', perte possible de données
-     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(262): warning C4244: '=' : conversion de 'double' en 'GLfloat', perte possible de données
-     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(497): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(498): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(39): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(234): warning C4316: 'Camera' : l'objet alloué sur le tas n'est peut-être pas aligné 16
+     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(296): warning C4244: '=' : conversion de 'double' en 'GLfloat', perte possible de données
+     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(297): warning C4244: '=' : conversion de 'double' en 'GLfloat', perte possible de données
+     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(561): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+     1>c:\users\sharundaar\documents\visual studio 2013\projects\openglsdl\graphicengine\main.cpp(562): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Sharundaar\Documents\Visual Studio 2013\Projects\OpenGLSDL\Debug\GraphicEngine.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Sharundaar\Documents\Visual Studio 2013\SDL2-2.0.3\lib\Compiled" /LIBPATH:"C:\Users\Sharundaar\Documents\Visual Studio 2013\glew\lib" opengl32.lib glew32s.lib SDL2.lib SDL2main.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Sharundaar\Documents\Visual Studio 2013\Projects\OpenGLSDL\Debug\GraphicEngine.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Sharundaar\Documents\Visual Studio 2013\Projects\OpenGLSDL\Debug\GraphicEngine.lib" /MACHINE:X86 Debug\Camera.obj
+         Debug\Cube.obj
+         Debug\EditableObject3D.obj
          Debug\Framework.obj
          Debug\Helpers.obj
          Debug\InputManager.obj
          Debug\LogManager.obj
          Debug\main.obj
+         Debug\Object3D.obj
+         Debug\OBJImporter.obj
          Debug\SDLEventHandler.obj
          Debug\SDLEventManager.obj
          Debug\SDLInputManager.obj
@@ -25,4 +29,4 @@
 
 La génération a réussi.
 
-Temps écoulé 00:00:01.24
+Temps écoulé 00:00:01.35

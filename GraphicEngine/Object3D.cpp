@@ -6,6 +6,11 @@ Object3D::Object3D() : m_indices(nullptr), m_indexCount(0), m_vertices(nullptr),
 
 Object3D::~Object3D()
 {
+	delete[] m_colors;
+	delete[] m_indices;
+	delete[] m_uvs;
+	delete[] m_normals;
+	delete[] m_vertices;
 }
 
 GLushort* Object3D::getIndices()

@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Object3D.h"
+#include "OBJImporter.h"
 
 using namespace std;
 
@@ -41,12 +42,15 @@ Shader* cellShader = NULL;
 Shader* shader = NULL;
 Shader* outline = NULL;
 Shader* light = NULL;
+Shader* noColor = NULL;
 
 Shader* activeShader = NULL;
 
 Camera* camera = NULL;
 
 Cube* cube = NULL;
+
+Object3D* importedObject = NULL;
 
 class QuitEventHandler : public SDLEventHandler
 {
@@ -165,6 +169,9 @@ void exit(SDL_GLContext _context, SDL_Window* _win)
 
 	delete quitEventHandler;
 
+	delete cube;
+	delete importedObject;
+
 	SDL_Quit();
 }
 
@@ -217,10 +224,19 @@ bool initialize()
 	light->registerAttribute("col");
 	light->registerAttribute("norm");
 
+	noColor = new Shader("Shaders/no_color");
+	noColor->registerUniform("P");
+	noColor->registerUniform("V");
+	noColor->registerUniform("W");
+
+	noColor->registerAttribute("pos");
+
 	camera = new Camera();
 	camera->setPosition(0, 0, -2);
 
 	cube = new Cube();
+
+	importedObject = OBJImporter::importObject("Ressources/ToreNode.obj");
 
 	return true;
 }
@@ -298,6 +314,19 @@ void drawCircle()
 	glDrawArrays(GL_TRIANGLE_FAN, 0, def+2);
 
 	shader->disableAllAttrib();
+}
+
+void drawObjectNoColor(Object3D& _object)
+{
+	noColor->activate();
+
+	noColor->transmitAttrVect3("pos", _object.getVertices());
+
+	noColor->enableAllAttrib();
+
+	glDrawElements(GL_TRIANGLES, _object.getIndiceCount(), GL_UNSIGNED_SHORT, _object.getIndices());
+
+	noColor->disableAllAttrib();
 }
 
 void drawCube()
@@ -598,10 +627,15 @@ void draw()
 	light->transmitUniformVect3("LightDir", lightDir);
 	light->transmitUniformVect3("LightColor", lightColor);
 
+	noColor->activate();
+	noColor->transmitUniformMat4("P", &camera->getProjection()[0][0], GL_FALSE);
+	noColor->transmitUniformMat4("V", &View[0][0], GL_FALSE);
+	noColor->transmitUniformMat4("W", &World[0][0], GL_FALSE);
+
 	// drawAxis();
 	drawGround();
 	// drawCube();
-	drawObject(*cube);
+	drawObjectNoColor(*importedObject);
 
 	// drawPyramide();
 

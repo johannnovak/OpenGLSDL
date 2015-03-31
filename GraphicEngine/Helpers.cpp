@@ -35,3 +35,32 @@ bool Helpers::loadFile(const char* _fileName, string& _out)
 		return false;
 	}
 }
+
+vector<string>* Helpers::splitString(const char* _src, const char _split, bool _includeEmptyString)
+{
+	vector<string>* result = new vector<string>();
+	string temp = "";
+	for (unsigned int i = 0; _src[i] != '\0'; ++i)
+	{
+		if (_src[i] == _split)
+		{
+			if (!temp.empty() || _includeEmptyString)
+			{
+				result->push_back(temp);
+			}
+			temp = "";
+		}
+		else
+		{
+			temp += _src[i];
+		}
+	}
+
+	if (temp[0] != _split)
+	{
+		if (!temp.empty() || _includeEmptyString)
+			result->push_back(temp);
+	}
+
+	return result;
+}

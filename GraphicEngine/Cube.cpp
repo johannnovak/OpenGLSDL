@@ -164,6 +164,12 @@ Cube::~Cube()
 	delete[] m_normals;
 	delete[] m_indices;
 	delete[] m_uvs;
+
+	m_vertices = nullptr;
+	m_colors = nullptr;
+	m_normals = nullptr;
+	m_indices = nullptr;
+	m_uvs = nullptr;
 }
 
 bool Cube::defineNormals()
