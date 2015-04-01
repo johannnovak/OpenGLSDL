@@ -95,6 +95,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="OBJImporter.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SDLEventHandler.cpp" />
     <ClCompile Include="SDLEventManager.cpp" />
     <ClCompile Include="SDLInputManager.cpp" />
@@ -110,6 +112,8 @@
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="OBJImporter.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneNode.h" />
     <ClInclude Include="SDLEventHandler.h" />
     <ClInclude Include="SDLEventManager.h" />
     <ClInclude Include="SDLInputManager.h" />

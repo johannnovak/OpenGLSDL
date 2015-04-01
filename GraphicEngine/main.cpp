@@ -22,6 +22,7 @@
 #include "Cube.h"
 #include "Object3D.h"
 #include "OBJImporter.h"
+#include "SceneNode.h"
 
 using namespace std;
 
@@ -51,6 +52,8 @@ Camera* camera = NULL;
 Cube* cube = NULL;
 
 Object3D* importedObject = NULL;
+
+SceneNode* cubeNode = NULL;
 
 class QuitEventHandler : public SDLEventHandler
 {
@@ -132,6 +135,18 @@ int main(int argc, char* argv[])
 		if (inputManager->isKeyDown(IM_KEY_UP))
 			r -= 0.1f;
 
+		if (inputManager->isKeyDown(IM_KEY_I))
+			rx += 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_K))
+			rx -= 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_J))
+			ry += 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_L))
+			ry -= 0.1f;
+
 		if (inputManager->isKeyDown(IM_KEY_ESCAPE))
 			quitEventHandler->externQuit();
 
@@ -145,6 +160,8 @@ int main(int argc, char* argv[])
 
 		camera->setPosition(r * sin(theta), 0, r*cos(theta));
 		// camera->setRotation(rx, ry, 0);
+
+		cubeNode->setRotation(rx, ry, 0);
 
 		// Draw
 		draw();
@@ -171,6 +188,7 @@ void exit(SDL_GLContext _context, SDL_Window* _win)
 
 	delete cube;
 	delete importedObject;
+	delete cubeNode;
 
 	SDL_Quit();
 }
@@ -236,6 +254,8 @@ bool initialize()
 	camera->setPosition(0, 0, -2);
 
 	cube = new Cube();
+	cubeNode = new SceneNode(nullptr);
+	cubeNode->setObject3D(cube);
 
 	importedObject = OBJImporter::importObject("Ressources/ToreNodeWithNormals.obj");
 
@@ -589,6 +609,22 @@ void drawPyramide()
 	}
 }
 
+void drawNode(SceneNode& _node)
+{
+	shader->activate();
+	
+	shader->transmitUniformMat4("W", &_node.getWorldMatrice()[0][0]);
+	
+	shader->transmitAttrVect3("pos", _node.getObject3D().getVertices());
+	shader->transmitAttrVect3("color", _node.getObject3D().getColors());
+
+	shader->enableAllAttrib();
+
+	glDrawElements(GL_TRIANGLES, _node.getObject3D().getIndiceCount(), GL_UNSIGNED_SHORT, _node.getObject3D().getIndices());
+
+	shader->disableAllAttrib();
+}
+
 void draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -636,8 +672,7 @@ void draw()
 
 	// drawAxis();
 	drawGround();
-	// drawCube();
-	drawObjectNoColor(*importedObject);
+	drawNode(*cubeNode);
 
 	// drawPyramide();
 
