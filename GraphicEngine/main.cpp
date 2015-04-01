@@ -230,13 +230,14 @@ bool initialize()
 	noColor->registerUniform("W");
 
 	noColor->registerAttribute("pos");
+	noColor->registerAttribute("normal");
 
 	camera = new Camera();
 	camera->setPosition(0, 0, -2);
 
 	cube = new Cube();
 
-	importedObject = OBJImporter::importObject("Ressources/ToreNode.obj");
+	importedObject = OBJImporter::importObject("Ressources/ToreNodeWithNormals.obj");
 
 	return true;
 }
@@ -321,6 +322,7 @@ void drawObjectNoColor(Object3D& _object)
 	noColor->activate();
 
 	noColor->transmitAttrVect3("pos", _object.getVertices());
+	noColor->transmitAttrVect3("normal", _object.getNormals());
 
 	noColor->enableAllAttrib();
 

@@ -21,7 +21,19 @@ Object3D* OBJImporter::importObject(const char* _file)
 		intermediate = parseFile(file);
 
 		GLushort* indices = new GLushort[65536];
-		GLfloat* vertices = new GLfloat[intermediate.vertexCount*3];
+		GLfloat* vertices = new GLfloat[intermediate.vertexCount * 3];
+		GLfloat* normals = new GLfloat[intermediate.vertexCount * 3];
+		int* normalRefCount = new int[intermediate.vertexCount];
+		unsigned short normalIndex;
+
+		for (unsigned int i = 0; i < intermediate.vertexCount; ++i)
+		{
+			normals[i * 3 + 0] = 0;
+			normals[i * 3 + 1] = 0;
+			normals[i * 3 + 2] = 0;
+
+			normalRefCount[i] = 0;
+		}
 
 		unsigned int indexCount = 0;
 		for (unsigned int i = 0; i < intermediate.faceCount; ++i)
@@ -35,12 +47,75 @@ Object3D* OBJImporter::importObject(const char* _file)
 				indices[indexCount++] = intermediate.faces[i].i1.vertex - 1;
 				indices[indexCount++] = intermediate.faces[i].i3.vertex - 1;
 				indices[indexCount++] = intermediate.faces[i].i4.vertex - 1;
+
+				if (intermediate.faces[i].i1.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i1.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
+
+				if (intermediate.faces[i].i2.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i2.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
+
+				if (intermediate.faces[i].i3.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i3.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
+
+				if (intermediate.faces[i].i4.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i4.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
 			}
 			else
 			{
 				indices[indexCount++] = intermediate.faces[i].i1.vertex-1;
 				indices[indexCount++] = intermediate.faces[i].i2.vertex-1;
 				indices[indexCount++] = intermediate.faces[i].i3.vertex-1;
+
+				if (intermediate.faces[i].i1.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i1.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
+
+				if (intermediate.faces[i].i2.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i2.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
+
+				if (intermediate.faces[i].i3.normal != 0)
+				{
+					normalIndex = intermediate.faces[i].i3.normal - 1;
+					normals[normalIndex * 3 + 0] += intermediate.normals[normalIndex].x;
+					normals[normalIndex * 3 + 1] += intermediate.normals[normalIndex].y;
+					normals[normalIndex * 3 + 2] += intermediate.normals[normalIndex].z;
+					normalRefCount[normalIndex]++;
+				}
 			}
 		}
 
@@ -49,6 +124,10 @@ Object3D* OBJImporter::importObject(const char* _file)
 			vertices[i * 3 + 0] = intermediate.vertices[i].x;
 			vertices[i * 3 + 1] = intermediate.vertices[i].y;
 			vertices[i * 3 + 2] = intermediate.vertices[i].z;
+
+			normals[i * 3 + 0] /= (normalRefCount[i] > 0 ? normalRefCount[i] : 1);
+			normals[i * 3 + 1] /= (normalRefCount[i] > 0 ? normalRefCount[i] : 1);
+			normals[i * 3 + 2] /= (normalRefCount[i] > 0 ? normalRefCount[i] : 1);
 		}
 
 		GLushort* temp = indices;
@@ -57,8 +136,9 @@ Object3D* OBJImporter::importObject(const char* _file)
 			indices[i] = temp[i];
 
 		delete temp;
+		delete[] normalRefCount;
 
-		output->setComponents(vertices, intermediate.vertexCount, nullptr, nullptr);
+		output->setComponents(vertices, intermediate.vertexCount, normals, nullptr);
 		output->setIndices(indices, indexCount);
 
 		deleteObjParserObject(intermediate);
