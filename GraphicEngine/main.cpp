@@ -12,6 +12,7 @@
 
 #include <SDL.h>
 
+#include "Quaternion.h"
 #include "SDLEventManager.h"
 #include "SDLInputManager.h"
 
@@ -24,18 +25,20 @@
 #include "OBJImporter.h"
 #include "SceneNode.h"
 
+
 using namespace std;
 
 const char* loadFile(string _file);
 void draw();
 bool initialize();
 void exit(SDL_GLContext _context, SDL_Window* _win);
+int run();
 
-float r = 5.0f, theta = 0;
+float r = 5.0f, theta = M_PI / 2;
 
 float ry = 0, rx = 0, rz = 0;
 
-float z = 0, x = 0;
+float x = 0, y = 0, z = 0;
 
 float fov = M_PI / 4.0f;
 
@@ -81,9 +84,37 @@ QuitEventHandler* quitEventHandler = new QuitEventHandler();
 
 int main(int argc, char* argv[])
 {
+	// return run();
+
+	Quaternion q1(cos(M_PI/4), 0, sin(M_PI/4)*1, 0);
+	Quaternion v(0, 0.5f, 0, 0.5f);
+	Quaternion q2 = Quaternion::invert(q1);
+
+	Quaternion vrot = q2*v*q1;
+
+	cout << q1 << endl << q2 << endl;
+	cout << v << " " << vrot << endl;
+	cout << endl;
+
+	Quaternion q3 = Quaternion::quat_rotate(2*M_PI / 3, glm::vec3(1, 1, 1));
+	Quaternion q4 = Quaternion::invert(q3);
+	Quaternion v2 = Quaternion(0, 1, 0, 0);
+
+	cout << q3 << endl;
+	cout << q3*q4 << endl;
+
+	cout << v2 << endl << q4*v2*q3 << endl << q4*(q4*v2*q3)*q3 << endl;
+
+	cin.ignore();
+
+	return EXIT_SUCCESS;
+}
+
+int run()
+{
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -147,6 +178,30 @@ int main(int argc, char* argv[])
 		if (inputManager->isKeyDown(IM_KEY_L))
 			ry -= 0.1f;
 
+		if (inputManager->isKeyDown(IM_KEY_O))
+			rz += 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_U))
+			rz -= 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_Z))
+			z -= 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_S))
+			z += 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_Q))
+			x -= 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_D))
+			x += 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_A))
+			y += 0.1f;
+
+		if (inputManager->isKeyDown(IM_KEY_E))
+			y -= 0.1f;
+
 		if (inputManager->isKeyDown(IM_KEY_ESCAPE))
 			quitEventHandler->externQuit();
 
@@ -158,10 +213,11 @@ int main(int argc, char* argv[])
 
 		// Update
 
-		camera->setPosition(r * sin(theta), 0, r*cos(theta));
+		camera->setPosition(r * cos(theta), 0, r*sin(theta));
 		// camera->setRotation(rx, ry, 0);
 
-		cubeNode->setRotation(rx, ry, 0);
+		cubeNode->setRotation(rx, ry, rz);
+		cubeNode->setPosition(x, y, z);
 
 		// Draw
 		draw();
@@ -170,8 +226,6 @@ int main(int argc, char* argv[])
 
 
 	exit(mainContext, win);
-
-	return EXIT_SUCCESS;
 }
 
 void exit(SDL_GLContext _context, SDL_Window* _win)
