@@ -18,6 +18,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Visual Studio files
+GraphicEngine/Debug/
 *.tlog
 *.lastbuildstate
 *.log
