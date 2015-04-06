@@ -216,6 +216,32 @@ KeyId SDLInputManager::SDLKeyToKeyId(SDL_Keycode _sdlk)
 	case SDLK_ESCAPE:
 		return IM_KEY_ESCAPE;
 
+	case SDLK_F1:
+		return IM_KEY_F1;
+	case SDLK_F2:
+		return IM_KEY_F2;
+	case SDLK_F3:
+		return IM_KEY_F3;
+	case SDLK_F4:
+		return IM_KEY_F4;
+	case SDLK_F5:
+		return IM_KEY_F5;
+	case SDLK_F6:
+		return IM_KEY_F6;
+	case SDLK_F7:
+		return IM_KEY_F7;
+	case SDLK_F8:
+		return IM_KEY_F8;
+	case SDLK_F9:
+		return IM_KEY_F9;
+	case SDLK_F10:
+		return IM_KEY_F10;
+	case SDLK_F11:
+		return IM_KEY_F11;
+	case SDLK_F12:
+		return IM_KEY_F12;
+
+
 	default:
 		LogManager::showError("Unable to handle entered key.");
 		return IM_KEY_0;

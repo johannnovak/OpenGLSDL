@@ -25,6 +25,8 @@ public:
 
 	void rotate(float _angle, glm::vec3& _axis);
 
+	void normalize();
+
 	static Quaternion conjugate(const Quaternion& q);
 	static Quaternion invert(const Quaternion& q);
 

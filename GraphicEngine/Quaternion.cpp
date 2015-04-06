@@ -51,13 +51,21 @@ void Quaternion::invert()
 	d = d / norm;
 }
 
+void Quaternion::normalize()
+{
+	float norm = normSquared(*this);
+	set(a / norm, b / norm, c / norm, d / norm);
+}
+
 void Quaternion::rotate(float _angle, glm::vec3& _axis)
 {
 	Quaternion q = computeRotationQuaternion(_angle, _axis);
 	set(a*q.a - b*q.b - c*q.c - d*q.d,
-		b*q.a + a*q.b + c*q.d - d*q.c,
-		c*q.a + a*q.c + d*q.b - b*q.d,
-		d*q.a + a*q.d + b*q.c - c*q.b);
+		b*q.a + a*q.b + d*q.c - c*q.d,
+		c*q.a + a*q.c + b*q.d - d*q.b,
+		d*q.a + a*q.d + c*q.b - b*q.c);
+
+	normalize();
 }
 
 Quaternion Quaternion::operator*(const Quaternion& q) const
@@ -113,8 +121,9 @@ Quaternion Quaternion::quat_rotate(float _angle, glm::vec3& _axis)
 
 Quaternion Quaternion::computeRotationQuaternion(float _angle, glm::vec3& _axis)
 {
+	glm::vec3 axisNorm = glm::normalize(_axis);
 	float halfAngle = _angle / 2.0f;
-	float sinAngle = sin(halfAngle);
+	float sinAngle = sinf(halfAngle);
 	return Quaternion(cosf(halfAngle), sinAngle*_axis.x, sinAngle*_axis.y, sinAngle*_axis.z);
 }
 
@@ -139,6 +148,7 @@ Quaternion Quaternion::computeRotationQuaternion(float _rx, float _ry, float _rz
 
 void Quaternion::computeRotationQuaternion(float _angle, glm::vec3& _axis, Quaternion& _out)
 {
+	glm::vec3 axisNorm = glm::normalize(_axis);
 	float halfAngle = _angle / 2.0f;
 	float sinAngle = sin(halfAngle);
 	_out.set(cosf(halfAngle), sinAngle*_axis.x, sinAngle*_axis.y, sinAngle*_axis.z);

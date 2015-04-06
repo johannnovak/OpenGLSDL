@@ -37,6 +37,10 @@ int run();
 float r = 5.0f, theta = M_PI / 2;
 
 float ry = 0, rx = 0, rz = 0;
+float sx = 1, sy = 1, sz = 1;
+float accsy = 0.025f;
+
+float rotspeed = 0.1f;
 
 float x = 0, y = 0, z = 0;
 
@@ -146,8 +150,14 @@ int run()
 		return EXIT_FAILURE;
 	}
 
+	glm::vec3 axis(0, 0, 0);
+
 	while (!quitEventHandler->m_quit)
 	{
+		axis.x = 0;
+		axis.y = 0;
+		axis.z = 0;
+
 		InputManager* inputManager = InputManager::getInstance();
 		inputManager->resetMouseMotion();
 
@@ -167,22 +177,22 @@ int run()
 			r -= 0.1f;
 
 		if (inputManager->isKeyDown(IM_KEY_I))
-			rx += 0.1f;
+			axis.x += 1.0f;
 
 		if (inputManager->isKeyDown(IM_KEY_K))
-			rx -= 0.1f;
+			axis.x -= 1.0f;
 
 		if (inputManager->isKeyDown(IM_KEY_J))
-			ry += 0.1f;
+			axis.y += 1.0f;
 
 		if (inputManager->isKeyDown(IM_KEY_L))
-			ry -= 0.1f;
+			axis.y -= 1.0f;
 
 		if (inputManager->isKeyDown(IM_KEY_O))
-			rz += 0.1f;
+			axis.z += 1.0f;
 
 		if (inputManager->isKeyDown(IM_KEY_U))
-			rz -= 0.1f;
+			axis.z -= 1.0f;
 
 		if (inputManager->isKeyDown(IM_KEY_Z))
 			z -= 0.1f;
@@ -208,16 +218,22 @@ int run()
 		if (inputManager->isMouseButtonDown(IM_MOUSE_LEFT))
 		{
 			theta += inputManager->getMouseMotion().dx * 0.01f;
-
 		}
 
 		// Update
+		sy += accsy;
+		if (sy >= 2.0f || sy <= 1.0f)
+			accsy = -accsy;
+
 
 		camera->setPosition(r * cos(theta), 0, r*sin(theta));
 		// camera->setRotation(rx, ry, 0);
 
-		cubeNode->setRotation(rx, ry, rz);
+		// cubeNode->setRotation(rx, ry, rz);
+		if (axis.x != 0 || axis.y != 0 || axis.z != 0)
+			cubeNode->rotate(rotspeed, axis);
 		cubeNode->setPosition(x, y, z);
+		cubeNode->setScale(sx, sy, sz);
 
 		// Draw
 		draw();

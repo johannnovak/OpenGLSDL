@@ -1,12 +1,12 @@
 #include "SceneNode.h"
 
 
-SceneNode::SceneNode() : m_childs(), m_position(), m_rotation(), m_scale(1, 1, 1), m_parent(nullptr)
+SceneNode::SceneNode() : m_childs(), m_position(), m_rotation(1, 0, 0, 0), m_scale(1, 1, 1), m_parent(nullptr)
 {
 
 }
 
-SceneNode::SceneNode(SceneNode* _parent) : m_childs(), m_position(), m_rotation(), m_scale(1, 1, 1), m_parent(_parent)
+SceneNode::SceneNode(SceneNode* _parent) : m_childs(), m_position(), m_rotation(1, 0, 0, 0), m_scale(1, 1, 1), m_parent(_parent)
 {
 }
 
@@ -57,6 +57,11 @@ void SceneNode::setRotation(float x, float y, float z)
 	Quaternion::computeRotationQuaternion(x, y, z, m_rotation);
 }
 
+void SceneNode::rotate(float _angle, glm::vec3& _axis)
+{
+	m_rotation.rotate(_angle, _axis);
+}
+
 void SceneNode::setScale(float x, float y, float z)
 {
 	m_scale.x = x;
@@ -72,11 +77,6 @@ glm::mat4 SceneNode::computeWorldMatrice()
 	result[0][3] = position.x;
 	result[1][3] = position.y;
 	result[2][3] = position.z;
-
-	/*result[0][0] *= m_scale.x;
-	result[1][1] *= m_scale.y;
-	result[2][2] *= m_scale.z;
-*/
 
 	return result;
 }

@@ -18,6 +18,8 @@ public:
 	void setRotation(float x, float y, float z);
 	void setScale(float x, float y, float z);
 
+	void rotate(float _angle, glm::vec3& _axis);
+
 	glm::mat4 computeWorldMatrice();
 
 	const glm::vec3& getPosition();
