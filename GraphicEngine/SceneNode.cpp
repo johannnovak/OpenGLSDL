@@ -1,14 +1,13 @@
 #include "SceneNode.h"
 
 
-SceneNode::SceneNode() : m_childs(), m_position(), m_rotation(), m_parent(nullptr)
+SceneNode::SceneNode() : m_childs(), m_position(), m_rotation(), m_scale(1, 1, 1), m_parent(nullptr)
 {
 
 }
 
-SceneNode::SceneNode(SceneNode* _parent) : m_childs(), m_position(), m_rotation()
+SceneNode::SceneNode(SceneNode* _parent) : m_childs(), m_position(), m_rotation(), m_scale(1, 1, 1), m_parent(_parent)
 {
-	m_parent = _parent;
 }
 
 
@@ -36,6 +35,11 @@ std::list<SceneNode*>& SceneNode::getChilds()
 	return m_childs;
 }
 
+const glm::vec3& SceneNode::getPosition()
+{
+	return m_position;
+}
+
 SceneNode* SceneNode::getParent()
 {
 	return m_parent;
@@ -50,40 +54,40 @@ void SceneNode::setPosition(float x, float y, float z)
 
 void SceneNode::setRotation(float x, float y, float z)
 {
-	m_rotation.x = x;
-	m_rotation.y = y;
-	m_rotation.z = z;
+	Quaternion::computeRotationQuaternion(x, y, z, m_rotation);
 }
 
-glm::mat4 SceneNode::getWorldMatrice()
+void SceneNode::setScale(float x, float y, float z)
 {
-	glm::mat4 result(1);
+	m_scale.x = x;
+	m_scale.y = y;
+	m_scale.z = z;
+}
 
-	glm::mat4 rotX(1), rotY(1), rotZ(1), pos(1);
-	
-	rotX[0][0] = 1; rotX[0][1] = 0; rotX[0][2] = 0; rotX[0][3] = 0;
-	rotX[1][0] = 0; rotX[1][1] = cos(m_rotation.x); rotX[1][2] = -sin(m_rotation.x); rotX[1][3] = 0;
-	rotX[2][0] = 0; rotX[2][1] = sin(m_rotation.x); rotX[2][2] = cos(m_rotation.x); rotX[2][3] = 0;
-	rotX[3][0] = 0; rotX[3][1] = 0; rotX[3][2] = 0; rotX[3][3] = 1;
+glm::mat4 SceneNode::computeWorldMatrice()
+{
+	glm::mat4 result = (glm::mat4) m_rotation;
+	glm::vec3 position = computeGlobalPosition();
 
-	rotY[0][0] = cos(m_rotation.y); rotY[0][1] = 0; rotY[0][2] = sin(m_rotation.y); rotY[0][3] = 0;
-	rotY[1][0] = 0; rotY[1][1] = 1; rotY[1][2] = 0; rotY[1][3] = 0;
-	rotY[2][0] = -sin(m_rotation.y); rotY[2][1] = 0; rotY[2][2] = cos(m_rotation.y); rotY[2][3] = 0;
-	rotY[3][0] = 0; rotY[3][1] = 0; rotY[3][2] = 0; rotY[3][3] = 1;
+	result[0][3] = position.x;
+	result[1][3] = position.y;
+	result[2][3] = position.z;
 
-	rotZ[0][0] = cos(m_rotation.z); rotZ[0][1] = -sin(m_rotation.z); rotZ[0][2] = 0; rotZ[0][3] = 0;
-	rotZ[1][0] = sin(m_rotation.z); rotZ[1][1] = cos(m_rotation.z); rotZ[1][2] = 0; rotZ[1][3] = 0;
-	rotZ[2][0] = 0; rotZ[2][1] = 0; rotZ[2][2] = 1; rotZ[2][3] = 0;
-	rotZ[3][0] = 0; rotZ[3][1] = 0; rotZ[3][2] = 0; rotZ[3][3] = 1;
-
-	pos[0][0] = 1; pos[0][1] = 0; pos[0][2] = 0; pos[0][3] = m_position.x;
-	pos[1][0] = 0; pos[1][1] = 1; pos[1][2] = 0; pos[1][3] = m_position.y;
-	pos[2][0] = 0; pos[2][1] = 0; pos[2][2] = 1; pos[2][3] = m_position.z;
-	pos[3][0] = 0; pos[3][1] = 0; pos[3][2] = 0; pos[3][3] = 1;
-
-	result = rotZ * rotY * rotX * pos;
+	/*result[0][0] *= m_scale.x;
+	result[1][1] *= m_scale.y;
+	result[2][2] *= m_scale.z;
+*/
 
 	return result;
+}
+
+glm::vec3 SceneNode::computeGlobalPosition() const
+{
+	glm::vec3 pos = m_position;
+	if (m_parent != nullptr)
+		pos += m_parent->computeGlobalPosition();
+
+	return pos;
 }
 
 Object3D& SceneNode::getObject3D()

@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "Object3D.h"
+#include "Quaternion.h"
 
 class SceneNode
 {
@@ -15,8 +16,12 @@ public:
 
 	void setPosition(float x, float y, float z);
 	void setRotation(float x, float y, float z);
+	void setScale(float x, float y, float z);
 
-	glm::mat4 getWorldMatrice();
+	glm::mat4 computeWorldMatrice();
+
+	const glm::vec3& getPosition();
+	glm::vec3 computeGlobalPosition() const;
 
 	void addChild(SceneNode* _child);
 	void removeChild(SceneNode* _child);
@@ -31,8 +36,9 @@ private:
 	SceneNode* m_parent;
 	std::list<SceneNode*> m_childs;
 
-	glm::vec3 m_rotation;
+	Quaternion m_rotation;
 	glm::vec3 m_position;
+	glm::vec3 m_scale;
 
 	Object3D* m_object3d;
 };

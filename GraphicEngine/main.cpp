@@ -84,9 +84,9 @@ QuitEventHandler* quitEventHandler = new QuitEventHandler();
 
 int main(int argc, char* argv[])
 {
-	// return run();
+	return run();
 
-	Quaternion q1(cos(M_PI/4), 0, sin(M_PI/4)*1, 0);
+	/*Quaternion q1(cos(M_PI/4), 0, sin(M_PI/4)*1, 0);
 	Quaternion v(0, 0.5f, 0, 0.5f);
 	Quaternion q2 = Quaternion::invert(q1);
 
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 
 	cin.ignore();
 
-	return EXIT_SUCCESS;
+	return EXIT_SUCCESS;*/
 }
 
 int run()
@@ -311,7 +311,7 @@ bool initialize()
 	cubeNode = new SceneNode(nullptr);
 	cubeNode->setObject3D(cube);
 
-	importedObject = OBJImporter::importObject("Ressources/ToreNodeWithNormals.obj");
+	importedObject = OBJImporter::importObject("Ressources/Camper.obj");
 
 	return true;
 }
@@ -667,7 +667,7 @@ void drawNode(SceneNode& _node)
 {
 	shader->activate();
 	
-	shader->transmitUniformMat4("W", &_node.getWorldMatrice()[0][0]);
+	shader->transmitUniformMat4("W", &_node.computeWorldMatrice()[0][0]);
 	
 	shader->transmitAttrVect3("pos", _node.getObject3D().getVertices());
 	shader->transmitAttrVect3("color", _node.getObject3D().getColors());
@@ -683,7 +683,8 @@ void draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 World = glm::mat4(1.0f);
+	glm::mat4 World = glm::mat4(1);
+	
 	glm::mat4 View = glm::lookAt(
 		glm::vec3(r*cos(theta), 2, r*sin(theta)),
 		glm::vec3(0, 0, 0),
@@ -727,6 +728,7 @@ void draw()
 	// drawAxis();
 	drawGround();
 	drawNode(*cubeNode);
+	// drawObjectNoColor(*importedObject);
 
 	// drawPyramide();
 
