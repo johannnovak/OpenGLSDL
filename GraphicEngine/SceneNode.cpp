@@ -85,7 +85,7 @@ glm::vec3 SceneNode::computeGlobalPosition() const
 {
 	glm::vec3 pos = m_position;
 	if (m_parent != nullptr)
-		pos += m_parent->computeGlobalPosition();
+		pos -= m_parent->computeGlobalPosition();
 
 	return pos;
 }

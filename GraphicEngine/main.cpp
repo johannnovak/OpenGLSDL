@@ -61,6 +61,7 @@ Cube* cube = NULL;
 Object3D* importedObject = NULL;
 
 SceneNode* cubeNode = NULL;
+SceneNode* cameraNode = NULL;
 
 class QuitEventHandler : public SDLEventHandler
 {
@@ -89,29 +90,6 @@ QuitEventHandler* quitEventHandler = new QuitEventHandler();
 int main(int argc, char* argv[])
 {
 	return run();
-
-	/*Quaternion q1(cos(M_PI/4), 0, sin(M_PI/4)*1, 0);
-	Quaternion v(0, 0.5f, 0, 0.5f);
-	Quaternion q2 = Quaternion::invert(q1);
-
-	Quaternion vrot = q2*v*q1;
-
-	cout << q1 << endl << q2 << endl;
-	cout << v << " " << vrot << endl;
-	cout << endl;
-
-	Quaternion q3 = Quaternion::quat_rotate(2*M_PI / 3, glm::vec3(1, 1, 1));
-	Quaternion q4 = Quaternion::invert(q3);
-	Quaternion v2 = Quaternion(0, 1, 0, 0);
-
-	cout << q3 << endl;
-	cout << q3*q4 << endl;
-
-	cout << v2 << endl << q4*v2*q3 << endl << q4*(q4*v2*q3)*q3 << endl;
-
-	cin.ignore();
-
-	return EXIT_SUCCESS;*/
 }
 
 int run()
@@ -226,8 +204,7 @@ int run()
 			accsy = -accsy;
 
 
-		camera->setPosition(r * cos(theta), 0, r*sin(theta));
-		// camera->setRotation(rx, ry, 0);
+		cameraNode->setPosition(r * cos(theta), 0, r*sin(theta));
 
 		// cubeNode->setRotation(rx, ry, rz);
 		if (axis.x != 0 || axis.y != 0 || axis.z != 0)
@@ -320,12 +297,15 @@ bool initialize()
 	noColor->registerAttribute("pos");
 	noColor->registerAttribute("normal");
 
-	camera = new Camera();
-	camera->setPosition(0, 0, -2);
-
 	cube = new Cube();
 	cubeNode = new SceneNode(nullptr);
 	cubeNode->setObject3D(cube);
+
+	cameraNode = new SceneNode(cubeNode);
+	cameraNode->setPosition(0, 0, 2);
+
+	camera = new Camera(*cameraNode);
+
 
 	importedObject = OBJImporter::importObject("Ressources/Camper.obj");
 
@@ -700,11 +680,7 @@ void draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glm::mat4 World = glm::mat4(1);
-	
-	glm::mat4 View = glm::lookAt(
-		glm::vec3(r*cos(theta), 2, r*sin(theta)),
-		glm::vec3(0, 0, 0),
-		glm::vec3(0, 1, 0));
+	glm::mat4 View = camera->getView();
 
 	shader->activate();
 	shader->transmitUniformMat4("P", &camera->getProjection()[0][0], GL_FALSE);
@@ -713,12 +689,12 @@ void draw()
 
 	cellShader->activate();
 	cellShader->transmitUniformMat4("P", &camera->getProjection()[0][0], GL_FALSE);
-	cellShader->transmitUniformMat4("V", &camera->getView()[0][0], GL_FALSE);
+	cellShader->transmitUniformMat4("V", &View[0][0], GL_FALSE);
 	cellShader->transmitUniformMat4("W", &World[0][0], GL_FALSE);
 
 	outline->activate();
 	outline->transmitUniformMat4("P", &camera->getProjection()[0][0], GL_FALSE);
-	outline->transmitUniformMat4("V", &camera->getView()[0][0], GL_FALSE);
+	outline->transmitUniformMat4("V", &View[0][0], GL_FALSE);
 	outline->transmitUniformMat4("W", &World[0][0], GL_FALSE);
 
 	light->activate();
