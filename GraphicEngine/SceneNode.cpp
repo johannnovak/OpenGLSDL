@@ -99,3 +99,8 @@ void SceneNode::setObject3D(Object3D* _object3d)
 {
 	m_object3d = _object3d;
 }
+
+bool SceneNode::hasObject3D()
+{
+	return m_object3d != nullptr;
+}

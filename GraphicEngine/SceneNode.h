@@ -33,6 +33,8 @@ public:
 
 	Object3D& getObject3D();
 	void setObject3D(Object3D* _object3d);
+	bool hasObject3D();
+
 
 private:
 	SceneNode* m_parent;

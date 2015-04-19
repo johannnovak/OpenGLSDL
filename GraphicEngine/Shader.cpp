@@ -7,6 +7,12 @@ using namespace std;
 //------------------------------------------------
 Shader::Shader(const char* _shaderName) : m_name(_shaderName), m_attributes(), m_uniforms()
 {
+	for (unsigned int i = 0; i < ShaderAttributeType_LAST; ++i)
+		m_attributeTypes[i] = -1;
+
+	for (unsigned int i = 0; i < ShaderUniformType_LAST; ++i)
+		m_uniformTypes[i] = -1;
+
 	string vsFile = m_name + ".vs";
 	string fsFile = m_name + ".fs";
 
@@ -70,6 +76,7 @@ Shader::Shader(const char* _shaderName) : m_name(_shaderName), m_attributes(), m
 //------------------------------------------------
 Shader::~Shader()
 {
+	glDeleteProgram(m_id);
 }
 
 //------------------------------------------------
@@ -155,6 +162,17 @@ GLuint Shader::getUniformLocation(const char* _name)
 }
 
 //------------------------------------------------
+GLuint Shader::getUniformLocation(ShaderUniformType _type)
+{
+	if (_type != ShaderUniformType_LAST)
+	{
+		return m_uniformTypes[_type];
+	}
+
+	return -1;
+}
+
+//------------------------------------------------
 GLuint Shader::getAttrLocation(const char* _name)
 {
 	string name(_name);
@@ -166,6 +184,17 @@ GLuint Shader::getAttrLocation(const char* _name)
 	}
 
 	return m_attributes[name];
+}
+
+//------------------------------------------------
+GLuint Shader::getAttrLocation(ShaderAttributeType _type)
+{
+	if (_type != ShaderAttributeType_LAST)
+	{
+		return m_attributeTypes[_type];
+	}
+
+	return -1;
 }
 
 //------------------------------------------------
@@ -191,6 +220,18 @@ bool Shader::registerUniform(const char* _name)
 }
 
 //------------------------------------------------
+bool Shader::registerUniform(const char* _name, ShaderUniformType _type)
+{
+	bool success = registerUniform(_name);
+	if (success)
+	{
+		m_uniformTypes[_type] = getUniformLocation(_name);
+	}
+
+	return success;
+}
+
+//------------------------------------------------
 bool Shader::registerAttribute(const char* _name)
 {
 	string name(_name);
@@ -213,6 +254,19 @@ bool Shader::registerAttribute(const char* _name)
 }
 
 //------------------------------------------------
+bool Shader::registerAttribute(const char* _name, ShaderAttributeType _type)
+{
+	bool registered = registerAttribute(_name);
+	if (registered == true)
+	{
+		m_attributeTypes[_type] = getAttrLocation(_name);
+		return true;
+	}
+		
+	return false;
+}
+
+//------------------------------------------------
 bool Shader::transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboolean _transpose)
 {
 	string name(_name);
@@ -224,6 +278,23 @@ bool Shader::transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboole
 	}
 
 	glUniformMatrix4fv(m_uniforms[name], 1, _transpose, _mat);
+
+	return true;
+}
+
+//------------------------------------------------
+bool Shader::transmitUniformMat4(ShaderUniformType _type, const GLfloat* _mat, GLboolean _transpose)
+{
+	if (m_uniformTypes[_type] == -1)
+	{
+		stringstream strstr;
+		strstr << "Uniform type " << _type << " is not registered for shader " << m_name;
+		LogManager::showError(strstr.str().c_str());
+
+		return false;
+	}
+
+	glUniformMatrix4fv(m_uniformTypes[_type], 1, _transpose, _mat);
 
 	return true;
 }
@@ -307,6 +378,41 @@ bool Shader::transmitAttrVect4(const char* _name, const GLfloat* _vect)
 	}
 
 	glVertexAttribPointer(m_attributes[name], 4, GL_FLOAT, GL_FALSE, 0, _vect);
+	return true;
+}
+
+//------------------------------------------------
+bool Shader::transmitAttrMat4(ShaderAttributeType _type, const GLfloat* _mat)
+{
+	LogManager::showError("transmitAttrMat4 is not implemented yet...");
+	return false;
+}
+
+//------------------------------------------------
+bool Shader::transmitAttrVect3(ShaderAttributeType _type, const GLfloat* _vect)
+{
+	if (m_attributeTypes[_type] == -1)
+	{
+		stringstream strstr;
+		strstr << "Attribute of type " << _type << " is not registered for shader " << m_name;
+		LogManager::showError(strstr.str().c_str());
+		return false;
+	}
+	glVertexAttribPointer(m_attributeTypes[_type], 3, GL_FLOAT, GL_FALSE, 0, _vect);
+	return true;
+}
+
+//------------------------------------------------
+bool Shader::transmitAttrVect4(ShaderAttributeType _type, const GLfloat* _vect)
+{
+	if (m_attributeTypes[_type] == -1)
+	{
+		stringstream strstr;
+		strstr << "Attribute of type " << _type << " is not registered for shader " << m_name;
+		LogManager::showError(strstr.str().c_str());
+		return false;
+	}
+	glVertexAttribPointer(m_attributeTypes[_type], 4, GL_FLOAT, GL_FALSE, 0, _vect);
 	return true;
 }
 

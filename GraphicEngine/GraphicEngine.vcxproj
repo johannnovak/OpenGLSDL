@@ -89,6 +89,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="EditableObject3D.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="GraphicEngine.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LogManager.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="EditableObject3D.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="GraphicEngine.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LogManager.h" />

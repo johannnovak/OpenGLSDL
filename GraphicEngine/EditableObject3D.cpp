@@ -22,3 +22,21 @@ void EditableObject3D::setIndices(GLushort* _indices, unsigned int _indexCount)
 	this->m_indices = _indices;
 	this->m_indexCount = _indexCount;
 }
+
+//--------------------------------------------
+bool EditableObject3D::defineNormals()
+{
+	return m_normals != nullptr;
+}
+
+//--------------------------------------------
+bool EditableObject3D::defineUVs()
+{
+	return m_uvs != nullptr;
+}
+
+//--------------------------------------------
+bool EditableObject3D::defineColors()
+{
+	return m_colors != nullptr;
+}
