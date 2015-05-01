@@ -11,6 +11,12 @@ GraphicEngine::~GraphicEngine()
 }
 
 //------------------------------------------------
+void GraphicEngine::setShader(Shader* _shader)
+{
+	m_currentShader = _shader;
+}
+
+//------------------------------------------------
 void GraphicEngine::drawObject3D(Object3D& _object)
 {
 	m_currentShader->activate();
@@ -46,6 +52,31 @@ void GraphicEngine::drawSceneNode(SceneNode& _node)
 }
 
 //------------------------------------------------
+void GraphicEngine::drawSceneNode(SceneNode& _node, const glm::mat4& _world)
+{
+	glm::mat4 nodeWorld = (glm::mat4) _node.getRotation();
+	nodeWorld[0][3] = _node.getPosition().x;
+	nodeWorld[1][3] = _node.getPosition().y;
+	nodeWorld[2][3] = _node.getPosition().z;
+
+	glm::mat4 w = nodeWorld * _world;
+
+	if (_node.hasObject3D())
+	{
+		m_currentShader->activate();
+
+		m_currentShader->transmitUniformMat4(ShaderUniformType_WORLD, &w[0][0]);
+		drawObject3D(_node.getObject3D());
+	}
+
+	for (auto node : _node.getChilds())
+	{
+		drawSceneNode(*node, w);
+	}
+}
+
+//------------------------------------------------
 void GraphicEngine::drawScene(Scene& _scene)
 {
+	drawSceneNode(_scene.getRootNode(), glm::mat4(1));
 }

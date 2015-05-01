@@ -17,7 +17,7 @@ void Camera::setFOV(float _fov)
 
 glm::mat4& Camera::getView()
 {
-	m_view = glm::transpose(m_node.computeWorldMatrice());
+	m_view = glm::transpose(glm::inverse(m_node.computeWorldMatrice()));
 	return m_view;
 }
 

@@ -24,6 +24,7 @@
 #include "Object3D.h"
 #include "OBJImporter.h"
 #include "SceneNode.h"
+#include "GraphicEngine.h"
 
 
 using namespace std;
@@ -62,6 +63,11 @@ Object3D* importedObject = NULL;
 
 SceneNode* cubeNode = NULL;
 SceneNode* cameraNode = NULL;
+SceneNode* importedObjectNode = NULL;
+
+Scene scene;
+
+GraphicEngine ge;
 
 class QuitEventHandler : public SDLEventHandler
 {
@@ -155,22 +161,22 @@ int run()
 			r -= 0.1f;
 
 		if (inputManager->isKeyDown(IM_KEY_I))
-			axis.x += 1.0f;
+			rx += 0.01f;
 
 		if (inputManager->isKeyDown(IM_KEY_K))
-			axis.x -= 1.0f;
+			rx -= 0.01f;
 
 		if (inputManager->isKeyDown(IM_KEY_J))
-			axis.y += 1.0f;
+			ry += 0.01f;
 
 		if (inputManager->isKeyDown(IM_KEY_L))
-			axis.y -= 1.0f;
+			ry -= 0.01f;
 
 		if (inputManager->isKeyDown(IM_KEY_O))
-			axis.z += 1.0f;
+			rz += 0.01f;
 
 		if (inputManager->isKeyDown(IM_KEY_U))
-			axis.z -= 1.0f;
+			rz -= 0.01f;
 
 		if (inputManager->isKeyDown(IM_KEY_Z))
 			z -= 0.1f;
@@ -206,11 +212,11 @@ int run()
 
 		cameraNode->setPosition(r * cos(theta), 0, r*sin(theta));
 
-		// cubeNode->setRotation(rx, ry, rz);
-		if (axis.x != 0 || axis.y != 0 || axis.z != 0)
-			cubeNode->rotate(rotspeed, axis);
+		cubeNode->setRotation(rx, ry, rz);
+		// if (axis.x != 0 || axis.y != 0 || axis.z != 0)
+		// 	cubeNode->rotate(rotspeed, axis);
 		cubeNode->setPosition(x, y, z);
-		cubeNode->setScale(sx, sy, sz);
+		// cubeNode->setScale(sx, sy, sz);
 
 		// Draw
 		draw();
@@ -219,6 +225,7 @@ int run()
 
 
 	exit(mainContext, win);
+	return EXIT_SUCCESS;
 }
 
 void exit(SDL_GLContext _context, SDL_Window* _win)
@@ -235,7 +242,6 @@ void exit(SDL_GLContext _context, SDL_Window* _win)
 
 	delete cube;
 	delete importedObject;
-	delete cubeNode;
 
 	SDL_Quit();
 }
@@ -264,10 +270,10 @@ bool initialize()
 	shader = new Shader("Shaders/shader");
 	shader->registerUniform("P");
 	shader->registerUniform("V");
-	shader->registerUniform("W");
+	shader->registerUniform("W", ShaderUniformType_WORLD);
 
-	shader->registerAttribute("pos");
-	shader->registerAttribute("color");
+	shader->registerAttribute("pos", ShaderAttributeType_POSITION);
+	shader->registerAttribute("color", ShaderAttributeType_COLOR);
 
 	outline = new Shader("Shaders/outline");
 	outline->registerUniform("P");
@@ -297,17 +303,26 @@ bool initialize()
 	noColor->registerAttribute("pos");
 	noColor->registerAttribute("normal");
 
+	importedObject = OBJImporter::importObject("Ressources/Sphere.obj");
+
 	cube = new Cube();
 	cubeNode = new SceneNode(nullptr);
 	cubeNode->setObject3D(cube);
 
-	cameraNode = new SceneNode(cubeNode);
+	scene.getRootNode().addChild(cubeNode);
+
+	importedObjectNode = new SceneNode(cubeNode);
+	importedObjectNode->setPosition(1, 1, 0);
+	importedObjectNode->setObject3D(importedObject);
+
+	cameraNode = new SceneNode(nullptr);
 	cameraNode->setPosition(0, 0, 2);
+
+	cubeNode->addChild(importedObjectNode);
 
 	camera = new Camera(*cameraNode);
 
-
-	importedObject = OBJImporter::importObject("Ressources/Camper.obj");
+	ge.setShader(shader);
 
 	return true;
 }
@@ -719,7 +734,8 @@ void draw()
 
 	// drawAxis();
 	drawGround();
-	drawNode(*cubeNode);
+	ge.drawScene(scene);
+	// drawNode(*cubeNode);
 	// drawObjectNoColor(*importedObject);
 
 	// drawPyramide();

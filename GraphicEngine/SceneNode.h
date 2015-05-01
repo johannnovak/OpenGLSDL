@@ -22,7 +22,9 @@ public:
 
 	glm::mat4 computeWorldMatrice();
 
-	const glm::vec3& getPosition();
+	const Quaternion& getRotation() const;
+
+	const glm::vec3& getPosition() const;
 	glm::vec3 computeGlobalPosition() const;
 
 	void addChild(SceneNode* _child);
