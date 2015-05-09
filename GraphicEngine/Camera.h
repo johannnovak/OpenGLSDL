@@ -21,6 +21,8 @@ public:
 	glm::mat4& getView();
 	glm::mat4& getProjection();
 
+	SceneNode& getSceneNode();
+
 private:
 	void computeMatrices();
 

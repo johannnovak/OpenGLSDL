@@ -62,3 +62,17 @@ bool Object3D::defineColors()
 {
 	return false;
 }
+
+void Object3D::setColor(float r, float g, float b)
+{
+	if (m_colors != nullptr)
+		delete[] m_colors;
+
+	m_colors = new GLfloat[m_vertexCount*3];
+	for (unsigned int i = 0; i < m_vertexCount; ++i)
+	{
+		m_colors[i * 3 + 0] = r;
+		m_colors[i * 3 + 1] = g;
+		m_colors[i * 3 + 2] = b;	
+	}
+}

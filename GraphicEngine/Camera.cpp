@@ -5,9 +5,13 @@ Camera::Camera(SceneNode& _node)
 {
 }
 
-
 Camera::~Camera()
 {
+}
+
+SceneNode& Camera::getSceneNode()
+{
+	return m_node;
 }
 
 void Camera::setFOV(float _fov)

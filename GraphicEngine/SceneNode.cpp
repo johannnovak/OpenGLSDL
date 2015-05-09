@@ -67,6 +67,13 @@ void SceneNode::rotate(float _angle, glm::vec3& _axis)
 	m_rotation.rotate(_angle, _axis);
 }
 
+void SceneNode::translate(float _dx, float _dy, float _dz)
+{
+	m_position.x += _dx;
+	m_position.y += _dy;
+	m_position.z += _dz;
+}
+
 void SceneNode::setScale(float x, float y, float z)
 {
 	m_scale.x = x;

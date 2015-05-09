@@ -19,6 +19,7 @@ public:
 	void setScale(float x, float y, float z);
 
 	void rotate(float _angle, glm::vec3& _axis);
+	void translate(float _dx, float _dy, float _dz);
 
 	glm::mat4 computeWorldMatrice();
 

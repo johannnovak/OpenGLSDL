@@ -29,8 +29,11 @@ enum ShaderUniformType
 class Shader
 {
 public:
+	Shader();
 	Shader(const char* _shaderName);
 	virtual ~Shader();
+
+	bool load(const char* _shaderName);
 
 	void activate();
 

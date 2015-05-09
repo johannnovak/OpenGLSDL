@@ -20,7 +20,7 @@ Object3D* OBJImporter::importObject(const char* _file)
 	{
 		intermediate = parseFile(file);
 
-		GLushort* indices = new GLushort[65536];
+		GLushort* indices = new GLushort[65535];
 		GLfloat* vertices = new GLfloat[intermediate.vertexCount * 3];
 		GLfloat* normals = new GLfloat[intermediate.vertexCount * 3];
 		int* normalRefCount = new int[intermediate.vertexCount];
@@ -131,6 +131,7 @@ Object3D* OBJImporter::importObject(const char* _file)
 		}
 
 		GLushort* temp = indices;
+		indices = nullptr;
 		indices = new GLushort[indexCount];
 		for (unsigned int i = 0; i < indexCount; ++i)
 			indices[i] = temp[i];

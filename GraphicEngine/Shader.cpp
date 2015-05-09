@@ -5,13 +5,31 @@ Shader* Shader::s_activeShader = nullptr;
 using namespace std;
 
 //------------------------------------------------
-Shader::Shader(const char* _shaderName) : m_name(_shaderName), m_attributes(), m_uniforms()
+Shader::Shader() : m_name(), m_attributes(), m_uniforms()
+{}
+
+//------------------------------------------------
+Shader::Shader(const char* _shaderName) : m_name(), m_attributes(), m_uniforms()
+{
+	load(_shaderName);
+}
+
+//------------------------------------------------
+Shader::~Shader()
+{
+	glDeleteProgram(m_id);
+}
+
+//------------------------------------------------
+bool Shader::load(const char* _shaderName)
 {
 	for (unsigned int i = 0; i < ShaderAttributeType_LAST; ++i)
 		m_attributeTypes[i] = -1;
 
 	for (unsigned int i = 0; i < ShaderUniformType_LAST; ++i)
 		m_uniformTypes[i] = -1;
+
+	m_name = string(_shaderName);
 
 	string vsFile = m_name + ".vs";
 	string fsFile = m_name + ".fs";
@@ -33,13 +51,15 @@ Shader::Shader(const char* _shaderName) : m_name(_shaderName), m_attributes(), m
 	// Compiling Vertex Shader
 	glShaderSource(vsId, 1, &vsPtr, NULL);
 	glCompileShader(vsId);
-	
+
 	// Log any error
 	if (!checkShaderError(vsId, GL_COMPILE_STATUS))
 	{
 		glDeleteProgram(m_id);
 		glDeleteShader(vsId);
 		glDeleteShader(fsId);
+
+		return false;
 	}
 
 	// Compiling Fragment Shader
@@ -52,6 +72,8 @@ Shader::Shader(const char* _shaderName) : m_name(_shaderName), m_attributes(), m
 		glDeleteProgram(m_id);
 		glDeleteShader(vsId);
 		glDeleteShader(fsId);
+
+		return false;
 	}
 
 	// Attaching Shaders
@@ -67,16 +89,14 @@ Shader::Shader(const char* _shaderName) : m_name(_shaderName), m_attributes(), m
 		glDeleteProgram(m_id);
 		glDeleteShader(vsId);
 		glDeleteShader(fsId);
+
+		return false;
 	}
 
 	vsPtr = nullptr;
 	fsPtr = nullptr;
-}
 
-//------------------------------------------------
-Shader::~Shader()
-{
-	glDeleteProgram(m_id);
+	return true;
 }
 
 //------------------------------------------------

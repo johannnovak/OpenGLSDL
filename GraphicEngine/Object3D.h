@@ -29,6 +29,8 @@ public:
 	GLfloat* getUVs();
 	GLfloat* getColors();
 
+	void setColor(float r, float g, float b);
+
 	virtual bool defineNormals();
 	virtual bool defineUVs();
 	virtual bool defineColors();
