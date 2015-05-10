@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Game::Game() : m_scene(), m_graphics(), m_mainCamera(nullptr)
+Game::Game() : m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 {
 }
 
@@ -48,6 +48,11 @@ void Game::initialize()
 	glClearColor(0.127f, 0.127f, 0.127f, 1.0f);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_POINT_SMOOTH);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	m_particleSystem.initialize();
 }
 
 void Game::loadContent()
@@ -67,7 +72,7 @@ void Game::loadContent()
 
 	m_cubeNode = new SceneNode(m_scene.getRootNode());
 	m_cubeNode->setObject3D(m_cube);
-	m_cubeNode->setPosition(0, 0.5f, 0);
+	m_cubeNode->setPosition(5, 0.5f, 0);
 
 	SceneNode* cameraNode = new SceneNode(m_scene.getRootNode());
  	cameraNode->setPosition(0, 1, 5);
@@ -150,16 +155,7 @@ void Game::update(float _dt)
 		m_mainCamera->getSceneNode().setRotation(0, 0, 0);
 	}
 
-	g_timer += _dt;
-	if (g_timer >= 2000)
-	{
-		glm::mat4 view = m_mainCamera->getView();
-		cout << "[ " << view[0][0] << "\t" << view[0][1] << "\t" << view[0][2] << "\t" << view[0][3] << endl;
-		cout << "  " << view[1][0] << "\t" << view[1][1] << "\t" << view[1][2] << "\t" << view[1][3] << endl;
-		cout << "  " << view[2][0] << "\t" << view[2][1] << "\t" << view[2][2] << "\t" << view[2][3] << endl;
-		cout << "  " << view[3][0] << "\t" << view[3][1] << "\t" << view[3][2] << "\t" << view[3][3] << " ]" << endl;
-		g_timer = 0.0f;
-	}
+	m_particleSystem.update(_dt);
 }
 
 void Game::draw(float _dt) 
@@ -171,6 +167,11 @@ void Game::draw(float _dt)
 	m_shader.transmitUniformMat4(ShaderUniformType_PROJECTION, &m_mainCamera->getProjection()[0][0], GL_FALSE);
 
 	m_graphics.drawScene(m_scene);
+	
+	m_particleSystem.setProjection(&m_mainCamera->getProjection()[0][0]);
+	m_particleSystem.setView(&m_mainCamera->getView()[0][0]);
+	m_particleSystem.setWorld(&glm::mat4(1)[0][0]);
+	m_particleSystem.draw(_dt);
 	SDL_GL_SwapWindow(m_window);
 }
 

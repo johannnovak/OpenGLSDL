@@ -59,6 +59,7 @@ public:
 	bool transmitUniformVect4(const char* _name, const GLfloat* _vect);
 
 	bool transmitUniformInt(const char* _name, const GLint _int);
+	bool transmitUniformFloat(const char* _name, const GLint _float);
 
 	bool transmitAttrMat4(const char* _name, const GLfloat* _mat);
 	bool transmitAttrMat4(ShaderAttributeType _type, const GLfloat* _mat);
@@ -68,6 +69,8 @@ public:
 
 	bool transmitAttrVect4(const char* _name, const GLfloat* _vect);
 	bool transmitAttrVect4(ShaderAttributeType _type, const GLfloat* _vect);
+
+	bool transmitAttrFloat(const char* _name, const GLfloat* _float);
 
 	void enableAllAttrib();
 	void disableAllAttrib();

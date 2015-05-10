@@ -224,14 +224,14 @@ bool Shader::registerUniform(const char* _name)
 
 	if (m_uniforms.find(name) != m_uniforms.end())
 	{
-		LogManager::showError((name + " attribute is already registered for shader " + m_name).c_str());
+		LogManager::showError((name + " uniform is already registered for shader " + m_name).c_str());
 		return false;
 	}
 
 	GLuint id = glGetUniformLocation(m_id, name.c_str());
 	if (id == -1)
 	{
-		LogManager::showError((name + " attribute does not exist in shader " + m_name).c_str());
+		LogManager::showError((name + " uniform does not exist in shader " + m_name).c_str());
 		return false;
 	}
 
@@ -258,14 +258,14 @@ bool Shader::registerAttribute(const char* _name)
 
 	if (m_attributes.find(name) != m_attributes.end())
 	{
-		LogManager::showError((name + " uniform is already registered for shader " + m_name).c_str());
+		LogManager::showError((name + " attribute is already registered for shader " + m_name).c_str());
 		return false;
 	}
 
 	GLuint id = glGetAttribLocation(m_id, name.c_str());
 	if (id == -1)
 	{
-		LogManager::showError((name + " uniform does not exist in shader " + m_name).c_str());
+		LogManager::showError((name + " attribute does not exist in shader " + m_name).c_str());
 		return false;
 	}
 
@@ -365,6 +365,21 @@ bool Shader::transmitUniformInt(const char* _name, const GLint _int)
 }
 
 //------------------------------------------------
+bool Shader::transmitUniformFloat(const char* _name, const GLint _float)
+{
+	string name(_name);
+
+	if (m_uniforms.find(name) == m_uniforms.end())
+	{
+		LogManager::showError((name + " uniform is not registered for shader " + m_name).c_str());
+		return false;
+	}
+
+	glUniform1f(m_uniforms[name], _float);
+	return true;
+}
+
+//------------------------------------------------
 bool Shader::transmitAttrMat4(const char* _name, const GLfloat* _mat)
 {
 	LogManager::showError("transmitAttrMat4 is not implemented yet...");
@@ -433,6 +448,21 @@ bool Shader::transmitAttrVect4(ShaderAttributeType _type, const GLfloat* _vect)
 		return false;
 	}
 	glVertexAttribPointer(m_attributeTypes[_type], 4, GL_FLOAT, GL_FALSE, 0, _vect);
+	return true;
+}
+
+//------------------------------------------------
+bool Shader::transmitAttrFloat(const char* _name, const GLfloat* _float)
+{
+	string name(_name);
+
+	if (m_attributes.find(name) == m_attributes.end())
+	{
+		LogManager::showError((name + " uniform is not registered for shader " + m_name).c_str());
+		return false;
+	}
+
+	glVertexAttribPointer(m_attributes[_name], 1, GL_FLOAT, GL_FALSE, 0, _float);
 	return true;
 }
 

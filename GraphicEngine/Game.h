@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Plane.h"
+#include "ParticleSystem.h"
 #include "SDLEventManager.h"
 #include "SDLInputManager.h"
 
@@ -65,5 +66,7 @@ private:
 	QuitEventHandler* m_quitEventHandler = new QuitEventHandler();
 
 	SDL_Window* m_window;
+
+	ParticleSystem m_particleSystem;
 };
 
