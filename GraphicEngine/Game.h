@@ -8,6 +8,7 @@
 #include "GraphicEngine.h"
 #include "Camera.h"
 #include "Cube.h"
+#include "Plane.h"
 #include "SDLEventManager.h"
 #include "SDLInputManager.h"
 
@@ -56,7 +57,10 @@ private:
 	
 	Camera* m_mainCamera;
 
+	SceneNode* m_cubeNode;
 	Cube* m_cube;
+
+	Plane* m_plane;
 
 	QuitEventHandler* m_quitEventHandler = new QuitEventHandler();
 

@@ -78,5 +78,5 @@ void GraphicEngine::drawSceneNode(SceneNode& _node, const glm::mat4& _world)
 //------------------------------------------------
 void GraphicEngine::drawScene(Scene& _scene)
 {
-	drawSceneNode(_scene.getRootNode(), glm::mat4(1));
+	drawSceneNode(*_scene.getRootNode(), glm::mat4(1));
 }

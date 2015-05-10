@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(SceneNode& _node) 
-: m_projection(1), m_view(1), m_fov(45), m_aspect(4.0f / 3.0f), m_near(0.1f), m_far(1000.0f), m_node(_node)
+: m_projection(1), m_view(1), m_fov(45), m_aspect(640.0f / 480.0f), m_near(0.1f), m_far(1000.0f), m_node(_node)
 {
 }
 

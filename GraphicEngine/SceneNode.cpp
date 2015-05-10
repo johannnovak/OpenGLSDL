@@ -3,7 +3,6 @@
 
 SceneNode::SceneNode() : m_childs(), m_position(), m_rotation(1, 0, 0, 0), m_scale(1, 1, 1), m_parent(nullptr), m_object3d(nullptr)
 {
-
 }
 
 SceneNode::SceneNode(SceneNode* _parent) : m_childs(), m_position(), m_rotation(1, 0, 0, 0), m_scale(1, 1, 1), m_parent(_parent), m_object3d(nullptr)
@@ -72,6 +71,11 @@ void SceneNode::translate(float _dx, float _dy, float _dz)
 	m_position.x += _dx;
 	m_position.y += _dy;
 	m_position.z += _dz;
+}
+
+void SceneNode::translate(const glm::vec3& _vect)
+{
+	m_position += _vect;
 }
 
 void SceneNode::setScale(float x, float y, float z)

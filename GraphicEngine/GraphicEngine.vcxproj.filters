@@ -22,6 +22,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{87b9c6e4-5b7f-4312-999d-9c460648278c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3D Object">
+      <UniqueIdentifier>{b45c7461-0885-4ab5-a713-618e78342e44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,16 +57,7 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Object3D.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="OBJImporter.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="EditableObject3D.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -82,6 +76,18 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>3D Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object3D.cpp">
+      <Filter>3D Object</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableObject3D.cpp">
+      <Filter>3D Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,16 +119,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Object3D.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="OBJImporter.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="EditableObject3D.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
@@ -141,6 +138,18 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>3D Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object3D.h">
+      <Filter>3D Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableObject3D.h">
+      <Filter>3D Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

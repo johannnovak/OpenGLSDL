@@ -8,9 +8,9 @@ public:
 	Scene();
 	~Scene();
 
-	SceneNode& getRootNode();
+	SceneNode* getRootNode();
 
 private:
-	SceneNode m_rootNode;
+	SceneNode* m_rootNode;
 };
 

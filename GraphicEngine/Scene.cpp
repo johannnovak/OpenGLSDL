@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-Scene::Scene()
+Scene::Scene() : m_rootNode(new SceneNode())
 {
 }
 
@@ -8,7 +8,7 @@ Scene::~Scene()
 {
 }
 
-SceneNode& Scene::getRootNode()
+SceneNode* Scene::getRootNode()
 {
 	return m_rootNode;
 }
