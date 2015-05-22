@@ -10,8 +10,11 @@
 #include "Cube.h"
 #include "Plane.h"
 #include "ParticleSystem.h"
+#include "AtmosphericParticleSystem.h"
+#include "FireParticle.h"
 #include "SDLEventManager.h"
 #include "SDLInputManager.h"
+#include "OBJImporter.h"
 
 class QuitEventHandler : public SDLEventHandler
 {
@@ -58,15 +61,18 @@ private:
 	
 	Camera* m_mainCamera;
 
+	SceneNode* m_importedObjectNode;
+	Object3D* m_importedObject;
+
 	SceneNode* m_cubeNode;
 	Cube* m_cube;
-
-	Plane* m_plane;
 
 	QuitEventHandler* m_quitEventHandler = new QuitEventHandler();
 
 	SDL_Window* m_window;
 
 	ParticleSystem m_particleSystem;
+	AtmosphericParticleSystem m_atmosphericParticle;
+	FireParticle m_fireParticle;
 };
 

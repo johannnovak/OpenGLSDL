@@ -1,9 +1,8 @@
 #include "ParticleSystem.h"
 
-
-ParticleSystem::ParticleSystem() : m_particleCount(1000), m_updateShader(), m_renderShader(), m_globalTime(0)
+ParticleSystem::ParticleSystem() : m_particleCount(1000), m_globalTime(0), m_particleSize(5.0f)
 {
-	m_particles = new Particle[m_particleCount];
+	
 }
 
 ParticleSystem::~ParticleSystem()
@@ -13,64 +12,49 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::initialize()
 {
-	m_updateShader.load("Shaders/particle_update");
-	m_updateShader.registerUniform("W");
-	m_updateShader.registerUniform("V");
-	m_updateShader.registerUniform("P");
-	m_updateShader.registerUniform("t");
+	m_shader = ShaderBank::getShader("Shaders/Particle/fade_in_out");
+	
+	m_shader->registerUniform("W");
+	m_shader->registerUniform("V");
+	m_shader->registerUniform("P");
+	m_shader->registerUniform("t");
 
-	m_updateShader.registerAttribute("position");
-	m_updateShader.registerAttribute("speed");
-	m_updateShader.registerAttribute("color");
+	m_shader->registerAttribute("position");
+	m_shader->registerAttribute("speed");
+	m_shader->registerAttribute("acceleration");
+	m_shader->registerAttribute("color");
 
-	m_updateShader.registerAttribute("spawnTime");
-	m_updateShader.registerAttribute("ttl");
+	m_shader->registerAttribute("spawnTime");
+	m_shader->registerAttribute("ttl");
 
-	srand(time(NULL));
-
+	m_particles = new Particle[m_particleCount];
 	for (unsigned int i = 0; i < m_particleCount; ++i)
 	{
 		initializeParticle(m_particles[i]);
 	}
 }
 
-float ParticleSystem::prand()
-{
-	return (float)rand() / (float)RAND_MAX;
-}
-
 void ParticleSystem::initializeParticle(Particle& _particle)
 {
 	_particle.spawnTime = m_globalTime;
 
-	_particle.ttl = (prand() * 1000 - 500) + 2000;
+	_particle.ttl = (Helpers::prand() * 1000 - 500) + 2000;
 
-	_particle.x = prand()*7.5f - 7.5f / 2.0f;
+	_particle.x = Helpers::prand()*7.5f - 7.5f / 2.0f;
 	_particle.y = 5.0f;
-	_particle.z = prand()*7.5f - 7.5f / 2.0f;
+	_particle.z = Helpers::prand()*7.5f - 7.5f / 2.0f;
 
-	_particle.dy = - (0.005f * prand());
+	_particle.dy = -(0.005f * Helpers::prand());
 	_particle.dx = 0; // 0.002f * prand() - 0.001f;
 	_particle.dz = 0; // 0.002f * prand() - 0.001f;
+
+	_particle.ax = 0;
+	_particle.ay = 0;
+	_particle.az = 0;
 
 	_particle.r = 0;
 	_particle.g = 0;
 	_particle.b = 1;
-}
-
-void ParticleSystem::setView(GLfloat* _view)
-{
-	m_view = _view;
-}
-
-void ParticleSystem::setProjection(GLfloat* _projection)
-{
-	m_projection = _projection;
-}
-
-void ParticleSystem::setWorld(GLfloat* _world)
-{
-	m_world = _world;
 }
 
 void ParticleSystem::update(float _dt)
@@ -86,24 +70,29 @@ void ParticleSystem::update(float _dt)
 
 void ParticleSystem::draw(float _dt)
 {
-	m_updateShader.activate();
-	m_updateShader.transmitUniformMat4("W", m_world, GL_FALSE);
-	m_updateShader.transmitUniformMat4("V", m_view, GL_FALSE);
-	m_updateShader.transmitUniformMat4("P", m_projection, GL_FALSE);
+	m_shader->activate();
+	m_shader->transmitUniformMat4("W", m_world, GL_FALSE);
+	m_shader->transmitUniformMat4("V", m_view, GL_FALSE);
+	m_shader->transmitUniformMat4("P", m_projection, GL_FALSE);
 
-	m_updateShader.transmitUniformFloat("t", m_globalTime);
+	m_shader->transmitUniformFloat("t", m_globalTime);
+	preDraw(_dt);
 
 	GLfloat* particlesToFloat = (float*)m_particles;
 
-	glVertexAttribPointer(m_updateShader.getAttrLocation("position"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat);
-	glVertexAttribPointer(m_updateShader.getAttrLocation("speed"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 3);
-	glVertexAttribPointer(m_updateShader.getAttrLocation("color"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 6);
+	glVertexAttribPointer(m_shader->getAttrLocation("position"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 0);
+	glVertexAttribPointer(m_shader->getAttrLocation("speed"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 3);
+	glVertexAttribPointer(m_shader->getAttrLocation("acceleration"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 6);
+	glVertexAttribPointer(m_shader->getAttrLocation("color"), 3, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 9);
 
-	glVertexAttribPointer(m_updateShader.getAttrLocation("ttl"), 1, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 9);
-	glVertexAttribPointer(m_updateShader.getAttrLocation("spawnTime"), 1, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 10);
+	glVertexAttribPointer(m_shader->getAttrLocation("ttl"), 1, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 12);
+	glVertexAttribPointer(m_shader->getAttrLocation("spawnTime"), 1, GL_FLOAT, GL_FALSE, sizeof(Particle), particlesToFloat + 13);
 
-	m_updateShader.enableAllAttrib();
-	glPointSize(5.0f);
+	m_shader->enableAllAttrib();
+	glPointSize(m_particleSize);
 	glDrawArrays(GL_POINTS, 0, m_particleCount);
-	m_updateShader.disableAllAttrib();
+	m_shader->disableAllAttrib();
 }
+
+void ParticleSystem::preDraw(float _dt)
+{}

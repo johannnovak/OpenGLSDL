@@ -224,7 +224,7 @@ bool Shader::registerUniform(const char* _name)
 
 	if (m_uniforms.find(name) != m_uniforms.end())
 	{
-		LogManager::showError((name + " uniform is already registered for shader " + m_name).c_str());
+		// LogManager::showError((name + " uniform is already registered for shader " + m_name).c_str());
 		return false;
 	}
 
@@ -258,7 +258,7 @@ bool Shader::registerAttribute(const char* _name)
 
 	if (m_attributes.find(name) != m_attributes.end())
 	{
-		LogManager::showError((name + " attribute is already registered for shader " + m_name).c_str());
+		// LogManager::showError((name + " attribute is already registered for shader " + m_name).c_str());
 		return false;
 	}
 

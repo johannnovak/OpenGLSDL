@@ -21,7 +21,7 @@ void Game::initialize()
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	m_window = SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	m_window = SDL_CreateWindow("Hello World!", 100, 100, 1024, 768, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if (m_window == nullptr)
 	{
 		cout << "SDL_CreateWindow Error: " << SDL_GetError() << endl;
@@ -50,38 +50,47 @@ void Game::initialize()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_POINT_SMOOTH);
 	glEnable(GL_BLEND);
+	glEnable(GL_CULL_FACE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	m_particleSystem.initialize();
+	m_atmosphericParticle.initialize();
+	m_fireParticle.initialize();
 }
 
 void Game::loadContent()
 { 
-	m_shader.load("Shaders/shader");
+	m_shader.load("Shaders/light_shader");
 	m_shader.registerUniform("P", ShaderUniformType_PROJECTION);
 	m_shader.registerUniform("V", ShaderUniformType_VIEW);
 	m_shader.registerUniform("W", ShaderUniformType_WORLD);
 
 	m_shader.registerAttribute("pos", ShaderAttributeType_POSITION);
 	m_shader.registerAttribute("color", ShaderAttributeType_COLOR);
+	m_shader.registerAttribute("normal", ShaderAttributeType_NORMAL);
 
 	m_graphics.setShader(&m_shader);
 
 	m_cube = new Cube();
-	m_plane = new Plane(-20, -20, 20, 20, 0);
 
 	m_cubeNode = new SceneNode(m_scene.getRootNode());
 	m_cubeNode->setObject3D(m_cube);
-	m_cubeNode->setPosition(5, 0.5f, 0);
+	m_cubeNode->setPosition(0, 0.5f, 0);
 
 	SceneNode* cameraNode = new SceneNode(m_scene.getRootNode());
  	cameraNode->setPosition(0, 1, 5);
 
 	m_mainCamera = new Camera(*cameraNode);
 
+	m_importedObject = OBJImporter::importObject("Ressources/Room.obj");
+	m_importedObject->setColor(1, 0, 0);
+	m_importedObjectNode = new SceneNode(m_scene.getRootNode());
+	m_importedObjectNode->setObject3D(m_importedObject);
+	m_importedObjectNode->setPosition(0, 0, 0);
+	
 	m_scene.getRootNode()->addChild(m_cubeNode);
 	m_scene.getRootNode()->addChild(cameraNode);
-	m_scene.getRootNode()->setObject3D(m_plane);
+	m_scene.getRootNode()->addChild(m_importedObjectNode);
 }
 
 float g_timer = 0.0f;
@@ -131,8 +140,8 @@ void Game::update(float _dt)
 		float dx = inputManager->getMouseMotion().dx;
 		float dy = inputManager->getMouseMotion().dy;
 
-		m_mainCamera->getSceneNode().rotate(0.005f * dx , glm::vec3(0, 1, 0));
 		m_mainCamera->getSceneNode().rotate(0.005f * dy, right);
+		m_mainCamera->getSceneNode().rotate(-0.005f * dx , glm::vec3(0, 1, 0));
 	}
 
 	if (inputManager->isKeyDown(KeyId::IM_KEY_L))
@@ -156,6 +165,8 @@ void Game::update(float _dt)
 	}
 
 	m_particleSystem.update(_dt);
+	m_fireParticle.update(_dt);
+	m_atmosphericParticle.update(_dt);
 }
 
 void Game::draw(float _dt) 
@@ -168,10 +179,19 @@ void Game::draw(float _dt)
 
 	m_graphics.drawScene(m_scene);
 	
-	m_particleSystem.setProjection(&m_mainCamera->getProjection()[0][0]);
-	m_particleSystem.setView(&m_mainCamera->getView()[0][0]);
-	m_particleSystem.setWorld(&glm::mat4(1)[0][0]);
-	m_particleSystem.draw(_dt);
+ 	m_particleSystem.setProjection(&m_mainCamera->getProjection()[0][0]);
+  	m_particleSystem.setView(&m_mainCamera->getView()[0][0]);
+  	m_particleSystem.setWorld(&glm::mat4(1)[0][0]);
+  	m_particleSystem.draw(_dt);
+
+// 	m_atmosphericParticle.setProjection(&m_mainCamera->getProjection()[0][0]);
+// 	m_atmosphericParticle.setView(&m_mainCamera->getView()[0][0]);
+// 	m_atmosphericParticle.setWorld(&glm::mat4(1)[0][0]);
+// 	m_atmosphericParticle.draw(_dt);
+
+	m_fireParticle.setMatrices(&glm::mat4(1)[0][0], &m_mainCamera->getView()[0][0], &m_mainCamera->getProjection()[0][0]);
+	m_fireParticle.draw(_dt);
+
 	SDL_GL_SwapWindow(m_window);
 }
 

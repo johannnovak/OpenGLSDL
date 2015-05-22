@@ -2,6 +2,8 @@
 
 using namespace std;
 
+bool Helpers::s_randInit = false;
+
 Helpers::Helpers()
 {
 }
@@ -63,4 +65,15 @@ vector<string>* Helpers::splitString(const char* _src, const char _split, bool _
 	}
 
 	return result;
+}
+
+float Helpers::prand()
+{
+	if (!s_randInit)
+	{
+		srand(time(NULL));
+		s_randInit = true;
+	}
+
+	return (float)rand() / (float)RAND_MAX;
 }

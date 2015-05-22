@@ -40,12 +40,12 @@ Plane::Plane(float _x1, float _z1, float _x2, float _z2, float _y)
 	m_colors[11] = 0.494;
 
 	m_indices[0] = 0;
-	m_indices[1] = 1;
-	m_indices[2] = 2;
+	m_indices[1] = 2;
+	m_indices[2] = 1;
 
 	m_indices[3] = 2;
-	m_indices[4] = 1;
-	m_indices[5] = 3;
+	m_indices[4] = 3;
+	m_indices[5] = 1;
 }
 
 

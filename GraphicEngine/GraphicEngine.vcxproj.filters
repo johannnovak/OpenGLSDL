@@ -25,15 +25,18 @@
     <Filter Include="3D Object">
       <UniqueIdentifier>{b45c7461-0885-4ab5-a713-618e78342e44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ParticleEngine">
+      <UniqueIdentifier>{90fe0fb2-8959-4733-ba61-137563e48511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{0b5ece05-d9b6-4cb4-a6a5-465dfdf22f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Framework.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Helpers.cpp">
@@ -90,15 +93,27 @@
     <ClCompile Include="Plane.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="AtmosphericParticleSystem.cpp">
+      <Filter>ParticleEngine</Filter>
+    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
+      <Filter>ParticleEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractParticleSystem.cpp">
+      <Filter>ParticleEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBank.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="FireParticle.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Helpers.h">
@@ -155,7 +170,22 @@
     <ClInclude Include="Plane.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="AtmosphericParticleSystem.h">
+      <Filter>ParticleEngine</Filter>
+    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
+      <Filter>ParticleEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractParticleSystem.h">
+      <Filter>ParticleEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderBank.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="FireParticle.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

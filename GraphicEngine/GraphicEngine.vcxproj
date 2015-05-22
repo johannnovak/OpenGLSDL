@@ -85,9 +85,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractParticleSystem.cpp" />
+    <ClCompile Include="AtmosphericParticleSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="EditableObject3D.cpp" />
+    <ClCompile Include="FireParticle.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEngine.cpp" />
@@ -107,11 +110,15 @@
     <ClCompile Include="SDLEventManager.cpp" />
     <ClCompile Include="SDLInputManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractParticleSystem.h" />
+    <ClInclude Include="AtmosphericParticleSystem.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="EditableObject3D.h" />
+    <ClInclude Include="FireParticle.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameEngine.h" />
@@ -130,6 +137,7 @@
     <ClInclude Include="SDLEventManager.h" />
     <ClInclude Include="SDLInputManager.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderBank.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

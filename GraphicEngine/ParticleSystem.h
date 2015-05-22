@@ -3,48 +3,32 @@
 #include <ctime>
 #include <random>
 
+#include "Helpers.h"
+
+#include "AbstractParticleSystem.h"
 #include "Shader.h"
+#include "ShaderBank.h"
 
-struct Particle 
-{
-	float x, y, z;		// 0
-	float dx, dy, dz;	// 3*sizeof(float) + 0
-	float r, g, b;		// 3*sizeof(float) + 3*sizeof(float) + 0
-
-	float ttl;			// 3*sizeof(float) + 3*sizeof(float) + 3*sizeof(float) + 0
-	float spawnTime;	// sizeof(float) + 3*sizeof(float) + 3*sizeof(float) + 3*sizeof(float) + 0
-};
-
-class ParticleSystem
+class ParticleSystem : public AbstractParticleSystem
 {
 public:
 	ParticleSystem();
 	~ParticleSystem();
 
-	void initialize();
-	void initializeParticle(Particle& _particle);
-
-	void setView(GLfloat* _view);
-	void setProjection(GLfloat* _projection);
-	void setWorld(GLfloat* _world);
-
-	float prand();
+public:
+	virtual void initialize();
+	virtual void initializeParticle(Particle& _particle);
 
 	void update(float _dt);
 	void draw(float _dt);
 
-private:
-	unsigned int m_particleCount;
-	Shader m_renderShader;
-	Shader m_updateShader;
+protected:
+	virtual void preDraw(float _dt);
 
-	Particle* m_particles;
+protected:
+	unsigned int m_particleCount;
+	float m_particleSize;
 
 	float m_globalTime;
-
-	GLfloat* m_view;
-	GLfloat* m_projection;
-	GLfloat* m_world;
-
 };
 
