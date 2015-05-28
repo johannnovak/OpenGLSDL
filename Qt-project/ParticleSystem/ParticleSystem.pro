@@ -50,14 +50,13 @@ DEPENDPATH += $$PWD/opengl/linux/include
 DESTDIR = release
 OBJECTS_DIR = obj
 
-
 # -------------------- LINUX LIBS ----------------
+
+# libGLEW
+unix:!macx: LIBS += -L$$PWD/opengl/linux/lib/ -lGLEW
 
 # lib GL
 unix:!macx: LIBS += -L$$PWD/opengl/linux/lib/ -lGL
-
-# libGL
-unix:!macx: LIBS += -L$$PWD/opengl/linux/lib/ -lGLEW
 
 # libGLU
 unix:!macx: LIBS += -L$$PWD/opengl/linux/lib/ -lGLU
@@ -81,6 +80,7 @@ HEADERS += 	src/Game.h \
                 src/environment/Camera.h \
                 src/environment/Scene.h \
                 src/environment/SceneNode.h \
+                src/entity/EditableObject3D.h \
                 src/entity/Object3D.h \
                 src/entity/particle_system/AbstractParticleSystem.h\
                 src/entity/particle_system/AtmosphericParticleSystem.h\
@@ -96,6 +96,7 @@ HEADERS += 	src/Game.h \
                 src/utils/maths/RandomNumberGenerator.h \
                 src/utils/maths/Vectors.h \
                 src/utils/misc/Helpers.h \
+                src/utils/misc/OBJImporter.h \
                 src/utils/log/LogManager.h \
                 opengl/glm/glm.hpp\
 
@@ -108,6 +109,7 @@ SOURCES += 	src/main.cpp \
                 src/environment/Camera.cpp \
                 src/environment/Scene.cpp \
                 src/environment/SceneNode.cpp \
+                src/entity/EditableObject3D.cpp \
                 src/entity/Object3D.cpp \
                 src/entity/particle_system/AbstractParticleSystem.cpp\
                 src/entity/particle_system/AtmosphericParticleSystem.cpp\
@@ -120,4 +122,5 @@ SOURCES += 	src/main.cpp \
                 src/utils/maths/Quaternion.cpp \
                 src/utils/maths/RandomNumberGenerator.cpp \
                 src/utils/misc/Helpers.cpp \
+                src/utils/misc/OBJImporter.cpp \
                 src/utils/log/LogManager.cpp \

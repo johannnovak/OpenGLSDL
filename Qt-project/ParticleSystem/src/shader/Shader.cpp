@@ -23,6 +23,7 @@ Shader::~Shader()
 //------------------------------------------------
 bool Shader::load(const char* _shaderName)
 {
+    std::cout << "Loading shader " << _shaderName << std::endl;
 	for (unsigned int i = 0; i < ShaderAttributeType_LAST; ++i)
 		m_attributeTypes[i] = -1;
 
@@ -95,6 +96,8 @@ bool Shader::load(const char* _shaderName)
 
 	vsPtr = nullptr;
 	fsPtr = nullptr;
+
+    std::cout << "Shader loaded !" << std::endl;
 
 	return true;
 }
@@ -265,7 +268,7 @@ bool Shader::registerAttribute(const char* _name)
 	GLuint id = glGetAttribLocation(m_id, name.c_str());
 	if (id == -1)
 	{
-		LogManager::showError((name + " attribute does not exist in shader " + m_name).c_str());
+        LogManager::showError((name + " attribute does not exist in shader " + m_name).c_str());
 		return false;
 	}
 

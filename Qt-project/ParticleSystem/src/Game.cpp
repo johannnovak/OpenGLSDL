@@ -1,7 +1,9 @@
 #include <Game.h>
 #include <iostream>
 #include <vector>
+
 #include "LogManager.h"
+#include "OBJImporter.h"
 
 using namespace std;
 
@@ -25,9 +27,13 @@ bool Game::initializeObjects()
     cout << "Objects initialization " << endl;
     LogManager::setWindow(this);
 
+
     m_particleSystem.initialize();
+    cout << "dgdfgfdgfdg" << endl;
     m_atmosphericParticle.initialize();
     m_fireParticle.initialize();
+
+    cout << "dgdfgfdgfdg" << endl;
 
     m_shader.load("Shaders/light_shader");
     m_shader.registerUniform("P", ShaderUniformType_PROJECTION);
@@ -38,14 +44,29 @@ bool Game::initializeObjects()
     m_shader.registerAttribute("color", ShaderAttributeType_COLOR);
     m_shader.registerAttribute("normal", ShaderAttributeType_NORMAL);
 
+    cout << "dgdfgfdgfdg" << endl;
     m_graphics.setShader(&m_shader);
 
+    m_cube = new Cube();
+
+    m_cubeNode = new SceneNode(m_scene.getRootNode());
+    m_cubeNode->setObject3D(m_cube);
+    m_cubeNode->setPosition(0, 0.5f, 0);
+
+    SceneNode* cameraNode = new SceneNode(m_scene.getRootNode());
+    cameraNode->setPosition(0, 1, 5);
+
+    m_mainCamera = new Camera(*cameraNode);
+
+    cout << "dgdfgfdgfdg" << endl;
     m_importedObject = OBJImporter::importObject("Ressources/Room.obj");
     m_importedObject->setColor(1, 0, 0);
     m_importedObjectNode = new SceneNode(m_scene.getRootNode());
     m_importedObjectNode->setObject3D(m_importedObject);
     m_importedObjectNode->setPosition(0, 0, 0);
 
+    m_scene.getRootNode()->addChild(m_cubeNode);
+    m_scene.getRootNode()->addChild(cameraNode);
     m_scene.getRootNode()->addChild(m_importedObjectNode);
 
     return true;

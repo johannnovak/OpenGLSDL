@@ -1,6 +1,5 @@
-#pragma once
-
-#include <GL/glew.h>
+#ifndef ABSTRACTPARTICLESYSTEM_H
+#define ABSTRACTPARTICLESYSTEM_H
 
 #include "Shader.h"
 
@@ -46,3 +45,4 @@ protected:
 
 };
 
+#endif

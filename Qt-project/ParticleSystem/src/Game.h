@@ -1,13 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "Shader.h"
 #include "GlWindow.h"
 #include "Types.h"
 #include "Scene.h"
-#include "Shader.h"
 #include "GraphicEngine.h"
 #include "Camera.h"
 #include "SceneNode.h"
+#include "Cube.h"
+#include "ParticleSystem.h"
+#include "AtmosphericParticleSystem.h"
+#include "FireParticle.h"
 
 class Game : public GlWindow
 {

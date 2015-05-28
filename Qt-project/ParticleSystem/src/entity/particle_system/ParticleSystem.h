@@ -1,13 +1,12 @@
-#pragma once
+#ifndef PARTICLESYSTEM_H
+#define PARTICLESYSTEM_H
+
+#include "AbstractParticleSystem.h"
+#include "ShaderBank.h"
+#include "Helpers.h"
 
 #include <ctime>
 #include <random>
-
-#include "Helpers.h"
-
-#include "AbstractParticleSystem.h"
-#include "Shader.h"
-#include "ShaderBank.h"
 
 class ParticleSystem : public AbstractParticleSystem
 {
@@ -32,3 +31,4 @@ protected:
 	float m_globalTime;
 };
 
+#endif

@@ -12,8 +12,9 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::initialize()
 {
+    std::cout << "Initializing ParticleSystem" << std::endl;
 	m_shader = ShaderBank::getShader("Shaders/Particle/fade_in_out");
-	
+
 	m_shader->registerUniform("W");
 	m_shader->registerUniform("V");
 	m_shader->registerUniform("P");

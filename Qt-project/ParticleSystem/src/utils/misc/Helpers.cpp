@@ -15,7 +15,7 @@ Helpers::~Helpers()
 
 bool Helpers::loadFile(const char* _fileName, string& _out)
 {
-	ifstream file(_fileName);
+    ifstream file(_fileName);
 	_out.clear();
 
 	if (file.is_open())

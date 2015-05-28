@@ -1,11 +1,13 @@
-#pragma once
+#ifndef SHADER_H
+#define SHADER_H
+
+#include "GL/glew.h"
+#include "Helpers.h"
 
 #include <unordered_map>
 #include <string>
 #include <sstream>
-#include "GL/glew.h"
 
-#include "Helpers.h"
 
 enum ShaderAttributeType
 {
@@ -96,3 +98,4 @@ public:
 	static Shader* s_activeShader;
 };
 
+#endif

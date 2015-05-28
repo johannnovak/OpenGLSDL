@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FIREPARTICLE_H
+#define FIREPARTICLE_H
+
 #include "ParticleSystem.h"
 
 class FireParticle :
@@ -13,3 +15,4 @@ public:
 	void initializeParticle(Particle& _particle);
 };
 
+#endif
