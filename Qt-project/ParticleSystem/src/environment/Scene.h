@@ -1,6 +1,7 @@
-#pragma once
+#ifndef SCENE_H
+#define SCENE_H
 
-#include "SceneNode.h"
+#include <SceneNode.h>
 
 class Scene
 {
@@ -14,3 +15,4 @@ private:
 	SceneNode* m_rootNode;
 };
 
+#endif

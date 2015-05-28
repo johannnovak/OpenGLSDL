@@ -1,11 +1,12 @@
-#pragma once
+#ifndef SCENENODE_H
+#define SCENENODE_H
 
 #include <list>
 #include <glm/glm.hpp>
 #include <cmath>
 
-#include "Object3D.h"
-#include "Quaternion.h"
+#include <Object3D.h>
+#include <Quaternion.h>
 
 class SceneNode
 {
@@ -51,3 +52,4 @@ private:
 	Object3D* m_object3d;
 };
 
+#endif

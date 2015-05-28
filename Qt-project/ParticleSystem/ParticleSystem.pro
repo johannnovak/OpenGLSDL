@@ -7,34 +7,51 @@ QT += core gui opengl
 TARGET = ParticleSystem
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++11
+
 
 # -------------------- INCLUDE/DEPEND PATH ----------------
 
 INCLUDEPATH += 	src \
-                src/qt_framework \
+                src/gui \
+                src/gui/qt_framework \
                 src/environment\
+                src/entity\
+                src/entity/particle_system\
+                src/entity/shape\
+                src/shader\
                 src/utils \
                 src/utils/def \
                 src/utils/maths \
+                src/utils/misc \
                 src/utils/log \
+                opengl/glm/\
+                opengl/glm/detail/\
 INCLUDEPATH += $$PWD/opengl/linux/include
 
 DEPENDPATH += 	src \
-                src/qt_framework \
+                src/gui \
+                src/gui/qt_framework \
+                src/environment\
+                src/entity\
+                src/entity/particle_system\
+                src/entity/shape\
+                src/shader\
                 src/utils \
                 src/utils/def \
                 src/utils/maths \
+                src/utils/misc \
                 src/utils/log \
 DEPENDPATH += $$PWD/opengl/linux/include
 
 
 # -------------------- OUTPUT DIRECTORIES ----------------
+
 DESTDIR = release
 OBJECTS_DIR = obj
 
 
 # -------------------- LINUX LIBS ----------------
-
 
 # lib GL
 unix:!macx: LIBS += -L$$PWD/opengl/linux/lib/ -lGL
@@ -57,23 +74,50 @@ win32: LIBS += $$PWD/opengl/windows/lib/glew32.dll
 
 # Header files
 HEADERS += 	src/Game.h \
-                src/Object3D.h \
-                src/qt_framework/AbstractFramework.h \
-                src/qt_framework/GlFramework.h \
-                src/qt_framework/GlWindow.h \
+                src/gui/GraphicEngine.h \
+                src/gui/qt_framework/AbstractFramework.h \
+                src/gui/qt_framework/GlFramework.h \
+                src/gui/qt_framework/GlWindow.h \
+                src/environment/Camera.h \
+                src/environment/Scene.h \
+                src/environment/SceneNode.h \
+                src/entity/Object3D.h \
+                src/entity/particle_system/AbstractParticleSystem.h\
+                src/entity/particle_system/AtmosphericParticleSystem.h\
+                src/entity/particle_system/FireParticle.h\
+                src/entity/particle_system/ParticleSystem.h\
+                src/entity/shape/Cube.h\
+                src/shader/Shader.h\
+                src/shader/ShaderBank.h\
                 src/utils/def/LF_String.h \
                 src/utils/def/MemDefns.h \
                 src/utils/def/Types.h \
+                src/utils/maths/Quaternion.h \
                 src/utils/maths/RandomNumberGenerator.h \
                 src/utils/maths/Vectors.h \
+                src/utils/misc/Helpers.h \
                 src/utils/log/LogManager.h \
+                opengl/glm/glm.hpp\
 
 # Source files
 SOURCES += 	src/main.cpp \
                 src/Game.cpp \
-                src/Object3D.cpp \
-                src/qt_framework/GlFramework.cpp \
-                src/qt_framework/GlWindow.cpp \
+                src/gui/GraphicEngine.cpp \
+                src/gui/qt_framework/GlFramework.cpp \
+                src/gui/qt_framework/GlWindow.cpp \
+                src/environment/Camera.cpp \
+                src/environment/Scene.cpp \
+                src/environment/SceneNode.cpp \
+                src/entity/Object3D.cpp \
+                src/entity/particle_system/AbstractParticleSystem.cpp\
+                src/entity/particle_system/AtmosphericParticleSystem.cpp\
+                src/entity/particle_system/FireParticle.cpp\
+                src/entity/particle_system/ParticleSystem.cpp\
+                src/entity/shape/Cube.cpp\
+                src/shader/Shader.cpp\
+                src/shader/ShaderBank.cpp\
                 src/utils/def/LF_String.cpp \
+                src/utils/maths/Quaternion.cpp \
                 src/utils/maths/RandomNumberGenerator.cpp \
+                src/utils/misc/Helpers.cpp \
                 src/utils/log/LogManager.cpp \

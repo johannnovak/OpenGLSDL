@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LOGMANAGER_H
+#define LOGMANAGER_H
 
 #define LOGMANAGER_ERROR_LIMIT 10
 
@@ -24,3 +25,4 @@ class LogManager
         static unsigned int s_errorCount;
 };
 
+#endif
