@@ -9,7 +9,6 @@
 #include "LogManager.h"
 #include "InputManager.h"
 
-
 class QTInputManager :
     public InputManager, public QWidget
 {
@@ -32,6 +31,8 @@ class QTInputManager :
 
         static KeyId QTKeyEventToKeyId(QKeyEvent* _event);
         static MouseButtonId QTMouseEventToMouseButtonId(QMouseEvent* _event);
+
+        bool eventFilter(QObject* _object,QEvent* _event);
 
     protected:
         void mousePressEvent(QMouseEvent* _event);

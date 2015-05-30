@@ -21,7 +21,9 @@ Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 
 Game::~Game()
 {
+    cout << "destroying Game !" << endl;
 
+    delete m_mainCamera;
 }
 
 bool Game::initializeObjects()
@@ -151,6 +153,9 @@ void Game::updateGame(float _dt)
         m_mainCamera->getSceneNode().setPosition(0, 0, 5);
         m_mainCamera->getSceneNode().setRotation(0, 0, 0);
     }
+
+    if(inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
+        close();
 
     m_particleSystem.update(_dt);
     m_fireParticle.update(_dt);

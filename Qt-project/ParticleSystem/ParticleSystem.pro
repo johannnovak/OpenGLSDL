@@ -28,7 +28,7 @@ INCLUDEPATH +=	src \
                 src/utils/log \
                 opengl/glm/\
                 opengl/glm/detail/\
-INCLUDEPATH += $$PWD/opengl/linux/include
+unix:!macx:INCLUDEPATH += $$PWD/opengl/linux/include
 
 DEPENDPATH += 	src \
                 src/gui \
@@ -44,7 +44,7 @@ DEPENDPATH += 	src \
                 src/utils/maths \
                 src/utils/misc \
                 src/utils/log \
-DEPENDPATH += $$PWD/opengl/linux/include
+unix:!macx:DEPENDPATH += $$PWD/opengl/linux/include
 
 
 # -------------------- OUTPUT DIRECTORIES ----------------

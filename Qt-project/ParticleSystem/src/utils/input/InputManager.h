@@ -105,7 +105,7 @@ public:
 	virtual ~InputManager();
 
 public:
-	static InputManager* getInstance();
+    static InputManager* getInstance();
 
 	static std::string IMTypeToStr(InputManagerType _type);
 

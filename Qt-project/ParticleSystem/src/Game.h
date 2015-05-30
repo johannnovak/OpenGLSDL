@@ -31,12 +31,7 @@ class Game : public GlWindow
         void renderGame(float _dt);
 
         void updateGame(float _dt) ;
-
     private:
-        long m_globalTime;
-        unsigned int m_targetFps;
-        bool m_quit;
-
         Scene m_scene;
         Shader m_shader;
         GraphicEngine m_graphics;
@@ -52,5 +47,6 @@ class Game : public GlWindow
         ParticleSystem m_particleSystem;
         AtmosphericParticleSystem m_atmosphericParticle;
         FireParticle m_fireParticle;
+
 };
 #endif

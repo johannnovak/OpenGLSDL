@@ -1,5 +1,46 @@
 #include "QTInputManager.h"
 
+#include <iostream>
+
+bool QTInputManager::eventFilter(QObject* _object, QEvent* _event)
+{
+    if(_event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent* qKeyEvent = (QKeyEvent*) _event;
+        keyPressEvent(qKeyEvent);
+        return true;
+    }
+    else if(_event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* qKeyEvent = (QKeyEvent*) _event;
+        keyReleaseEvent(qKeyEvent);
+        return true;
+    }
+    else if(_event->type() == QEvent::MouseMove)
+    {
+        QMouseEvent* qMouseEvent = (QMouseEvent*) _event;
+        mouseMoveEvent(qMouseEvent);
+        return true;
+    }
+    else if(_event->type() == QEvent::MouseButtonPress)
+    {
+        std::cout << "mouuuuuuuuuuuuuuuuuuuuuuuse" << std::endl;
+        QMouseEvent* qMouseEvent = (QMouseEvent*) _event;
+        mousePressEvent(qMouseEvent);
+        return true;
+    }
+    else if(_event->type() == QEvent::MouseButtonRelease)
+    {
+        QMouseEvent* qMouseEvent = (QMouseEvent*) _event;
+        mouseReleaseEvent(qMouseEvent);
+        return true;
+    }
+    else
+    {
+        return QObject::eventFilter(_object,_event);
+    }
+}
+
 QTInputManager::QTInputManager()
 {
 	m_keyPressed = new bool[IM_KEY_LAST];
@@ -251,17 +292,17 @@ KeyId QTInputManager::QTKeyEventToKeyId(QKeyEvent* _event)
 
 MouseButtonId QTInputManager::QTMouseEventToMouseButtonId(QMouseEvent* _event)
 {
-    switch (_event->type())
+    switch (_event->button())
 	{
-    case Qt::LeftButton:
-		return IM_MOUSE_LEFT;
-    case Qt::RightButton:
-		return IM_MOUSE_RIGHT;
-    case Qt::MiddleButton:
-		return IM_MOUSE_MIDDLE;
+        case Qt::LeftButton:
+            return IM_MOUSE_LEFT;
+        case Qt::RightButton:
+            return IM_MOUSE_RIGHT;
+        case Qt::MiddleButton:
+            return IM_MOUSE_MIDDLE;
 
-	default:
-		LogManager::showError("Unable to handle mouse button.");
-		return IM_MOUSE_LEFT;
+        default:
+            LogManager::showError("Unable to handle mouse button.");
+            return IM_MOUSE_LEFT;
 	}
 }
