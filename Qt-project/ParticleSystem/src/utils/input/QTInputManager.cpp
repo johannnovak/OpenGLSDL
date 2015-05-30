@@ -1,6 +1,5 @@
 #include "QTInputManager.h"
 
-
 QTInputManager::QTInputManager()
 {
 	m_keyPressed = new bool[IM_KEY_LAST];
@@ -21,6 +20,11 @@ QTInputManager::QTInputManager()
     m_eventMasks.push_back(QMouseEvent::MouseButtonPress);
     m_eventMasks.push_back(QMouseEvent::MouseButtonRelease);
     m_eventMasks.push_back(QMouseEvent::MouseMove);
+
+    m_mouseMotion.x = 0;
+    m_mouseMotion.y = 0;
+    m_mouseMotion.dx = 0;
+    m_mouseMotion.dy = 0;
 }
 
 QTInputManager::~QTInputManager()
@@ -77,48 +81,46 @@ void QTInputManager::resetMouseMotion()
 	m_mouseMotion.dy = 0;
 }
 
-bool QTInputManager::event( QEvent *_event )
+void QTInputManager::mousePressEvent( QMouseEvent*_event )
 {
-    QKeyEvent* qtKeyEvent;
-    KeyId keyId;
+    QMouseEvent* qtMouseEvent = (QMouseEvent*) _event;
+    MouseButtonId mouseButtonId = QTMouseEventToMouseButtonId(qtMouseEvent);
 
-    QMouseEvent* qtMouseEvent;
-	MouseButtonId mouseButtonId;
+    m_mouseButtonPressed[mouseButtonId] = true;
+}
 
-    switch (_event->type)
-	{
-    case QKeyEvent::KeyPress:
-        qtKeyEvent = (QKeyEvent*) _event;
-        keyId = QTKeyEventToKeyId(qtKeyEvent);
-		m_keyPressed[keyId] = true;
-		break;
+void QTInputManager::mouseReleaseEvent( QMouseEvent*_event )
+{
+    QMouseEvent* qtMouseEvent = (QMouseEvent*) _event;
+    MouseButtonId mouseButtonId = QTMouseEventToMouseButtonId(qtMouseEvent);
 
-    case QKeyEvent::KeyRelease:
-        qtKeyEvent = (QKeyEvent*) _event;
-        keyId = QTKeyEventToKeyId(qtKeyEvent);
-		m_keyPressed[keyId] = false;
-		break;
+    m_mouseButtonPressed[mouseButtonId] = false;
+}
 
-    case QMouseEvent::MouseButtonPress:
-        qtMouseEvent = (QMouseEvent*) _event;
-        mouseButtonId = QTMouseEventToMouseButtonId(mouseButton);
-        m_mouseButtonPressed[mouseButtonId] = true;
-		break;
+void QTInputManager::mouseMoveEvent( QMouseEvent* _event )
+{
+    QMouseEvent* qtMouseEvent = (QMouseEvent*) _event;
 
-    case QMouseEvent::MouseButtonRelease:
-        qtMouseEvent = (QMouseEvent*) _event;
-        mouseButtonId = QTMouseEventToMouseButtonId(mouseButton);
-		m_mouseButtonPressed[mouseButtonId] = false;
-		break;
+    m_mouseMotion.x = qtMouseEvent->x();
+    m_mouseMotion.y = qtMouseEvent->y();
+    m_mouseMotion.dx = qtMouseEvent->x() - m_mouseMotion.dx;
+    m_mouseMotion.dy = qtMouseEvent->y() - m_mouseMotion.dy;
+}
 
-    case QMouseEvent::MouseMove:
-        m_mouseMotion.x = _event.motion.x;
-		m_mouseMotion.y = _event.motion.y;
-		m_mouseMotion.dx = _event.motion.xrel;
-		m_mouseMotion.dy = _event.motion.yrel;
+void QTInputManager::keyPressEvent( QKeyEvent* _event )
+{
+    QKeyEvent* qtKeyEvent = (QKeyEvent*) _event;
+    KeyId keyId = QTKeyEventToKeyId(qtKeyEvent);
 
-		break;
-	}
+    m_keyPressed[keyId] = true;
+}
+
+void QTInputManager::keyReleaseEvent( QKeyEvent* _event )
+{
+    QKeyEvent* qtKeyEvent = (QKeyEvent*) _event;
+    KeyId keyId = QTKeyEventToKeyId(qtKeyEvent);
+
+    m_keyPressed[keyId] = false;
 }
 
 std::vector<QEvent>& QTInputManager::getMasks()

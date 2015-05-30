@@ -2,7 +2,7 @@
 #define SCENENODE_H
 
 #include <list>
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 #include <cmath>
 
 #include <Object3D.h>
@@ -19,7 +19,7 @@ public:
 	void setRotation(float x, float y, float z);
 	void setScale(float x, float y, float z);
 
-	void rotate(float _angle, glm::vec3& _axis);
+    void rotate(float _angle, glm::vec3 _axis);
 	void translate(const glm::vec3& _vect);
 	void translate(float _dx, float _dy, float _dz);
 

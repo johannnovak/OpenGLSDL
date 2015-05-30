@@ -20,6 +20,7 @@
 #include <cmath>
 #include "LF_String.h"
 
+#include "QTInputManager.h"
 #include <iostream>
 
 using namespace std;
@@ -122,6 +123,10 @@ bool GlFramework::init()
     {
         return false;
     }
+
+    QTInputManager::initialize();
+//	QTEventManager::registerSDLEventHandler((SDLEventHandler*)((SDLInputManager*)SDLInputManager::getInstance()));  TODO
+//	QTEventManager::registerSDLEventHandler(m_quitEventHandler);														TODO
 
     glClearColor(0.127f, 0.127f, 0.127f, 1.0f);
 

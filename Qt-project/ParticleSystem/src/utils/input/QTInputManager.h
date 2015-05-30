@@ -2,7 +2,7 @@
 #define QTINPUTMANAGER_H
 
 #include <vector>
-#include <QObject>
+#include <QWidget>
 #include <QKeyEvent>
 #include <QMouseEvent>
 
@@ -11,7 +11,7 @@
 
 
 class QTInputManager :
-    public InputManager, public QObject
+    public InputManager, public QWidget
 {
     public:
         QTInputManager();
@@ -28,14 +28,17 @@ class QTInputManager :
         MouseMotion& getMouseMotion();
         void resetMouseMotion();
 
-        void handleEvent(SDL_Event& _event);
-        std::vector<SDL_EventType>& getMasks();
+        std::vector<QEvent>& getMasks();
 
         static KeyId QTKeyEventToKeyId(QKeyEvent* _event);
         static MouseButtonId QTMouseEventToMouseButtonId(QMouseEvent* _event);
 
     protected:
-        bool event( QEvent *evt );
+        void mousePressEvent(QMouseEvent* _event);
+        void mouseReleaseEvent(QMouseEvent* _event);
+        void mouseMoveEvent(QMouseEvent* _event);
+        void keyPressEvent(QKeyEvent* _event);
+        void keyReleaseEvent(QKeyEvent* _event);
 
     private:
         bool* m_keyPressed;
@@ -45,5 +48,10 @@ class QTInputManager :
 
         std::vector<QEvent> m_eventMasks;
 };
-
+/*
+#define INTERFACE_QTINPUTMANAGER\
+    void mousePressEvent(QMouseEvent* _event);\
+    void mouseMoveEvent(QMouseEvent* _event);\
+    void keyPressEvent(QKeyEvent* _event);\
+*/
 #endif

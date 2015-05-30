@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "LogManager.h"
+#include "glm/glm.hpp"
+#include "QTInputManager.h"
 #include "OBJImporter.h"
 
 using namespace std;
@@ -11,7 +13,7 @@ Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 {
     cout << "Game creation" << endl;
     setWindowTitle(trUtf8("ParticleSystem"));
-    installEventFilter(InputManager::getInstance());
+
     show();
     cout << "Game created !" << endl;
 }
@@ -20,29 +22,6 @@ Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 Game::~Game()
 {
 
-}
-
-void Game::go()
-{
-    float dt = 0.0f;
-    long targetTPF = (long) (1.0 / (double)m_targetFps * 1000.0); // time per frame
-
-    while (!m_quit)
-    {
-        auto start = chrono::high_resolution_clock::now();
-
-        m_globalTime += dt;
-        updateGame(dt);
-        paintGL(dt);
-
-        auto dur = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-        if (dur.count() < targetTPF)
-            this_thread::sleep_for(chrono::milliseconds(targetTPF - dur.count()));
-
-        dt = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start).count();
-    }
-
-//	unloadContent();
 }
 
 bool Game::initializeObjects()
@@ -104,8 +83,81 @@ bool Game::initializeObjects()
     return true;
 }
 
+void Game::updateGame(float _dt)
+{
+    InputManager* inputManager = QTInputManager::getInstance();
+    inputManager->resetMouseMotion();
 
-void Game::render(float _dt)
+/*    SDLEventManager::pollSDLEvents();
+
+    if (m_quitEventHandler->m_quit || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
+        this->m_quit = true;
+*/
+    glm::vec3 forward, right, up;
+    glm::mat4 view = m_mainCamera->getSceneNode().computeWorldMatrice();
+
+    right.x = view[0].x;
+    right.y = view[1].x;
+    right.z = view[2].x;
+
+    up.x = view[0].y;
+    up.y = view[1].y;
+    up.z = view[2].y;
+
+    forward.x = view[0].z;
+    forward.y = view[1].z;
+    forward.z = view[2].z;
+
+    if (inputManager->isKeyDown(KeyId::IM_KEY_UP) || inputManager->isKeyDown(KeyId::IM_KEY_Z))
+        m_mainCamera->getSceneNode().translate(-0.01f*_dt * forward);
+    if (inputManager->isKeyDown(KeyId::IM_KEY_DOWN) || inputManager->isKeyDown(KeyId::IM_KEY_S))
+        m_mainCamera->getSceneNode().translate(0.01f*_dt * forward);
+    if (inputManager->isKeyDown(KeyId::IM_KEY_RIGHT) || inputManager->isKeyDown(KeyId::IM_KEY_D))
+        m_mainCamera->getSceneNode().translate(0.01f*_dt * right);
+    if (inputManager->isKeyDown(KeyId::IM_KEY_LEFT) || inputManager->isKeyDown(KeyId::IM_KEY_Q))
+        m_mainCamera->getSceneNode().translate(-0.01f*_dt * right);
+
+    if (inputManager->isKeyDown(KeyId::IM_KEY_A))
+        m_mainCamera->getSceneNode().translate(0, -0.01f*_dt, 0);
+    if (inputManager->isKeyDown(KeyId::IM_KEY_E))
+        m_mainCamera->getSceneNode().translate(0, 0.01f*_dt, 0);
+
+    // rotate camera
+    if (inputManager->isMouseButtonDown(IM_MOUSE_RIGHT))
+    {
+        float dx = inputManager->getMouseMotion().dx;
+        float dy = inputManager->getMouseMotion().dy;
+
+        m_mainCamera->getSceneNode().rotate(0.005f * dy, right);
+        m_mainCamera->getSceneNode().rotate(-0.005f * dx , glm::vec3(0, 1, 0));
+    }
+
+    if (inputManager->isKeyDown(KeyId::IM_KEY_L))
+        m_cubeNode->rotate(0.01f, glm::vec3(0, 1, 0));
+    if (inputManager->isKeyDown(KeyId::IM_KEY_J))
+        m_cubeNode->rotate(-0.01f, glm::vec3(0, 1, 0));
+    if (inputManager->isKeyDown(KeyId::IM_KEY_I))
+        m_cubeNode->translate(0, 0, 0.01f*_dt);
+    if (inputManager->isKeyDown(KeyId::IM_KEY_K))
+        m_cubeNode->translate(0, 0, -0.01f*_dt);
+
+    if (inputManager->isKeyDown(KeyId::IM_KEY_P))
+        m_mainCamera->getSceneNode().rotate(0.01f, glm::vec3(0, 1, 0));
+    if (inputManager->isKeyDown(KeyId::IM_KEY_O))
+        m_mainCamera->getSceneNode().rotate(-0.01f, glm::vec3(0, 1, 0));
+
+    if (inputManager->isKeyDown(KeyId::IM_KEY_R))
+    {
+        m_mainCamera->getSceneNode().setPosition(0, 0, 5);
+        m_mainCamera->getSceneNode().setRotation(0, 0, 0);
+    }
+
+    m_particleSystem.update(_dt);
+    m_fireParticle.update(_dt);
+    m_atmosphericParticle.update(_dt);
+}
+
+void Game::renderGame(float _dt)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -127,15 +179,4 @@ void Game::render(float _dt)
 
         m_fireParticle.setMatrices(&glm::mat4(1)[0][0], &m_mainCamera->getView()[0][0], &m_mainCamera->getProjection()[0][0]);
         m_fireParticle.draw(_dt);
-}
-
-void Game::keyPressEvent( QKeyEvent* event )
-{
-    int key = event->key();
-    switch(key)
-    {
-        case Qt::Key_Escape:
-            close();
-            break;
-    }
 }

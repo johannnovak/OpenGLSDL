@@ -61,7 +61,7 @@ void SceneNode::setRotation(float x, float y, float z)
 	Quaternion::computeRotationQuaternion(x, y, z, m_rotation);
 }
 
-void SceneNode::rotate(float _angle, glm::vec3& _axis)
+void SceneNode::rotate(float _angle, glm::vec3 _axis)
 {
 	m_rotation.rotate(_angle, _axis);
 }

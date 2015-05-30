@@ -52,7 +52,7 @@ enum KeyId
 	IM_KEY_ESCAPE = 0x28,
 
 	IM_KEY_F1 = 0x29,
-	IM_KEY_F2 = 0x2A,
+    IM_KEY_F2 = 0x2A,
 	IM_KEY_F3 = 0x2B,
 	IM_KEY_F4 = 0x2C,
 	IM_KEY_F5 = 0x2D,

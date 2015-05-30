@@ -19,8 +19,6 @@ class Game : public GlWindow
         Game();
         ~Game();
 
-        void go();
-
     protected:
         /*!
         *\brief Initialization des objets.
@@ -30,9 +28,9 @@ class Game : public GlWindow
         /*!
         *\brief Rendu de la scène.
         */
-        void render(float _dt);
+        void renderGame(float _dt);
 
-        void keyPressEvent(QKeyEvent *);
+        void updateGame(float _dt) ;
 
     private:
         long m_globalTime;

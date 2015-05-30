@@ -27,10 +27,13 @@ std::string InputManager::IMTypeToStr(InputManagerType _type)
 {
 	switch (_type)
 	{
-	case IM_TYPE_SDL:
-		return "SDLInputManager";
+        case IM_TYPE_SDL:
+            return "SDLInputManager";
 
-	default:
-		return "Undefined";
+        case IM_TYPE_QT:
+            return "QTInputManager";
+
+        default:
+            return "Undefined";
 	}
 }

@@ -136,7 +136,7 @@ Object3D* OBJImporter::importObject(const char* _file)
 		for (unsigned int i = 0; i < indexCount; ++i)
 			indices[i] = temp[i];
 
-		delete temp;
+        delete[] temp;
 		delete[] normalRefCount;
 
 		output->setComponents(vertices, intermediate.vertexCount, normals, nullptr);

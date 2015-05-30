@@ -22,13 +22,16 @@ class GlWindow : public QGLWidget, public GlFramework
         */
         virtual void initializeGL();
 
+
     private: // methods
+        void timerEvent(QTimerEvent *);
+
 		/*!
 		*\brief Fonction d'initialization des structures des objets.
 		*/
 		virtual bool initializeObjects() = 0;
 
-        virtual void render(float _dt) = 0;
+        virtual void renderGame(float _dt) = 0;
 
         /*!
 		*\brief Appelé chaque fois que la fenêtre est redimensionnée.
@@ -36,13 +39,11 @@ class GlWindow : public QGLWidget, public GlFramework
 		void resizeGL(int w, int h);
 
 
+        float m_dt;
 
     protected:
-        long m_globalTime;
-        unsigned int m_targetFps;
-        bool m_quit;
 
-        void updateGame(float _dt);
+        virtual void updateGame(float _dt) = 0;
         void paintGL(float _dt);
 };
 
@@ -50,7 +51,5 @@ class GlWindow : public QGLWidget, public GlFramework
 #define INTERFACE_GLWINDOW \
 	bool initializeObjects(); \
 	void render(); \
-	void keyPressEvent( QKeyEvent* event ); \
-
 
 #endif
