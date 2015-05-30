@@ -4,6 +4,8 @@
 
 #include "GlFramework.h"
 
+#include <chrono>
+#include <thread>
 #include <QGLWidget>
 #include <QKeyEvent>
 
@@ -26,16 +28,22 @@ class GlWindow : public QGLWidget, public GlFramework
 		*/
 		virtual bool initializeObjects() = 0;
 
-		virtual void render() = 0;
+        virtual void render(float _dt) = 0;
 
         /*!
 		*\brief Appelé chaque fois que la fenêtre est redimensionnée.
 		*/
 		void resizeGL(int w, int h);
 
-		void paintGL();
 
-        void timerEvent(QTimerEvent *);
+
+    protected:
+        long m_globalTime;
+        unsigned int m_targetFps;
+        bool m_quit;
+
+        void updateGame(float _dt);
+        void paintGL(float _dt);
 };
 
 

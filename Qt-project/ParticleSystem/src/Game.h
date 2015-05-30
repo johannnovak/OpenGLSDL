@@ -19,6 +19,8 @@ class Game : public GlWindow
         Game();
         ~Game();
 
+        void go();
+
     protected:
         /*!
         *\brief Initialization des objets.
@@ -28,11 +30,15 @@ class Game : public GlWindow
         /*!
         *\brief Rendu de la scène.
         */
-        void render();
+        void render(float _dt);
 
         void keyPressEvent(QKeyEvent *);
 
     private:
+        long m_globalTime;
+        unsigned int m_targetFps;
+        bool m_quit;
+
         Scene m_scene;
         Shader m_shader;
         GraphicEngine m_graphics;

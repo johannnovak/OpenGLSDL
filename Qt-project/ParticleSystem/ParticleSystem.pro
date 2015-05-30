@@ -12,7 +12,7 @@ QMAKE_CXXFLAGS += -std=c++11
 
 # -------------------- INCLUDE/DEPEND PATH ----------------
 
-INCLUDEPATH += 	src \
+INCLUDEPATH +=	src \
                 src/gui \
                 src/gui/qt_framework \
                 src/environment\
@@ -22,6 +22,7 @@ INCLUDEPATH += 	src \
                 src/shader\
                 src/utils \
                 src/utils/def \
+                src/utils/input \
                 src/utils/maths \
                 src/utils/misc \
                 src/utils/log \
@@ -39,6 +40,7 @@ DEPENDPATH += 	src \
                 src/shader\
                 src/utils \
                 src/utils/def \
+                src/utils/input \
                 src/utils/maths \
                 src/utils/misc \
                 src/utils/log \
@@ -72,7 +74,7 @@ win32: LIBS += $$PWD/opengl/windows/lib/glew32.dll
 # -------------------- SOURCE/HEADER FILES ----------------
 
 # Header files
-HEADERS += 	src/Game.h \
+HEADERS += 		src/Game.h \
                 src/gui/GraphicEngine.h \
                 src/gui/qt_framework/AbstractFramework.h \
                 src/gui/qt_framework/GlFramework.h \
@@ -92,12 +94,14 @@ HEADERS += 	src/Game.h \
                 src/utils/def/LF_String.h \
                 src/utils/def/MemDefns.h \
                 src/utils/def/Types.h \
+                src/utils/log/LogManager.h \
+                src/utils/input/InputManager.h \
+                src/utils/input/QTInputManager.h \
                 src/utils/maths/Quaternion.h \
                 src/utils/maths/RandomNumberGenerator.h \
                 src/utils/maths/Vectors.h \
                 src/utils/misc/Helpers.h \
                 src/utils/misc/OBJImporter.h \
-                src/utils/log/LogManager.h \
                 opengl/glm/glm.hpp\
 
 # Source files
@@ -119,8 +123,10 @@ SOURCES += 	src/main.cpp \
                 src/shader/Shader.cpp\
                 src/shader/ShaderBank.cpp\
                 src/utils/def/LF_String.cpp \
+                src/utils/input/InputManager.cpp \
+                src/utils/input/QTInputManager.cpp \
+                src/utils/log/LogManager.cpp \
                 src/utils/maths/Quaternion.cpp \
                 src/utils/maths/RandomNumberGenerator.cpp \
                 src/utils/misc/Helpers.cpp \
                 src/utils/misc/OBJImporter.cpp \
-                src/utils/log/LogManager.cpp \
