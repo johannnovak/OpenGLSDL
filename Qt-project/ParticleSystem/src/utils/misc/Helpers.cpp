@@ -33,7 +33,7 @@ bool Helpers::loadFile(const char* _fileName, string& _out)
 	}
 	else
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,"Can't open file " + string(_fileName),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Can't open file " + string(_fileName)));
         return false;
 	}
 }

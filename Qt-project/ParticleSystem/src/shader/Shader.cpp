@@ -115,7 +115,7 @@ bool Shader::checkShaderError(GLuint _id, GLuint _type)
 		log = new char[logSize + 1];
 		glGetShaderInfoLog(_id, logSize, &logSize, log);
 		log[logSize] = '\0';
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string("Error in vs: " + string(log)),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, std::string("Error in vs: " + string(log))));
 		delete[] log;
 		log = NULL;
 		return false;
@@ -137,7 +137,7 @@ bool Shader::checkProgramError(GLuint _id, GLuint _type)
 		log = new char[logSize + 1];
 		glGetProgramInfoLog(_id, logSize, &logSize, log);
 		log[logSize] = '\0';
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string("Error in vs: " + string(log)),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string("Error in vs: " + string(log))));
 		delete[] log;
 		log = NULL;
 		return false;
@@ -177,7 +177,7 @@ GLuint Shader::getUniformLocation(const char* _name)
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string(name + " attribute is not registered for shader " + m_name),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string(name + " attribute is not registered for shader " + m_name)));
         return -1;
 	}
 
@@ -202,7 +202,7 @@ GLuint Shader::getAttrLocation(const char* _name)
 
 	if (m_attributes.find(name) == m_attributes.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string(name + " attribute is not registered for shader " + m_name),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string(name + " attribute is not registered for shader " + m_name)));
 		return -1;
 	}
 
@@ -234,7 +234,7 @@ bool Shader::registerUniform(const char* _name)
 	GLuint id = glGetUniformLocation(m_id, name.c_str());
 	if (id == -1)
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string(name + " uniform does not exist in shader " + m_name),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string(name + " uniform does not exist in shader " + m_name)));
 		return false;
 	}
 
@@ -268,7 +268,7 @@ bool Shader::registerAttribute(const char* _name)
 	GLuint id = glGetAttribLocation(m_id, name.c_str());
 	if (id == -1)
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string(name + " uniform does not exist in shader " + m_name),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform does not exist in shader " + m_name));
 		return false;
 	}
 
@@ -296,7 +296,7 @@ bool Shader::transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboole
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent, name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
 		return false;
 	}
 
@@ -312,7 +312,7 @@ bool Shader::transmitUniformMat4(ShaderUniformType _type, const GLfloat* _mat, G
 	{
 		stringstream strstr;
 		strstr << "Uniform type " << _type << " is not registered for shader " << m_name;
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,strstr.str(),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, strstr.str()));
 
 		return false;
 	}
@@ -329,7 +329,7 @@ bool Shader::transmitUniformVect3(const char* _name, const GLfloat* _vect)
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
         return false;
 	}
 
@@ -344,7 +344,7 @@ bool Shader::transmitUniformVect4(const char* _name, const GLfloat* _vect)
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
         return false;
 	}
 
@@ -359,7 +359,7 @@ bool Shader::transmitUniformInt(const char* _name, const GLint _int)
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
         return false;
 	}
 
@@ -374,7 +374,7 @@ bool Shader::transmitUniformFloat(const char* _name, const GLint _float)
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
         return false;
 	}
 
@@ -385,7 +385,7 @@ bool Shader::transmitUniformFloat(const char* _name, const GLint _float)
 //------------------------------------------------
 bool Shader::transmitAttrMat4(const char* _name, const GLfloat* _mat)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,"transmitAttrMat4 is not implemented yet...",LogLevel::ERROR));
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "transmitAttrMat4 is not implemented yet..."));
     return false;
 }
 
@@ -396,7 +396,7 @@ bool Shader::transmitAttrVect3(const char* _name, const GLfloat* _vect)
 
 	if (m_attributes.find(name) == m_attributes.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
         return false;
 	}
 
@@ -411,7 +411,7 @@ bool Shader::transmitAttrVect4(const char* _name, const GLfloat* _vect)
 
 	if (m_attributes.find(name) == m_attributes.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
         return false;
 	}
 
@@ -422,7 +422,7 @@ bool Shader::transmitAttrVect4(const char* _name, const GLfloat* _vect)
 //------------------------------------------------
 bool Shader::transmitAttrMat4(ShaderAttributeType _type, const GLfloat* _mat)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,"transmitAttrMat4 is not implemented yet...",LogLevel::ERROR));
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, "transmitAttrMat4 is not implemented yet..."));
     return false;
 }
 
@@ -433,7 +433,7 @@ bool Shader::transmitAttrVect3(ShaderAttributeType _type, const GLfloat* _vect)
 	{
 		stringstream strstr;
 		strstr << "Attribute of type " << _type << " is not registered for shader " << m_name;
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,strstr.str(),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, strstr.str()));
 		return false;
 	}
 	glVertexAttribPointer(m_attributeTypes[_type], 3, GL_FLOAT, GL_FALSE, 0, _vect);
@@ -447,7 +447,7 @@ bool Shader::transmitAttrVect4(ShaderAttributeType _type, const GLfloat* _vect)
 	{
 		stringstream strstr;
 		strstr << "Attribute of type " << _type << " is not registered for shader " << m_name;
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,strstr.str(),LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR,strstr.str()));
 		return false;
 	}
 	glVertexAttribPointer(m_attributeTypes[_type], 4, GL_FLOAT, GL_FALSE, 0, _vect);
@@ -461,7 +461,7 @@ bool Shader::transmitAttrFloat(const char* _name, const GLfloat* _float)
 
 	if (m_attributes.find(name) == m_attributes.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,name + " uniform is not registered for shader " + m_name,LogLevel::ERROR));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform is not registered for shader " + m_name));
 		return false;
 	}
 

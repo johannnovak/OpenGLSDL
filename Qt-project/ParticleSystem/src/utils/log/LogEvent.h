@@ -6,12 +6,14 @@
 enum LogEventType
 {
     ConsoleLogEvent,
-    QtLogEvent
+    QtLogEvent,
+    AllLogEvent
 };
 
 enum LogLevel
 {
     ERROR,
+    WARN,
     DEBUG,
     INFO
 };
@@ -26,7 +28,7 @@ class LogEvent
     public:
         LogEvent();
         LogEvent(LogEventType _type);
-        LogEvent(LogEventType _type, std::string _content, LogLevel _level);
+        LogEvent(LogEventType _type, LogLevel _level, std::string _content);
         ~LogEvent();
 
         LogLevel getLevel();

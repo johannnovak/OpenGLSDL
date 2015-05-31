@@ -19,7 +19,7 @@ InputManager* InputManager::getInstance()
 	if (s_instance != nullptr)
 		return s_instance;
 	
-    LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,"You need to initialize the InputManager before calling getInstance()",LogLevel::ERROR));
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "You need to initialize the InputManager before calling getInstance()"));
     return s_instance;
 }
 

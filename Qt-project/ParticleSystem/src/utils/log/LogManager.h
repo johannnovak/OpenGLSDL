@@ -14,22 +14,17 @@ class LogManager
         LogManager();
         virtual ~LogManager();
 
-    public:
-        static void pushEvent(LogEvent* _event);
+        static void closeHandlers();
 
+        static unsigned int s_errorCount;
+    public:
         static void registerLogEventHandler(LogEventHandler* _handler);
         static void unregisterLogEventHandler(LogEventHandler* _handler);
-        static bool pollEvents();
 
-        static void showError(const char* _msg);
-
-        static void print(std::string _str);
+        static void pushEvent(LogEvent* _event);
 
     private:
-        static LogEvent* pollEvent(LogEvent* _event);
-
         static std::vector<LogEventHandler*> s_eventHandlers;
-        static std::vector<LogEvent*> s_logEvents;
 };
 
 #endif

@@ -6,13 +6,12 @@
 #include "glm/glm.hpp"
 #include "QTInputManager.h"
 #include "OBJImporter.h"
-#include "ConsoleLogEventHandler.h"
 
 using namespace std;
 
 Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 {
-    cout << "Game creation" << endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Game creation"));
     setWindowTitle(trUtf8("ParticleSystem"));
 
     show();
@@ -22,15 +21,13 @@ Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 
 Game::~Game()
 {
-    cout << "destroying Game !" << endl;
-
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Destroying Game"));
     delete m_mainCamera;
 }
 
 bool Game::initializeObjects()
 {
     cout << "Objects initialization " << endl;
-    LogManager::registerLogEventHandler(new ConsoleLogEventHandler());
 
     m_particleSystem.initialize();
     m_atmosphericParticle.initialize();
@@ -90,8 +87,17 @@ void Game::updateGame(float _dt)
     InputManager* inputManager = QTInputManager::getInstance();
     inputManager->resetMouseMotion();
 
-    if (quit || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
+    if (LogManager::s_errorCount > 10 || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
+    {
+        if (LogManager::s_errorCount > 10)
+            LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Too many errors, exiting the program."));
+        else
+            LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "ESCAPE key pressed."));
+
+        LogManager::closeHandlers();
+
         close();
+    }
 
     glm::vec3 forward, right, up;
     glm::mat4 view = m_mainCamera->getSceneNode().computeWorldMatrice();

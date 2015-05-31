@@ -9,8 +9,9 @@ class ConsoleLogEventHandler : public LogEventHandler
         ConsoleLogEventHandler();
         ~ConsoleLogEventHandler();
 
-        bool handleEvent(LogEvent& _event);
-        std::vector<LogEvent>& getMasks();
+        void handleEvent(LogEvent& _event);
+        std::vector<LogEvent*>& getMasks();
+        void closeHandler();
 };
 
 #endif // CONSOLELOGEVENTHANDLER_H

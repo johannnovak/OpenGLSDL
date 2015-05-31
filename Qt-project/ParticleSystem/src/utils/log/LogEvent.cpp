@@ -12,7 +12,7 @@ LogEvent::LogEvent(LogEventType _type):m_type(_type)
     m_content = new std::string("");
 }
 
-LogEvent::LogEvent(LogEventType _type, std::string _content, LogLevel _level):m_type(_type), m_level(_level)
+LogEvent::LogEvent(LogEventType _type, LogLevel _level, std::string _content):m_type(_type), m_level(_level)
 {
     m_content = new std::string(_content);
 }
@@ -50,6 +50,10 @@ std::ostream& operator<<(std::ostream& _o, LogEvent& _event)
     {
         case LogLevel::ERROR :
             _o << "ERROR : ";
+            break;
+
+        case LogLevel::WARN:
+            _o << "WARN  : ";
             break;
 
         case LogLevel::DEBUG :

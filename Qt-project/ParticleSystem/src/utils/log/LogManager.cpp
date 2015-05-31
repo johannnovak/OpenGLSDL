@@ -1,39 +1,19 @@
 #include "LogManager.h"
 #include <QDebug>
 #include <string>
+#include "InputManager.h"
 
 std::vector<LogEventHandler*> LogManager::s_eventHandlers;
-std::vector<LogEvent*> LogManager::s_logEvents;
+unsigned int LogManager::s_errorCount = 0;
 
 LogManager::LogManager()
 {
+
 }
 
 
 LogManager::~LogManager()
 {
-}
-
-void LogManager::pushEvent(LogEvent *_event)
-{
-    for(int i(0); i < LogManager::s_eventHandlers; ++i)
-        for(int j(0); i < LogManager::s_eventHandlers[i]->getMasks().size(); ++j)
-            if(LogManager::s_eventHandlers[i]->getMasks()[j] == *_event)
-                LogManager::s_eventHandlers[i]->handleEvent(*event);
-}
-
-LogEvent* LogManager::pollEvent(LogEvent* _event)
-{
-    if(LogManager::s_logEvents.empty())
-    {
-        _event = nullptr;
-    }
-    else
-    {
-        _event = LogManager::s_logEvents.back();
-        LogManager::s_logEvents.pop_back();
-    }
-    return _event;
 }
 
 void LogManager::registerLogEventHandler(LogEventHandler* _handler)
@@ -64,20 +44,21 @@ void LogManager::unregisterLogEventHandler(LogEventHandler* _handler)
     }
 }
 
-bool LogManager::pollEvents()
+void LogManager::pushEvent(LogEvent *_event)
 {
-    LogEvent* event = nullptr;
-    while((event = pollEvent(event)))
-    {
-        for(int i(0); i < LogManager::s_eventHandlers.size(); ++i)
-        {
-            for(int j(0); i < LogManager::s_eventHandlers[i]->getMasks().size(); ++j)
-            {
-                if(LogManager::s_eventHandlers[i]->getMasks()[j] == *event)
-                {
-                    return LogManager::s_eventHandlers[i]->handleEvent(*event);
-                }
-            }
-        }
-    }
+
+    for(int i(0); i < LogManager::s_eventHandlers.size(); ++i)
+        for(int j(0); j < LogManager::s_eventHandlers[i]->getMasks().size(); ++j)
+            if(*LogManager::s_eventHandlers[i]->getMasks()[j] == *_event)
+                if(LogManager::s_eventHandlers[i]->canLog(_event->getLevel()))
+                    LogManager::s_eventHandlers[i]->handleEvent(*_event);
+
+    if(_event->getLevel() == LogLevel::ERROR)
+        ++LogManager::s_errorCount;
+}
+
+void LogManager::closeHandlers()
+{
+    for(int i(0); i < LogManager::s_eventHandlers.size(); ++i)
+        LogManager::s_eventHandlers[i]->closeHandler();
 }
