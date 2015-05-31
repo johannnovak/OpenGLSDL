@@ -16,7 +16,7 @@ void GlWindow::initializeGL()
     initializeObjects();
 }
 
-void GlWindow::timerEvent(QTimerEvent * _event)
+void GlWindow::timerEvent(QTimerEvent * )
 {
     paintGL(m_dt);
 }

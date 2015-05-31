@@ -10,25 +10,24 @@
 
 class ParticleSystem : public AbstractParticleSystem
 {
-public:
-	ParticleSystem();
-	~ParticleSystem();
+    protected:
+        unsigned int m_particleCount;
+        float m_globalTime;
+        float m_particleSize;
 
-public:
-	virtual void initialize();
-	virtual void initializeParticle(Particle& _particle);
+    public:
+        ParticleSystem();
+        ~ParticleSystem();
 
-	void update(float _dt);
-	void draw(float _dt);
+    public:
+        virtual void initialize();
+        virtual void initializeParticle(Particle& _particle);
 
-protected:
-	virtual void preDraw(float _dt);
+        void update(float _dt);
+        void draw(float _dt);
 
-protected:
-	unsigned int m_particleCount;
-	float m_particleSize;
-
-	float m_globalTime;
+    protected:
+        virtual void preDraw(float _dt);
 };
 
 #endif

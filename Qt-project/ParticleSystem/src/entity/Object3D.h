@@ -16,36 +16,36 @@ enum BufferType
 
 class Object3D
 {
-public:
-	Object3D();
-	~Object3D();
 
-	GLushort* getIndices();
-	unsigned int getIndiceCount();
+    protected:
+        GLushort* m_indices;
+        unsigned int m_indexCount;
 
-	GLfloat* getVertices();
-	unsigned int getVertexCount();
+        GLfloat* m_vertices;
+        unsigned int m_vertexCount;
 
-	GLfloat* getNormals();
-	GLfloat* getUVs();
-	GLfloat* getColors();
+        GLfloat* m_normals;
+        GLfloat* m_colors;
+        GLfloat* m_uvs;
+    public:
+        Object3D();
+        ~Object3D();
 
-	void setColor(float r, float g, float b);
+        GLushort* getIndices();
+        unsigned int getIndiceCount();
 
-	virtual bool defineNormals();
-	virtual bool defineUVs();
-	virtual bool defineColors();
+        GLfloat* getVertices();
+        unsigned int getVertexCount();
 
-protected:
-	GLushort* m_indices;
-	unsigned int m_indexCount;
+        GLfloat* getNormals();
+        GLfloat* getUVs();
+        GLfloat* getColors();
 
-	GLfloat* m_vertices;
-	unsigned int m_vertexCount;
+        void setColor(float r, float g, float b);
 
-	GLfloat* m_normals;
-	GLfloat* m_uvs;
-	GLfloat* m_colors;
+        virtual bool defineNormals();
+        virtual bool defineUVs();
+        virtual bool defineColors();
 
 };
 

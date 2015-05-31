@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <string>
 
-QGLWidget* LogManager::s_window = NULL;
-unsigned int LogManager::s_errorCount = 0;
+std::vector<LogEventHandler*> LogManager::s_eventHandlers;
+std::vector<LogEvent*> LogManager::s_logEvents;
 
 LogManager::LogManager()
 {
@@ -14,29 +14,70 @@ LogManager::~LogManager()
 {
 }
 
-void LogManager::setWindow(QGLWidget* _win)
+void LogManager::pushEvent(LogEvent *_event)
 {
-	s_window = _win;
+    for(int i(0); i < LogManager::s_eventHandlers; ++i)
+        for(int j(0); i < LogManager::s_eventHandlers[i]->getMasks().size(); ++j)
+            if(LogManager::s_eventHandlers[i]->getMasks()[j] == *_event)
+                LogManager::s_eventHandlers[i]->handleEvent(*event);
 }
 
-void LogManager::showError(const char* _msg)
+LogEvent* LogManager::pollEvent(LogEvent* _event)
 {
-//	SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Error", _msg, LogManager::s_window);
-    std::string error("Error : ");
-    error += _msg;
-
-    std::cout << error << std::endl;
-
-    s_errorCount++;
-
-	if (s_errorCount > LOGMANAGER_ERROR_LIMIT)
+    if(LogManager::s_logEvents.empty())
     {
-        std::cout << "Too many errors, program exiting\n\n" << endl;
-        exit(1);
+        _event = nullptr;
+    }
+    else
+    {
+        _event = LogManager::s_logEvents.back();
+        LogManager::s_logEvents.pop_back();
+    }
+    return _event;
+}
+
+void LogManager::registerLogEventHandler(LogEventHandler* _handler)
+{
+    if(_handler != NULL)
+        LogManager::s_eventHandlers.push_back(_handler);
+}
+
+void LogManager::unregisterLogEventHandler(LogEventHandler* _handler)
+{
+    if(_handler == NULL)
+        return;
+
+    int size = LogManager::s_eventHandlers.size();
+    for(int i = 0 ; i < size; ++i)
+    {
+        if(LogManager::s_eventHandlers[i] == _handler)
+        {
+            if(size == 1)
+                LogManager::s_eventHandlers.clear();
+            else
+            {
+                LogManager::s_eventHandlers[i] = LogManager::s_eventHandlers[size - 1];
+                LogManager::s_eventHandlers.pop_back();
+            }
+            break;
+        }
     }
 }
 
-void LogManager::print(std::string _str)
+bool LogManager::pollEvents()
 {
-	std::cout << _str << std::endl;
+    LogEvent* event = nullptr;
+    while((event = pollEvent(event)))
+    {
+        for(int i(0); i < LogManager::s_eventHandlers.size(); ++i)
+        {
+            for(int j(0); i < LogManager::s_eventHandlers[i]->getMasks().size(); ++j)
+            {
+                if(LogManager::s_eventHandlers[i]->getMasks()[j] == *event)
+                {
+                    return LogManager::s_eventHandlers[i]->handleEvent(*event);
+                }
+            }
+        }
+    }
 }

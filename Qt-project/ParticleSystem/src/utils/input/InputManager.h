@@ -91,11 +91,10 @@ class MouseMotion
 public:
 	MouseMotion();
 
-	int x;
+    int dx;
+    int dy;
+    int x;
 	int y;
-
-	int dx;
-	int dy;
 };
 
 class InputManager

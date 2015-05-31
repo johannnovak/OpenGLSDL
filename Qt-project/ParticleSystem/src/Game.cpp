@@ -6,6 +6,7 @@
 #include "glm/glm.hpp"
 #include "QTInputManager.h"
 #include "OBJImporter.h"
+#include "ConsoleLogEventHandler.h"
 
 using namespace std;
 
@@ -29,8 +30,7 @@ Game::~Game()
 bool Game::initializeObjects()
 {
     cout << "Objects initialization " << endl;
-    LogManager::setWindow(this);
-
+    LogManager::registerLogEventHandler(new ConsoleLogEventHandler());
 
     m_particleSystem.initialize();
     m_atmosphericParticle.initialize();
@@ -90,11 +90,9 @@ void Game::updateGame(float _dt)
     InputManager* inputManager = QTInputManager::getInstance();
     inputManager->resetMouseMotion();
 
-/*    SDLEventManager::pollSDLEvents();
+    if (quit || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
+        close();
 
-    if (m_quitEventHandler->m_quit || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
-        this->m_quit = true;
-*/
     glm::vec3 forward, right, up;
     glm::mat4 view = m_mainCamera->getSceneNode().computeWorldMatrice();
 
@@ -153,9 +151,6 @@ void Game::updateGame(float _dt)
         m_mainCamera->getSceneNode().setPosition(0, 0, 5);
         m_mainCamera->getSceneNode().setRotation(0, 0, 0);
     }
-
-    if(inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
-        close();
 
     m_particleSystem.update(_dt);
     m_fireParticle.update(_dt);

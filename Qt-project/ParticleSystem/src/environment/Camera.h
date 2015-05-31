@@ -12,29 +12,30 @@
 
 class Camera
 {
-public:
-	Camera(SceneNode& _node);
-	virtual ~Camera();
+    private:
+        glm::mat4 m_projection;
+        glm::mat4 m_view;
 
-	void setFOV(float _fov);
+        float m_fov;
+        float m_aspect;
+        float m_near;
+        float m_far;
 
-	glm::mat4& getView();
-	glm::mat4& getProjection();
+        SceneNode& m_node;
 
-	SceneNode& getSceneNode();
+    public:
+        Camera(SceneNode& _node);
+        virtual ~Camera();
 
-private:
-	void computeMatrices();
+        void setFOV(float _fov);
 
-private:
-	float m_fov;
-	float m_aspect;
-	float m_near;
-	float m_far;
+        glm::mat4& getView();
+        glm::mat4& getProjection();
 
-	glm::mat4 m_projection;
-	glm::mat4 m_view;
+        SceneNode& getSceneNode();
 
-	SceneNode& m_node;
+    private:
+        void computeMatrices();
+
 };
 

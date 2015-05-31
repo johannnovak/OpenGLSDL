@@ -10,46 +10,46 @@
 
 class SceneNode
 {
-public:
-	SceneNode();
-	SceneNode(SceneNode* _parent);
-	~SceneNode();
+    private:
+        std::list<SceneNode*> m_childs;
 
-	void setPosition(float x, float y, float z);
-	void setRotation(float x, float y, float z);
-	void setScale(float x, float y, float z);
+        glm::vec3 m_position;
+        Quaternion m_rotation;
+        glm::vec3 m_scale;
+        SceneNode* m_parent;
 
-    void rotate(float _angle, glm::vec3 _axis);
-	void translate(const glm::vec3& _vect);
-	void translate(float _dx, float _dy, float _dz);
+        Object3D* m_object3d;
+    public:
+        SceneNode();
+        SceneNode(SceneNode* _parent);
+        ~SceneNode();
 
-	glm::mat4 computeWorldMatrice();
+        void setPosition(float x, float y, float z);
+        void setRotation(float x, float y, float z);
+        void setScale(float x, float y, float z);
 
-	const Quaternion& getRotation() const;
+        void rotate(float _angle, glm::vec3 _axis);
+        void translate(const glm::vec3& _vect);
+        void translate(float _dx, float _dy, float _dz);
 
-	const glm::vec3& getPosition() const;
-	glm::vec3 computeGlobalPosition() const;
+        glm::mat4 computeWorldMatrice();
 
-	void addChild(SceneNode* _child);
-	void removeChild(SceneNode* _child);
+        const Quaternion& getRotation() const;
 
-	std::list<SceneNode*>& getChilds();
-	SceneNode* getParent();
+            const glm::vec3& getPosition() const;
+        glm::vec3 computeGlobalPosition() const;
 
-	Object3D& getObject3D();
-	void setObject3D(Object3D* _object3d);
-	bool hasObject3D();
+        void addChild(SceneNode* _child);
+        void removeChild(SceneNode* _child);
+
+        std::list<SceneNode*>& getChilds();
+        SceneNode* getParent();
+
+        Object3D& getObject3D();
+        void setObject3D(Object3D* _object3d);
+        bool hasObject3D();
 
 
-private:
-	SceneNode* m_parent;
-	std::list<SceneNode*> m_childs;
-
-	Quaternion m_rotation;
-	glm::vec3 m_position;
-	glm::vec3 m_scale;
-
-	Object3D* m_object3d;
 };
 
 #endif

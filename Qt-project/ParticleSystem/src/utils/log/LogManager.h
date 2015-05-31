@@ -1,11 +1,11 @@
 #ifndef LOGMANAGER_H
 #define LOGMANAGER_H
 
-#define LOGMANAGER_ERROR_LIMIT 10
-
 #include <iostream>
 #include <string>
-#include <QGLWidget>
+#include <vector>
+#include "LogEventHandler.h"
+#include "LogEvent.h"
 
 class LogManager
 {
@@ -15,14 +15,21 @@ class LogManager
         virtual ~LogManager();
 
     public:
+        static void pushEvent(LogEvent* _event);
+
+        static void registerLogEventHandler(LogEventHandler* _handler);
+        static void unregisterLogEventHandler(LogEventHandler* _handler);
+        static bool pollEvents();
+
         static void showError(const char* _msg);
-        static void setWindow(QGLWidget* _win);
 
         static void print(std::string _str);
 
     private:
-        static QGLWidget* s_window;
-        static unsigned int s_errorCount;
+        static LogEvent* pollEvent(LogEvent* _event);
+
+        static std::vector<LogEventHandler*> s_eventHandlers;
+        static std::vector<LogEvent*> s_logEvents;
 };
 
 #endif

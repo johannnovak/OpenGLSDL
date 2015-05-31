@@ -94,7 +94,11 @@ HEADERS += 		src/Game.h \
                 src/utils/def/LF_String.h \
                 src/utils/def/MemDefns.h \
                 src/utils/def/Types.h \
+                src/utils/log/ConsoleLogEventHandler.h \
+                src/utils/log/LogEvent.h \
+                src/utils/log/LogEventHandler.h \
                 src/utils/log/LogManager.h \
+                src/utils/log/QTLogEventHandler.h \
                 src/utils/input/InputManager.h \
                 src/utils/input/QTInputManager.h \
                 src/utils/maths/Quaternion.h \
@@ -125,7 +129,11 @@ SOURCES += 	src/main.cpp \
                 src/utils/def/LF_String.cpp \
                 src/utils/input/InputManager.cpp \
                 src/utils/input/QTInputManager.cpp \
+                src/utils/log/ConsoleLogEventHandler.cpp \
+                src/utils/log/LogEvent.cpp \
+                src/utils/log/LogEventHandler.cpp \
                 src/utils/log/LogManager.cpp \
+                src/utils/log/QTLogEventHandler.cpp \
                 src/utils/maths/Quaternion.cpp \
                 src/utils/maths/RandomNumberGenerator.cpp \
                 src/utils/misc/Helpers.cpp \

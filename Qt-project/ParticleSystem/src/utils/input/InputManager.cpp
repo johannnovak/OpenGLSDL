@@ -19,8 +19,8 @@ InputManager* InputManager::getInstance()
 	if (s_instance != nullptr)
 		return s_instance;
 	
-	LogManager::showError("You need to initialize the InputManager before calling getInstance()");
-	return s_instance;
+    LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,"You need to initialize the InputManager before calling getInstance()",LogLevel::ERROR));
+    return s_instance;
 }
 
 std::string InputManager::IMTypeToStr(InputManagerType _type)

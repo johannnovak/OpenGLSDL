@@ -95,5 +95,5 @@ void ParticleSystem::draw(float _dt)
 	m_shader->disableAllAttrib();
 }
 
-void ParticleSystem::preDraw(float _dt)
+void ParticleSystem::preDraw(float)
 {}

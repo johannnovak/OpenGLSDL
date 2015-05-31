@@ -24,7 +24,6 @@ bool QTInputManager::eventFilter(QObject* _object, QEvent* _event)
     }
     else if(_event->type() == QEvent::MouseButtonPress)
     {
-        std::cout << "mouuuuuuuuuuuuuuuuuuuuuuuse" << std::endl;
         QMouseEvent* qMouseEvent = (QMouseEvent*) _event;
         mousePressEvent(qMouseEvent);
         return true;
@@ -285,8 +284,8 @@ KeyId QTInputManager::QTKeyEventToKeyId(QKeyEvent* _event)
         return IM_KEY_F12;
 
 	default:
-		LogManager::showError("Unable to handle entered key.");
-		return IM_KEY_0;
+        LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,std::string("Unable to handle entered key."),LogLevel::ERROR));
+        return IM_KEY_0;
 	}
 }
 
@@ -302,7 +301,7 @@ MouseButtonId QTInputManager::QTMouseEventToMouseButtonId(QMouseEvent* _event)
             return IM_MOUSE_MIDDLE;
 
         default:
-            LogManager::showError("Unable to handle mouse button.");
+            LogManager::pushEvent(new LogEvent(LogEventType::ConsoleLogEvent,"Unable to handle mouse button.",LogLevel::ERROR));
             return IM_MOUSE_LEFT;
 	}
 }

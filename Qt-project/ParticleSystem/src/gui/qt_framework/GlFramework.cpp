@@ -136,6 +136,7 @@ bool GlFramework::init()
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    return true;
 }
 
 
