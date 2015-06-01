@@ -11,29 +11,33 @@ using namespace std;
 
 Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Game creation"));
-    setWindowTitle(trUtf8("ParticleSystem"));
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Creating Game..."));
 
+    setWindowTitle(trUtf8("ParticleSystem"));
     show();
-    cout << "Game created !" << endl;
+
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Game created."));
 }
 
 
 Game::~Game()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Destroying Game"));
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Destroying Game..."));
+
     delete m_mainCamera;
+
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Game destroyed."));
 }
 
 bool Game::initializeObjects()
 {
-    cout << "Objects initialization " << endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Initializing Objects..."));
 
     m_particleSystem.initialize();
     m_atmosphericParticle.initialize();
     m_fireParticle.initialize();
 
-    cout << "Particle systems loaded !" << endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Loading Shaders..."));
 
     m_shader.load("Shaders/light_shader");
     m_shader.registerUniform("P", ShaderUniformType_PROJECTION);
@@ -46,7 +50,9 @@ bool Game::initializeObjects()
 
     m_graphics.setShader(&m_shader);
 
-    cout << "Graphic's' current shader loaded !" << endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Loaded and set."));
+
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Creating world entities..."));
 
     m_cube = new Cube();
 
@@ -54,14 +60,11 @@ bool Game::initializeObjects()
     m_cubeNode->setObject3D(m_cube);
     m_cubeNode->setPosition(0, 0.5f, 0);
 
-    cout << "Cube created " << endl;
-
     SceneNode* cameraNode = new SceneNode(m_scene.getRootNode());
     cameraNode->setPosition(0, 1, 5);
 
     m_mainCamera = new Camera(*cameraNode);
 
-    cout << "Camera created" << endl;
 /*
     m_importedObject = OBJImporter::importObject("Ressources/Room.obj");
 
@@ -74,16 +77,22 @@ bool Game::initializeObjects()
 
     cout << "Room imported" << endl;
 */
+
+
     m_scene.getRootNode()->addChild(m_cubeNode);
     m_scene.getRootNode()->addChild(cameraNode);
 /*    m_scene.getRootNode()->addChild(m_importedObjectNode);
 */
-    cout << "Cube/camera/room added in scene" << endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "World entities created and added to the scene."));
+
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Object initialization successful."));
     return true;
 }
 
 void Game::updateGame(float _dt)
 {
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Updating scene..."));
+
     InputManager* inputManager = QTInputManager::getInstance();
     inputManager->resetMouseMotion();
 
@@ -161,28 +170,34 @@ void Game::updateGame(float _dt)
     m_particleSystem.update(_dt);
     m_fireParticle.update(_dt);
     m_atmosphericParticle.update(_dt);
+
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Scene updated."));
 }
 
 void Game::renderGame(float _dt)
 {
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Rendering Scene..."));
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_shader.activate();
-        m_shader.transmitUniformMat4(ShaderUniformType_VIEW, &m_mainCamera->getView()[0][0], GL_FALSE);
-        m_shader.transmitUniformMat4(ShaderUniformType_PROJECTION, &m_mainCamera->getProjection()[0][0], GL_FALSE);
+    m_shader.activate();
+    m_shader.transmitUniformMat4(ShaderUniformType_VIEW, &m_mainCamera->getView()[0][0], GL_FALSE);
+    m_shader.transmitUniformMat4(ShaderUniformType_PROJECTION, &m_mainCamera->getProjection()[0][0], GL_FALSE);
 
-        m_graphics.drawScene(m_scene);
+    m_graphics.drawScene(m_scene);
 
-        m_particleSystem.setProjection(&m_mainCamera->getProjection()[0][0]);
-        m_particleSystem.setView(&m_mainCamera->getView()[0][0]);
-        m_particleSystem.setWorld(&glm::mat4(1)[0][0]);
-        m_particleSystem.draw(_dt);
+    m_particleSystem.setProjection(&m_mainCamera->getProjection()[0][0]);
+    m_particleSystem.setView(&m_mainCamera->getView()[0][0]);
+    m_particleSystem.setWorld(&glm::mat4(1)[0][0]);
+    m_particleSystem.draw(_dt);
 
-    // 	m_atmosphericParticle.setProjection(&m_mainCamera->getProjection()[0][0]);
-    // 	m_atmosphericParticle.setView(&m_mainCamera->getView()[0][0]);
-    // 	m_atmosphericParticle.setWorld(&glm::mat4(1)[0][0]);
-    // 	m_atmosphericParticle.draw(_dt);
+    m_atmosphericParticle.setProjection(&m_mainCamera->getProjection()[0][0]);
+    m_atmosphericParticle.setView(&m_mainCamera->getView()[0][0]);
+    m_atmosphericParticle.setWorld(&glm::mat4(1)[0][0]);
+    m_atmosphericParticle.draw(_dt);
 
-        m_fireParticle.setMatrices(&glm::mat4(1)[0][0], &m_mainCamera->getView()[0][0], &m_mainCamera->getProjection()[0][0]);
-        m_fireParticle.draw(_dt);
+    m_fireParticle.setMatrices(&glm::mat4(1)[0][0], &m_mainCamera->getView()[0][0], &m_mainCamera->getProjection()[0][0]);
+    m_fireParticle.draw(_dt);
+
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Scene rendered."));
 }

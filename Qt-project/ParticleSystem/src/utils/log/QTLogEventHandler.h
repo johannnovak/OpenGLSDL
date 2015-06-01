@@ -22,7 +22,6 @@ class QTLogEventHandler : public LogEventHandler, QPlainTextEdit
         QString m_infoColor;
         QString m_defaultColor;
         QString m_backTag;
-
 };
 
 #endif // QTLOGEVENTHANDLER_H

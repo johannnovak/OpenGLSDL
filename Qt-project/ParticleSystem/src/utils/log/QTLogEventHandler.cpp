@@ -22,6 +22,7 @@ QTLogEventHandler::QTLogEventHandler()
     m_infoColor = "#0000FF";
     m_defaultColor = "#000000";
     m_backTag = "</font>";
+
     resize(350,750);
     setWindowTitle(trUtf8("LogWindow"));
     QPlainTextEdit::setReadOnly(true);
@@ -71,6 +72,7 @@ void QTLogEventHandler::handleEvent(LogEvent& _event)
     log += " - ";
     log += eventStringStream.rdbuf()->str().c_str() + m_backTag;
     appendHtml(log);
+
     verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 

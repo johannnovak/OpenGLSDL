@@ -115,6 +115,8 @@ GlFramework::~GlFramework()
 
 bool GlFramework::init()
 {
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Initializing OpenGL..."));
+
     //TODO glSetAttribute(GL_DEPTH_SIZE, 24)
     //TODO glSetAttribute(GL_DOUBLEBUFFER, 1)
 
@@ -123,9 +125,9 @@ bool GlFramework::init()
     GLenum error = glewInit();
     if(error != GLEW_OK)
     {
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "An error occured when initializing GLEW with glewInit()."));
         return false;
     }
-
 
     glClearColor(0.127f, 0.127f, 0.127f, 1.0f);
 
@@ -135,6 +137,7 @@ bool GlFramework::init()
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "OpenGL initialized."));
     return true;
 }
 

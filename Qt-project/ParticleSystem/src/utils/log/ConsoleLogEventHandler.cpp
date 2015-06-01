@@ -9,8 +9,8 @@ ConsoleLogEventHandler::ConsoleLogEventHandler()
     m_masks.push_back(new LogEvent(LogEventType::ConsoleLogEvent));
     m_masks.push_back(new LogEvent(LogEventType::AllLogEvent));
 
-//    m_logLevels.push_back(LogLevel::INFO);
-//    m_logLevels.push_back(LogLevel::WARN);
+    m_logLevels.push_back(LogLevel::INFO);
+    m_logLevels.push_back(LogLevel::WARN);
     m_logLevels.push_back(LogLevel::ERROR);
 
     m_logLevels.push_back(LogLevel::DEBUG);

@@ -23,7 +23,8 @@ Shader::~Shader()
 //------------------------------------------------
 bool Shader::load(const char* _shaderName)
 {
-    std::cout << "Loading shader " << _shaderName << std::endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Loading Shader '"+ string(_shaderName) +"'..."));
+
 	for (unsigned int i = 0; i < ShaderAttributeType_LAST; ++i)
 		m_attributeTypes[i] = -1;
 
@@ -97,7 +98,7 @@ bool Shader::load(const char* _shaderName)
 	vsPtr = nullptr;
 	fsPtr = nullptr;
 
-    std::cout << "Shader loaded !" << std::endl;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Shader '"+ string(_shaderName) +"' loaded."));
 
 	return true;
 }
@@ -115,13 +116,14 @@ bool Shader::checkShaderError(GLuint _id, GLuint _type)
 		log = new char[logSize + 1];
 		glGetShaderInfoLog(_id, logSize, &logSize, log);
 		log[logSize] = '\0';
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, std::string("Error in vs: " + string(log))));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent,LogLevel::ERROR, "Error in fs/vs: " + string(log)));
 		delete[] log;
 		log = NULL;
 		return false;
 	}
 
-	return true;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Shader with id '"+ to_string(_id) +"'' has no errors."));
+    return true;
 }
 
 //------------------------------------------------
@@ -137,13 +139,14 @@ bool Shader::checkProgramError(GLuint _id, GLuint _type)
 		log = new char[logSize + 1];
 		glGetProgramInfoLog(_id, logSize, &logSize, log);
 		log[logSize] = '\0';
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string("Error in vs: " + string(log))));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Error in fs/vs: " + string(log)));
 		delete[] log;
 		log = NULL;
 		return false;
 	}
 
-	return true;
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Program attached to shaders has no errors."));
+    return true;
 }
 
 //------------------------------------------------
@@ -177,7 +180,7 @@ GLuint Shader::getUniformLocation(const char* _name)
 
 	if (m_uniforms.find(name) == m_uniforms.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string(name + " attribute is not registered for shader " + m_name)));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " attribute is not registered for shader " + m_name));
         return -1;
 	}
 
@@ -202,7 +205,7 @@ GLuint Shader::getAttrLocation(const char* _name)
 
 	if (m_attributes.find(name) == m_attributes.end())
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string(name + " attribute is not registered for shader " + m_name)));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " attribute is not registered for shader " + m_name));
 		return -1;
 	}
 
@@ -234,7 +237,7 @@ bool Shader::registerUniform(const char* _name)
 	GLuint id = glGetUniformLocation(m_id, name.c_str());
 	if (id == -1)
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string(name + " uniform does not exist in shader " + m_name)));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, name + " uniform does not exist in shader " + m_name));
 		return false;
 	}
 

@@ -15,6 +15,8 @@ Helpers::~Helpers()
 
 bool Helpers::loadFile(const char* _fileName, string& _out)
 {
+    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Loading file '"+ string(_fileName) +"'..."));
+
     ifstream file(_fileName);
 	_out.clear();
 
@@ -29,11 +31,12 @@ bool Helpers::loadFile(const char* _fileName, string& _out)
 
 		file.close();
 
-		return true;
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "File '"+ string(_fileName) +"' successfully loaded."));
+        return true;
 	}
 	else
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Can't open file " + string(_fileName)));
+        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Could not open file '" + string(_fileName) +"'."));
         return false;
 	}
 }
