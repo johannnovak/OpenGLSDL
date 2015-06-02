@@ -1,6 +1,8 @@
 #ifndef OBJECT3D_H
 #define OBJECT3D_H
 
+#include "Types.h"
+
 #include "GL/glew.h"
 
 enum BufferType

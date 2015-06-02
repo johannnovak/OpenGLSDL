@@ -1,9 +1,11 @@
 #ifndef QUATERNION_H
 #define QUATERNION_H
 
+#include "Types.h"
+
+#include "glm/glm.hpp"
 #include <iostream>
 #include <sstream>
-#include "glm/glm.hpp"
 
 class Quaternion
 {

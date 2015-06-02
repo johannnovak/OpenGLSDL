@@ -86,7 +86,7 @@ HEADERS += 		src/Game.h \
                 src/entity/Object3D.h \
                 src/entity/particle_system/AbstractParticleSystem.h\
                 src/entity/particle_system/AtmosphericParticleSystem.h\
-                src/entity/particle_system/FireParticle.h\
+                src/entity/particle_system/FireParticleSystem.h \
                 src/entity/particle_system/ParticleSystem.h\
                 src/entity/shape/Cube.h\
                 src/shader/Shader.h\
@@ -121,7 +121,7 @@ SOURCES += 	src/main.cpp \
                 src/entity/Object3D.cpp \
                 src/entity/particle_system/AbstractParticleSystem.cpp\
                 src/entity/particle_system/AtmosphericParticleSystem.cpp\
-                src/entity/particle_system/FireParticle.cpp\
+                src/entity/particle_system/FireParticleSystem.cpp \
                 src/entity/particle_system/ParticleSystem.cpp\
                 src/entity/shape/Cube.cpp\
                 src/shader/Shader.cpp\

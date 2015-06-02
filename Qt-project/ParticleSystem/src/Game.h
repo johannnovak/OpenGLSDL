@@ -11,7 +11,7 @@
 #include "Cube.h"
 #include "ParticleSystem.h"
 #include "AtmosphericParticleSystem.h"
-#include "FireParticle.h"
+#include "FireParticleSystem.h"
 
 class Game : public GlWindow
 {
@@ -46,7 +46,7 @@ class Game : public GlWindow
 
         ParticleSystem m_particleSystem;
         AtmosphericParticleSystem m_atmosphericParticle;
-        FireParticle m_fireParticle;
+        FireParticleSystem m_fireParticle;
 
 };
 #endif

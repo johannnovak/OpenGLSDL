@@ -4,7 +4,6 @@
 
 #include <stdio.h>      // for NULL pointer
 
-
 typedef char int8;
 typedef short int16;
 typedef int int32;

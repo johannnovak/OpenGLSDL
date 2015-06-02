@@ -11,33 +11,33 @@ using namespace std;
 
 Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Creating Game..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Creating Game..."));
 
     setWindowTitle(trUtf8("ParticleSystem"));
     show();
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Game created."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Game created."));
 }
 
 
 Game::~Game()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Destroying Game..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Destroying Game..."));
 
     delete m_mainCamera;
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Game destroyed."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Game destroyed."));
 }
 
 bool Game::initializeObjects()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Initializing Objects..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Initializing Objects..."));
 
     m_particleSystem.initialize();
     m_atmosphericParticle.initialize();
     m_fireParticle.initialize();
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Loading Shaders..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Loading Shaders..."));
 
     m_shader.load("Shaders/light_shader");
     m_shader.registerUniform("P", ShaderUniformType_PROJECTION);
@@ -50,9 +50,9 @@ bool Game::initializeObjects()
 
     m_graphics.setShader(&m_shader);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Loaded and set."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Loaded and set."));
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Creating world entities..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Creating world entities..."));
 
     m_cube = new Cube();
 
@@ -83,15 +83,15 @@ bool Game::initializeObjects()
     m_scene.getRootNode()->addChild(cameraNode);
 /*    m_scene.getRootNode()->addChild(m_importedObjectNode);
 */
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "World entities created and added to the scene."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "World entities created and added to the scene."));
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "Object initialization successful."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Object initialization successful."));
     return true;
 }
 
 void Game::updateGame(float _dt)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Updating scene..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Updating scene..."));
 
     InputManager* inputManager = QTInputManager::getInstance();
     inputManager->resetMouseMotion();
@@ -99,9 +99,9 @@ void Game::updateGame(float _dt)
     if (LogManager::s_errorCount > 10 || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
     {
         if (LogManager::s_errorCount > 10)
-            LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Too many errors, exiting the program."));
+            LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::ERROR, "Too many errors, exiting the program."));
         else
-            LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::INFO, "ESCAPE key pressed."));
+            LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "ESCAPE key pressed."));
 
         LogManager::closeHandlers();
 
@@ -171,12 +171,12 @@ void Game::updateGame(float _dt)
     m_fireParticle.update(_dt);
     m_atmosphericParticle.update(_dt);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Scene updated."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Scene updated."));
 }
 
 void Game::renderGame(float _dt)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Rendering Scene..."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Rendering Scene..."));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -199,5 +199,5 @@ void Game::renderGame(float _dt)
     m_fireParticle.setMatrices(&glm::mat4(1)[0][0], &m_mainCamera->getView()[0][0], &m_mainCamera->getProjection()[0][0]);
     m_fireParticle.draw(_dt);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::DEBUG, "Scene rendered."));
+    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Scene rendered."));
 }

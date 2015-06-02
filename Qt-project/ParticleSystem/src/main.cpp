@@ -6,9 +6,9 @@
 #include "ConsoleLogEventHandler.h"
 #include "QTLogEventHandler.h"
 
-int main(int argc, char* argv[])
+int main(int _argc, char* _argv[])
 {
-    QApplication app(argc, argv);
+    QApplication app(_argc, _argv);
 
     QTInputManager::initialize();
     LogManager::registerLogEventHandler(new ConsoleLogEventHandler());

@@ -284,7 +284,7 @@ KeyId QTInputManager::QTKeyEventToKeyId(QKeyEvent* _event)
         return IM_KEY_F12;
 
 	default:
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, std::string("Unable to handle entered key.")));
+        LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::ERROR, std::string("Unable to handle entered key.")));
         return IM_KEY_0;
 	}
 }
@@ -301,7 +301,7 @@ MouseButtonId QTInputManager::QTMouseEventToMouseButtonId(QMouseEvent* _event)
             return IM_MOUSE_MIDDLE;
 
         default:
-            LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, "Unable to handle mouse button."));
+            LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::ERROR, "Unable to handle mouse button."));
             return IM_MOUSE_LEFT;
 	}
 }

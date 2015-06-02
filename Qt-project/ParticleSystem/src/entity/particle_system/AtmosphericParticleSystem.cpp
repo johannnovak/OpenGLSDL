@@ -1,37 +1,71 @@
-#include "AtmosphericParticleSystem.h"
+#include "AtmosphericParticleSystem.h" // Implemented Class.
 
 
-AtmosphericParticleSystem::AtmosphericParticleSystem()
+/////////////////////////////// PUBLIC ///////////////////////////////////////
+
+//============================= LIFECYCLE =======================================
+
+/**************************************************************************
+* Name:  ParticleSystem()
+* Description: Default constructor. Sets by default the particleSize to 1.0f
+*						and calls ParticleSystem parametered constructor.
+* Inputs: none
+**************************************************************************/
+AtmosphericParticleSystem::AtmosphericParticleSystem() : ParticleSystem(1.0f)
 {
-	// Inherited
-	this->m_particleCount = 1000;
-	this->m_particleSize = 1.0f;
 }
 
 
+/**************************************************************************
+* Name:  ~AtmosphericParticleSystem()
+* Description: Default Destructor.
+* Inputs: none
+**************************************************************************/
 AtmosphericParticleSystem::~AtmosphericParticleSystem()
 {
 }
 
+/////////////////////////////// PROTECTED ///////////////////////////////////
+
+/**************************************************************************
+* Name: initializeParticle(Particle& _particle)
+* Description: Method used to initialize a Particle.
+* Inputs:
+*			- _particle : Particle to initialize and set all of its attributes.
+* Returns: none
+**************************************************************************/
 void AtmosphericParticleSystem::initializeParticle(Particle& _particle)
 {
-	_particle.spawnTime = m_globalTime;
+    /* Sets the spawn time of the particle to the current global time. */
+    _particle.spawnTime = m_globalTime;
 
-	_particle.ttl = 10000 + (Helpers::prand() * 3000.0f - 1500.0f);
+    /* Sets a random TTL : 3000 < TTL < 11500 .*/
+    _particle.ttl = (Helpers::prand() * 3000.0f) + 8500.0f;
 
-	float r = Helpers::prand() * 100.0f;
-	float angle1 = Helpers::prand() * 2 * M_PI - M_PI;
-	float angle2 = Helpers::prand() * 2 * M_PI - M_PI;
+    /* Creates the circular caracteristics of the Particle. */
+    float r = Helpers::prand() * 100.0f;
+    float angle1 = Helpers::prand() * 2 * M_PI - M_PI;
+    float angle2 = Helpers::prand() * 2 * M_PI - M_PI;
 
-	_particle.x = cosf(angle1)*sinf(angle2)*r;
-	_particle.y = sinf(angle1)*sinf(angle2)*r + 2.0f;
-	_particle.z = cosf(angle2) * r;
+    /* Sets the position of the Particle according to the radius
+     * and the two angles calculated previously
+     */
+    _particle.x = cosf(angle1)*sinf(angle2)*r;
+    _particle.y = sinf(angle1)*sinf(angle2)*r + 2.0f;
+    _particle.z = cosf(angle2) * r;
 
-	_particle.dy = 0;
-	_particle.dx = 0;
-	_particle.dz = 0;
+    /* Sets the direction of the Particle to a null vector. */
+    _particle.dy = 0;
+    _particle.dx = 0;
+    _particle.dz = 0;
 
-	_particle.r = 0.803f;
-	_particle.g = 0.522f;
-	_particle.b = 0.257f;
+    /* Sets acceleration to a null vector. */
+    _particle.ax = 0;
+    _particle.ay = 0;
+    _particle.az = 0;
+
+    /* Sets the color of the particle to brown. */
+    _particle.r = 0.803f;
+    _particle.g = 0.522f;
+    _particle.b = 0.257f;
 }

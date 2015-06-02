@@ -151,7 +151,7 @@ Object3D* OBJImporter::importObject(const char* _file)
 		std::string message;
 		message = "Unable to open file ";
 		message += _file;
-        LogManager::pushEvent(new LogEvent(LogEventType::AllLogEvent, LogLevel::ERROR, message));
+        LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::ERROR, message));
 
 		return nullptr;
 	}

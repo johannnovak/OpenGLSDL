@@ -6,8 +6,8 @@
 
 QTLogEventHandler::QTLogEventHandler()
 {
-    m_masks.push_back(new LogEvent(LogEventType::QtLogEvent));
-    m_masks.push_back(new LogEvent(LogEventType::AllLogEvent));
+    m_masks.push_back(new LogEvent(LogEventType::QT_LOG_EVENT));
+    m_masks.push_back(new LogEvent(LogEventType::ALL_LOG_EVENT));
 
     m_logLevels.push_back(LogLevel::INFO);
     m_logLevels.push_back(LogLevel::WARN);
