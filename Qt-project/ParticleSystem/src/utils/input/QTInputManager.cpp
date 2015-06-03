@@ -173,10 +173,13 @@ void QTInputManager::mouseMoveEvent( QMouseEvent* _event )
 {
     QMouseEvent* qtMouseEvent = (QMouseEvent*) _event;
 
+    m_mouseMotion.dx = qtMouseEvent->x() - m_mouseMotion.x;
+    m_mouseMotion.dy = qtMouseEvent->y() - m_mouseMotion.y;
     m_mouseMotion.x = qtMouseEvent->x();
     m_mouseMotion.y = qtMouseEvent->y();
-    m_mouseMotion.dx = qtMouseEvent->x() - m_mouseMotion.dx;
-    m_mouseMotion.dy = qtMouseEvent->y() - m_mouseMotion.dy;
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "mouse motion : dx "+std::to_string(m_mouseMotion.dx));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "mouse motion : dy "+std::to_string(m_mouseMotion.dy)+"\n");
+
 }
 
 /**************************************************************************

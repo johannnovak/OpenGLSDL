@@ -1,0 +1,31 @@
+\contentsline {chapter}{\numberline {1}L'architecture du moteur 3D}{3}{chapter.0.1}
+\contentsline {section}{\numberline {1.1}Un concept de "Sc\IeC {\`e}ne"}{3}{section.0.1.1}
+\contentsline {subsection}{\numberline {1.1.1}D\IeC {\'e}finition}{3}{subsection.0.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Diagramme de classe}{3}{subsection.0.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}Avantages}{3}{subsection.0.1.1.3}
+\contentsline {section}{\numberline {1.2}Les syst\IeC {\`e}mes de particules}{3}{section.0.1.2}
+\contentsline {subsection}{\numberline {1.2.1}D\IeC {\'e}finition d'un point de vue physique}{3}{subsection.0.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Diagramme de classe}{4}{subsection.0.1.2.2}
+\contentsline {paragraph}{Remarque}{4}{section*.3}
+\contentsline {section}{\numberline {1.3}La boucle de simulation}{4}{section.0.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Situation initiale}{5}{subsection.0.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}Mise \IeC {\`a} jour des objets}{5}{subsection.0.1.3.2}
+\contentsline {subsection}{\numberline {1.3.3}Rendering \IeC {\`a} l'\IeC {\'e}cran}{5}{subsection.0.1.3.3}
+\contentsline {section}{\numberline {1.4}Des utilitaires tr\IeC {\`e}s pratiques}{5}{section.0.1.4}
+\contentsline {subsection}{\numberline {1.4.1}Un importateur d'objets cr\IeC {\'e}\IeC {\'e}s sous 3ds Max}{5}{subsection.0.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}Une gestion g\IeC {\'e}n\IeC {\'e}rique des inputs utilisateurs}{5}{subsection.0.1.4.2}
+\contentsline {subsection}{\numberline {1.4.3}Un syst\IeC {\`e}me de log avanc\IeC {\'e}}{5}{subsection.0.1.4.3}
+\contentsline {chapter}{\numberline {2}Rendu dans une sc\IeC {\`e}ne}{7}{chapter.0.2}
+\contentsline {section}{\numberline {2.1}Appartement Feng-Shui}{7}{section.0.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Quelques impressions \IeC {\'e}crans}{7}{subsection.0.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Objets pr\IeC {\'e}sents dans la sc\IeC {\`e}ne}{7}{subsection.0.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Shaders utilis\IeC {\'e}s}{7}{subsection.0.2.1.3}
+\contentsline {section}{\numberline {2.2}Temp\IeC {\^e}te de sable au Sahara}{7}{section.0.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Quelques impressions \IeC {\'e}crans}{7}{subsection.0.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Objets pr\IeC {\'e}sents dans la sc\IeC {\`e}ne}{7}{subsection.0.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Shaders utilis\IeC {\'e}s}{7}{subsection.0.2.2.3}
+\contentsline {chapter}{\numberline {3}Bilan du projet}{8}{chapter.0.3}
+\contentsline {section}{\numberline {3.1}Benchmark}{8}{section.0.3.1}
+\contentsline {section}{\numberline {3.2}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{8}{section.0.3.2}
+\contentsline {section}{\numberline {3.3}Am\IeC {\'e}liorations possibles}{8}{section.0.3.3}
+\contentsline {part}{Annexes}{9}{chapter*.4}

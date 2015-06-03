@@ -179,8 +179,8 @@ void Game::updateGame(float32 _dt)
         float32 dx = inputManager->getMouseMotion().dx;
         float32 dy = inputManager->getMouseMotion().dy;
 
-        m_mainCamera->getSceneNode().rotate(0.005f * dy, right);
-        m_mainCamera->getSceneNode().rotate(-0.005f * dx , glm::vec3(0, 1, 0));
+        m_mainCamera->getSceneNode().rotate(100.0f * dy, right);
+        m_mainCamera->getSceneNode().rotate(-100.0f * dx , glm::vec3(0, 1, 0));
     }
 
     if (inputManager->isKeyDown(KeyId::IM_KEY_L))

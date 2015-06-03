@@ -16,9 +16,9 @@ INCLUDEPATH +=	src \
                 src/gui \
                 src/gui/qt_framework \
                 src/environment\
-                src/entity\
-                src/entity/particle_system\
-                src/entity/shape\
+                src/environment/entity\
+                src/environment/entity/particle_system\
+                src/environment/entity/shape\
                 src/shader\
                 src/utils \
                 src/utils/def \
@@ -34,9 +34,9 @@ DEPENDPATH += 	src \
                 src/gui \
                 src/gui/qt_framework \
                 src/environment\
-                src/entity\
-                src/entity/particle_system\
-                src/entity/shape\
+                src/environment/entity\
+                src/environment/entity/particle_system\
+                src/environment/entity/shape\
                 src/shader\
                 src/utils \
                 src/utils/def \
@@ -44,8 +44,9 @@ DEPENDPATH += 	src \
                 src/utils/maths \
                 src/utils/misc \
                 src/utils/log \
-unix:!macx:DEPENDPATH += $$PWD/opengl/linux/include
-
+                opengl/glm/\
+                opengl/glm/detail/\
+unix:!macx:INCLUDEPATH += $$PWD/opengl/linux/include
 
 # -------------------- OUTPUT DIRECTORIES ----------------
 
@@ -82,13 +83,13 @@ HEADERS += 		src/Game.h \
                 src/environment/Camera.h \
                 src/environment/Scene.h \
                 src/environment/SceneNode.h \
-                src/entity/EditableObject3D.h \
-                src/entity/Object3D.h \
-                src/entity/particle_system/AbstractParticleSystem.h\
-                src/entity/particle_system/AtmosphericParticleSystem.h\
-                src/entity/particle_system/FireParticleSystem.h \
-                src/entity/particle_system/ParticleSystem.h\
-                src/entity/shape/Cube.h\
+                src/environment/entity/EditableObject3D.h \
+                src/environment/entity/Object3D.h \
+                src/environment/entity/particle_system/AbstractParticleSystem.h\
+                src/environment/entity/particle_system/AtmosphericParticleSystem.h\
+                src/environment/entity/particle_system/FireParticleSystem.h \
+                src/environment/entity/particle_system/ParticleSystem.h\
+                src/environment/entity/shape/Cube.h\
                 src/shader/Shader.h\
                 src/shader/ShaderBank.h\
                 src/utils/def/LF_String.h \
@@ -117,13 +118,13 @@ SOURCES += 	src/main.cpp \
                 src/environment/Camera.cpp \
                 src/environment/Scene.cpp \
                 src/environment/SceneNode.cpp \
-                src/entity/EditableObject3D.cpp \
-                src/entity/Object3D.cpp \
-                src/entity/particle_system/AbstractParticleSystem.cpp\
-                src/entity/particle_system/AtmosphericParticleSystem.cpp\
-                src/entity/particle_system/FireParticleSystem.cpp \
-                src/entity/particle_system/ParticleSystem.cpp\
-                src/entity/shape/Cube.cpp\
+                src/environment/entity/EditableObject3D.cpp \
+                src/environment/entity/Object3D.cpp \
+                src/environment/entity/particle_system/AbstractParticleSystem.cpp\
+                src/environment/entity/particle_system/AtmosphericParticleSystem.cpp\
+                src/environment/entity/particle_system/FireParticleSystem.cpp \
+                src/environment/entity/particle_system/ParticleSystem.cpp\
+                src/environment/entity/shape/Cube.cpp\
                 src/shader/Shader.cpp\
                 src/shader/ShaderBank.cpp\
                 src/utils/def/LF_String.cpp \

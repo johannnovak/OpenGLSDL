@@ -1,0 +1,55 @@
+\chapter{L'architecture du moteur 3D}
+ Nous voulions faire un moteur 3D temps réel avec une \textbf{architecture générique}. De ce fait, il serait alors simple plus tard de le réutiliser pour une autre application 3D. Nous avons alors réfléchis sur la question : comment gérer les objets (et leur matrices projectives) dans un monde complexe ? Le concept de "\textit{Scène}" en est ressorti. Ensuite, la création du système de particule ne fut pas difficile une fois le concept compris. Finalement, pour lier le tout et faciliter à la fois le travail et les phases de debug, des utilitaires auxiliaires ont été créés.
+ \section{Un concept de "Scène"}
+  \subsection{Définition}
+   Une scène n'est rien de plus qu'un arbre composé d'un noeud racine\footnote{On appellera dans le rapport le noeud racine, root node.} qui lui est composé de zéro à plusieurs autres noeuds, etc\ldots Ces noeuds sont appelés dans notre projet des SceneNode\footnote{\textbf{SceneNode} : Noeud de scène}. Chaque SceneNode possède comme attribut sa position locale et ses matrices projectives locales. De plus, à un noeud est associé un Object3D\footnote{Nom de la classe représentant n'importe quel objet ayant une représentation 3D sous OpenGL.}  unique qui est dessiné lorsque le noeud est dessiné. \\
+\indent Évidemment, tous les objets à dessiner doivent être ajoutés à un noeud
+  \subsection{Diagramme de classe}
+  \subsection{Avantages}
+ \section{Les systèmes de particules}
+  \subsection{Définition d'un point de vue physique}
+
+   Un système de particule d'un point de vue physique peut être résumé à un ensemble de caractéristiques. Le premier ensemble est celui du système en lui-même, il doit posséder :
+   \begin{itemize}
+    \item[$\rightarrow$] un \textbf{point de l'espace} à partir duquel émettre des particules;
+    \item[$\rightarrow$] le nombre de particule qu'il émettra au total dans sa vie. Ce dernier peut \^{e}tre égal à l'infini bien entendu.
+   \end{itemize}
+   Cependant les particules émises par ce systèmes sont un peu plus complexes, elles sont reliées par :
+   \begin{itemize}
+    \item[$\rightarrow$] leur durée de vie (de leur émission à leur disparition de l'écran) appelé "Time To Live"\footnote{\textbf{Time To Live} : temps restant à vivre.} ou \textbf{TTL};
+    \item[$\rightarrow$] le moment à laquelle elles ont été créées, appelé \textbf{spawn time}\footnote{\textbf{Spawn time} : temps d'apparition.};
+    \item[$\rightarrow$] un vecteur vitesse à trois composantes $\begin{pmatrix}v_x \\ v_y \\ v_z \end{pmatrix}$  propre à chacune qui défini leur \textbf{trajectoire} tout au long de leur vie;
+    \item[$\rightarrow$] un vecteur à trois composantes $\begin{pmatrix}a_x \\ a_y \\ a_z \end{pmatrix}$ qui défini leur \textbf{accélération};
+    \item[$\rightarrow$] un vecteur $\begin{pmatrix}r\\g\\b\end{pmatrix}$ qui défini sa \textbf{couleur}\footnote{\textbf{RGB} : \textbf{R}ed \textbf{G}reen \textbf{B}lue, Rouge Vert Bleu, trois composantes de couleur nécessaires pour dessiner un pixel à l'écran.}.
+   \end{itemize}
+   ~\\
+\indent A partir de ces informations, coder le système de particule est simple. Mais alors comment le rendre générique ?
+  \subsection{Diagramme de classe}
+   
+     \begin{figure}[H]
+      \centering
+%      \includegraphics[scale = 0.5]{img/classDiagram}
+      \caption{Diagramme de classe de l'architecture du moteur.}
+      \label{fig:arc_class_diagram}
+     \end{figure}
+	~\\
+\indent Comme le schéma ci-dessus le montre, nous avons une classe mère abstraite \textit{AbstractParticleSystem} qui s'occupe des matrices projectives et du shader à utiliser. %TODO
+   \paragraph{Remarque} Nous avons choisi de pas implémenter 'Particule' en tant que classe mais en tant que structure car cette dernière n'est qu'au final un tableau encapsulé. Ainsi il est possible d'accéder à chaque attribut de la particule via l'opérateur '[]'. Ce choix nous est utile lorsque nous transmettons les attributs de la particule au shader, nous utilisons le paramètre de 'stride' de la fonction \textit{glVertexAttribPointer} qui permet de préciser la taille à parcourir lors de chaque appel.
+ \section{La boucle de simulation}
+  Notre simulation possède trois états :
+   \begin{itemize}
+    \item[1] la situation initial avant le lancement de la simulation
+    \item[2] dès que la boucle de jeu est lancée, il faut mettre à jour tous les objets de la scène;
+    \item[3] après mise à jour, il faut les dessiner à l'écran. (La simulation passe ainsi de l'état 2 à l'état 3 indéfiniment)
+   \end{itemize}
+   ~\\
+\indent Nous avons utilisé le framework utilisé en TP, c'est-à-dire les classes \textit{GLWindow} et \textit{AbstractFramework} (cependant des légères modifications ont été apportées). C'est la classe Game qui s'occupe de gérer l'initialisation de tous les objets lors de la situation initial, et lorsque l'application est lancée, l'update et le draw. Le timer qu'utilise QT est paramétré à 16 millisecondes, ce qui rend un affichage qui tourne à 60 FPS\footnote{\textbf{FPS} : \textbf{F}rame \textbf{P}er \textbf{Second}, image par seconde.}
+  \subsection{Situation initiale}
+   Lorsque que la simulation est lancée, le framework s'occupe d'initialiser les librairies OpenGL tandis que notre classe principale elle se charge d'initialiser tous les objets de la scène : elle les créer, les paramètre si besoin est et les ajoute dans un nouveau SceneNode qui est ajouté à la scène. De plus elle charge les shader qui sont nécessaire au bon fonctionnement du programme. Les fichiers sont lus par pair\footnote{Un shader est composé d'un 'Vertex shader' traitant les problèmes de positionnement et d'un 'Fragment shader' se chargeant de la couleur des pixels à afficher.}, et sont testés pour voir s'ils ne contiennent aucune erreur (qui peut survenir du code shader lui-m\^{e}me ou lorsque le code est associé\footnote{Ou aussi dit "linké".} avec le programme).
+  \subsection{Mise à jour des objets}
+   	
+  \subsection{Rendering à l'écran}
+ \section{Des utilitaires très pratiques}
+  \subsection{Un importateur d'objets créés sous 3ds Max}
+  \subsection{Une gestion générique des inputs utilisateurs}
+  \subsection{Un système de log avancé}
