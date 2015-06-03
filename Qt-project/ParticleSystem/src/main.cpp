@@ -11,6 +11,7 @@ int main(int _argc, char* _argv[])
     QApplication app(_argc, _argv);
 
     QTInputManager::initialize();
+
     LogManager::registerLogEventHandler(new ConsoleLogEventHandler());
     LogManager::registerLogEventHandler(new QTLogEventHandler());
 
@@ -18,5 +19,9 @@ int main(int _argc, char* _argv[])
 
     app.installEventFilter((QTInputManager*)InputManager::getInstance());
 
-    return app.exec();
+    int result = app.exec();
+
+    LogManager::unregisterAllLogEventHandler();
+
+    return result;
 }

@@ -123,19 +123,19 @@ std::ostream& operator<<(std::ostream& _o, LogEvent& _event)
     /* Adds the associated string of the priority level. */
     switch (_event.m_level)
     {
-        case LogLevel::ERROR :
+        case LogLevel::LogLevel_ERROR :
             _o << "ERROR : ";
             break;
 
-        case LogLevel::WARN :
+        case LogLevel::LogLevel_WARN :
             _o << "WARN  : ";
             break;
 
-        case LogLevel::DEBUG :
+        case LogLevel::LogLevel_DEBUG :
             _o << "DEBUG : ";
             break;
 
-        case LogLevel::INFO :
+        case LogLevel::LogLevel_INFO :
             _o << "INFO  : ";
             break;
 

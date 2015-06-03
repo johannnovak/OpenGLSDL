@@ -11,9 +11,9 @@
 **************************************************************************/
 enum LogEventType
 {
-    CONSOLE_LOG_EVENT, // LogEvent aimed at being output in the console.
-    QT_LOG_EVENT,      // LogEvent aimed at being output in a QtPlainTextEdit.
-    ALL_LOG_EVENT      // LogEvent aimed at being output in all registered Handlers.
+    LogEventType_CONSOLE_LOG_EVENT = 0, 	// LogEvent aimed at being output in the console.
+    LogEventType_QT_LOG_EVENT,      		// LogEvent aimed at being output in a QtPlainTextEdit.
+    LogEventType_ALL_LOG_EVENT      		// LogEvent aimed at being output in all registered Handlers.
 };
 
 /**************************************************************************
@@ -23,10 +23,10 @@ enum LogEventType
 **************************************************************************/
 enum LogLevel
 {
-    ERROR, // Level used when an error occured.
-    WARN,  // Level used when something is not alright but that is not lethal to the program.
-    DEBUG, // Level used for debugging the program.
-    INFO   // Level used to inform the user.
+    LogLevel_ERROR = 0,	// Level used when an error occured.
+    LogLevel_WARN,  		// Level used when something is not alright but that is not lethal to the program.
+    LogLevel_DEBUG, 		// Level used for debugging the program.
+    LogLevel_INFO   		// Level used to inform the user.
 };
 
 

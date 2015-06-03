@@ -45,12 +45,12 @@ ParticleSystem::~ParticleSystem()
 **************************************************************************/
 void ParticleSystem::initialize()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Initializing ParticleSystem..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "Initializing ParticleSystem...");
 
     /* Gets the shader */
     m_shader = ShaderBank::getShader("Shaders/Particle/fade_in_out");
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Registering variables..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Registering variables...");
 
     /* Registers the uniform variables W, V, P matrixes along with the time t.*/
     m_shader->registerUniform("W");
@@ -67,14 +67,14 @@ void ParticleSystem::initialize()
     m_shader->registerAttribute("spawnTime");
     m_shader->registerAttribute("ttl");
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Creating "+std::string(m_particleCount)+" particles..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Creating "+ Helpers::uint32ToString(m_particleCount) +" particles...");
 
     /* Initializes all particles of the system. */
     m_particles = new Particle[m_particleCount];
     for (unsigned int i = 0; i < m_particleCount; ++i)
         initializeParticle(m_particles[i]);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "ParticleSystem initialized."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "ParticleSystem initialized.");
 }
 
 /**************************************************************************

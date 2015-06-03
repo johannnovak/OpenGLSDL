@@ -1,174 +1,356 @@
-#include "Quaternion.h"
+#include "Quaternion.h" // Implemented Class.
 
+/////////////////////////////// PUBLIC ///////////////////////////////////
 
-Quaternion::Quaternion() : a(0), b(0), c(0), d(0)
+//============================= LIFECYCLE =======================================
+
+/**************************************************************************
+* Name:  Quaternion()
+* Description: Default constructor. Sets he default values to 0.
+* Inputs: none
+**************************************************************************/
+Quaternion::Quaternion() : m_a(0), m_b(0), m_c(0), m_d(0)
 {
 }
 
-Quaternion::Quaternion(float a, float b, float c, float d) : a(a), b(b), c(c), d(d)
+/**************************************************************************
+* Name:  Quaternion(float _a, float _b, float _c, float _d)
+* Description: Parametered constructor defining the 4 components of the 4
+*						components of a quaternion.
+* Inputs:
+*				- _a : w component of the Quaternion.
+*				- _b : x component of the Quaternion.
+*				- _c : y component of the Quaternion.
+*				- _d : z component of the Quaternion.
+**************************************************************************/
+Quaternion::Quaternion(float _a, float _b, float _c, float _d) : m_a(_a), m_b(_b), m_c(_c), m_d(_d)
 {
 }
 
-
+/**************************************************************************
+* Name: ~Quaternion()
+* Description: Default destructor.
+* Inputs: none
+**************************************************************************/
 Quaternion::~Quaternion()
 {
 }
 
-void Quaternion::set(float a, float b, float c, float d)
+//============================= ATTRIBUTE ACCESSORS =====================================
+
+/**************************************************************************
+* Name: set(float _a, float _b, float _c, float _d)
+* Description: Setter for all 4 components of the quaternions.
+* Inputs:
+*				- _a : w component of the Quaternion.
+*				- _b : x component of the Quaternion.
+*				- _c : y component of the Quaternion.
+*				- _d : z component of the Quaternion.
+* Returns : none
+**************************************************************************/
+void Quaternion::set(float _a, float _b, float _c, float _d)
 {
-	this->a = a;
-	this->b = b;
-	this->c = c;
-	this->d = d;
+    this->m_a = _a;
+    this->m_b = _b;
+    this->m_c = _c;
+    this->m_d = _d;
 }
 
-Quaternion Quaternion::conjugate(const Quaternion& q)
+//============================= OPERATORS ==============================================
+
+/**************************************************************************
+* Name:  operator*(const Quaternion& _q) const
+* Description: Overloaded * operator for a Quaternion product.
+* Inputs:
+*				- _q : const Quaternion& to be multiplied by this.
+* Returns:
+*				- Product of the two Quaternions.
+**************************************************************************/
+Quaternion Quaternion::operator*(const Quaternion& _q) const
 {
-	return Quaternion(q.a, -q.b, -q.c, -q.d);
+    return Quaternion(m_a*_q.m_a - m_b*_q.m_b - m_c*_q.m_c - m_d*_q.m_d,
+                      m_b*_q.m_a + m_a*_q.m_b + m_c*_q.m_d - m_d*_q.m_c,
+                      m_c*_q.m_a + m_a*_q.m_c + m_d*_q.m_b - m_b*_q.m_d,
+                      m_d*_q.m_a + m_a*_q.m_d + m_b*_q.m_c - m_c*_q.m_b);
 }
 
+/**************************************************************************
+* Name:  operator+(const Quaternion& _q) const
+* Description: Overloaded + operator for a Quaternion sum.
+* Inputs:
+*				- _q : const Quaternion& to be add to this.
+* Returns:
+*				- Sum of the two Quaternions.
+**************************************************************************/
+Quaternion Quaternion::operator+(const Quaternion& _q) const
+{
+    return Quaternion(m_a + _q.m_a, m_b + _q.m_b, m_c + _q.m_c, m_d + _q.m_d);
+}
+
+/**************************************************************************
+* Name:  operator-(const Quaternion& _q) const
+* Description: Overloaded - operator for a Quaternion substraction.
+* Inputs:
+*				- _q : const Quaternion& to be substracted with.
+* Returns:
+*				- Substraction of this - _q.
+**************************************************************************/
+Quaternion Quaternion::operator-(const Quaternion& _q) const
+{
+    return Quaternion(m_a - _q.m_a, m_b - _q.m_b, m_c - _q.m_c, m_d - _q.m_d);
+}
+
+/**************************************************************************
+* Name:  operator/(const Quaternion& _q) const
+* Description: Overloaded / operator for a Quaternion division.
+* Inputs:
+*				- _q : const Quaternion& to divide this.
+* Returns:
+*				- Division of this / _q.
+**************************************************************************/
+Quaternion Quaternion::operator/(const Quaternion& _q) const
+{
+    return (*this)*invert(_q); // equivalent to Q1*invert(Q2)
+}
+
+/**************************************************************************
+* Name:  operator=(const Quaternion& _q) const
+* Description: Overloaded = operator for a Quaternion equality.
+* Inputs:
+*				- _q : const Quaternion& to test the equality with.
+* Returns:
+*				- True if all 4 components of each are equal.
+*				- False otherwise.
+**************************************************************************/
 void Quaternion::operator=(const Quaternion& q)
 {
-	a = q.a;
-	b = q.b;
-	c = q.c;
-	d = q.d;
+    m_a = q.m_a;
+    m_b = q.m_b;
+    m_c = q.m_c;
+    m_d = q.m_d;
 }
 
+/**************************************************************************
+* Name:  toString(const Quaternion& _q)
+* Description: toString method of Quaternion that return a String definition
+*						of a Quaternion.
+* Inputs:
+*				- _q : const Quaternion&, Quaternion to print.
+* Returns:
+*				- std::string containing the string definition of the Quaternion.
+**************************************************************************/
+std::string Quaternion::toString(const Quaternion& _q)
+{
+    std::stringstream str;
+    str << "[ " << _q.m_a << " " << _q.m_b << " " << _q.m_c << " " << _q.m_d << " ]";
+    return str.str();
+}
+
+//============================= OPERATIONS ==============================================
+
+/**************************************************************************
+* Name: conjugate()
+* Description: Returns the conjugate of the Quaternion.
+* Inputs: none
+* Returns:
+*				- Conjugate Quaternion (all components are mulitplied by -1 except w).
+**************************************************************************/
 void Quaternion::conjugate()
 {
-	b = -b;
-	c = -c;
-	d = -d;
+    m_b = -m_b;
+    m_c = -m_c;
+    m_d = -m_d;
 }
 
+/* TODO */
 void Quaternion::invert()
 {
-	float norm = normSquared(*this);
-	a = a / norm;
-	b = b / norm;
-	c = c / norm;
-	d = d / norm;
+    float norm = normSquared(*this);
+    m_a = m_a / norm;
+    m_b = m_b / norm;
+    m_c = m_c / norm;
+    m_d = m_d / norm;
 }
 
-void Quaternion::normalize()
-{
-	float norm = normSquared(*this);
-	set(a / norm, b / norm, c / norm, d / norm);
-}
-
+/**************************************************************************
+* Name: rotate(float _angle, glm::vec3& _axis)
+* Description: Rotation of a Quaternion.
+* Inputs:
+*				- _angle : float, angle to rotate with.
+*				- _axis  : glm::vec3&, axis to rotate around.
+* Returns: none.
+**************************************************************************/
 void Quaternion::rotate(float _angle, glm::vec3& _axis)
 {
-	Quaternion q = computeRotationQuaternion(_angle, _axis);
-	set(a*q.a - b*q.b - c*q.c - d*q.d,
-		b*q.a + a*q.b + d*q.c - c*q.d,
-		c*q.a + a*q.c + b*q.d - d*q.b,
-		d*q.a + a*q.d + c*q.b - b*q.c);
+    Quaternion q = computeRotationQuaternion(_angle, _axis);
+    set(m_a*q.m_a - m_b*q.m_b - m_c*q.m_c - m_d*q.m_d,
+        m_b*q.m_a + m_a*q.m_b + m_d*q.m_c - m_c*q.m_d,
+        m_c*q.m_a + m_a*q.m_c + m_b*q.m_d - m_d*q.m_b,
+        m_d*q.m_a + m_a*q.m_d + m_c*q.m_b - m_b*q.m_c);
 
-	normalize();
+    normalize();
 }
 
-Quaternion Quaternion::operator*(const Quaternion& q) const
+/**************************************************************************
+* Name:  normalize()
+* Description: Normalize the Quaternion.
+* Inputs: none.
+* Returns: none.
+**************************************************************************/
+void Quaternion::normalize()
 {
-	return Quaternion(a*q.a - b*q.b - c*q.c - d*q.d,
-		b*q.a + a*q.b + c*q.d - d*q.c,
-		c*q.a + a*q.c + d*q.b - b*q.d,
-		d*q.a + a*q.d + b*q.c - c*q.b);
+    float norm = normSquared(*this);
+    set(m_a / norm, m_b / norm, m_c / norm, m_d / norm);
 }
 
-Quaternion Quaternion::operator+(const Quaternion& q) const
+/**************************************************************************
+* Name: conjugate(const Quaternion& _q)
+* Description: Returns the conjugate of the Quaternion passed in parameter.
+* Inputs:
+*				- _q : const Quaternion&, Quaternion to get the conjugate from.
+* Returns:
+*				- Conjugate Quaternion (all components are mulitplied by -1 except w).
+**************************************************************************/
+Quaternion Quaternion::conjugate(const Quaternion& q)
 {
-	return Quaternion(a + q.a, b + q.b, c + q.c, d + q.d);
+    return Quaternion(q.m_a, -q.m_b, -q.m_c, -q.m_d);
 }
 
-Quaternion Quaternion::operator-(const Quaternion& q) const
+/* TODO */
+Quaternion Quaternion::invert(const Quaternion& _q)
 {
-	return Quaternion(a - q.a, b - q.b, c - q.c, d - q.d);
+    float normSquared = Quaternion::normSquared(_q);
+    return Quaternion(_q.m_a / normSquared, -_q.m_b / normSquared, -_q.m_c / normSquared, -_q.m_d / normSquared);
 }
 
-Quaternion Quaternion::operator/(const Quaternion& q) const
+/**************************************************************************
+* Name: normSquared(const Quaternion& _q)
+* Description: Returns the squared norm of the quaternion.
+* Inputs:
+*				- _q : const Quaternion&, quaternion from which the quared norm is
+*							returned.
+* Returns:
+*				- float reprensenting the squared norm of the quaternion.
+**************************************************************************/
+float Quaternion::normSquared(const Quaternion& _q)
 {
-	return (*this)*invert(q); // equivalent to Q1*invert(Q2)
+    return _q.m_a*_q.m_a + _q.m_b*_q.m_b + _q.m_c*_q.m_c + _q.m_d*_q.m_d;
 }
 
-float Quaternion::normSquared(const Quaternion& q)
-{
-	return q.a*q.a + q.b*q.b + q.c*q.c + q.d*q.d;
-}
-
-Quaternion Quaternion::invert(const Quaternion& q)
-{
-	float normSquared = Quaternion::normSquared(q);
-	return Quaternion(q.a / normSquared, -q.b / normSquared, -q.c / normSquared, -q.d / normSquared);
-}
-
-std::string Quaternion::toString(const Quaternion& q)
-{
-	std::stringstream str;
-	str << "[ " << q.a << " " << q.b << " " << q.c << " " << q.d << " ]";
-	return str.str();
-}
-
-Quaternion Quaternion::quat_rotate(float _angle, glm::vec3& _axis)
-{
-	glm::vec3 axisNorm = glm::normalize(_axis);
-	float sinAngle = sinf(_angle / 2.0f);
-	float cosAngle = cosf(_angle / 2.0f);
-
-	return Quaternion(cosAngle, sinAngle*axisNorm.x, sinAngle*axisNorm.y, sinAngle*axisNorm.z);
-
-}
-
+/**************************************************************************
+* Name: computeRotationQuaternion(float _angle, glm::vec3& _axis)
+* Description: Creates a Quaternion associated with a rotation composed
+*						from the angle '_angle' around the axis '_axis'.
+* Inputs:
+*				- _angle : angle the returned Quaternion is associated with.
+*				- _axis  : axis around which the returned Quaternion rotates.
+* Returns:
+*				- Quaternion rotation around '_axis' with an angle '_angle'.
+**************************************************************************/
 Quaternion Quaternion::computeRotationQuaternion(float _angle, glm::vec3& _axis)
 {
-	glm::vec3 axisNorm = glm::normalize(_axis);
-	float halfAngle = _angle / 2.0f;
-	float sinAngle = sinf(halfAngle);
-	return Quaternion(cosf(halfAngle), sinAngle*_axis.x, sinAngle*_axis.y, sinAngle*_axis.z);
+    glm::vec3 axisNorm = glm::normalize(_axis);
+    float halfAngle = _angle / 2.0f;
+    float sinAngle = sinf(halfAngle);
+    return Quaternion(cosf(halfAngle), sinAngle*_axis.x, sinAngle*_axis.y, sinAngle*_axis.z);
 }
 
+/**************************************************************************
+* Name: computeRotationQuaternion(float _angle, glm::vec3& _axis, Quaternion& _q)
+* Description: Sets the Quaternion _q rotation as above.
+* Inputs:
+*				- _angle : angle the returned Quaternion is associated with.
+*				- _axis  : axis around which the returned Quaternion rotates.
+*				- _q     : Quaternion whose components are set by the rotation defined
+*								by '_angle' and '_axis'.
+* Returns: none
+**************************************************************************/
+void Quaternion::computeRotationQuaternion(float _angle, glm::vec3& _axis, Quaternion& _q)
+{
+    glm::vec3 axisNorm = glm::normalize(_axis);
+    float halfAngle = _angle / 2.0f;
+    float sinAngle = sin(halfAngle);
+    _q.set(cosf(halfAngle), sinAngle*_axis.x, sinAngle*_axis.y, sinAngle*_axis.z);
+}
+
+/**************************************************************************
+* Name:  quat_rotate(float _angle, glm::vec3& _axis)
+* Description: Creates a Quaternion associated with a rotation composed
+*						from the angle '_angle' around the axis '_axis'.
+* Inputs:
+*				- _angle : angle the returned Quaternion is associated with.
+*				- _axis  : axis around which the returned Quaternion rotates.
+* Returns:
+*				- Quaternion rotation around '_axis' with an angle '_angle'.
+**************************************************************************/
+Quaternion Quaternion::quat_rotate(float _angle, glm::vec3& _axis)
+{
+    glm::vec3 axisNorm = glm::normalize(_axis);
+    float sinAngle = sinf(_angle / 2.0f);
+    float cosAngle = cosf(_angle / 2.0f);
+
+    return Quaternion(cosAngle, sinAngle*axisNorm.x, sinAngle*axisNorm.y, sinAngle*axisNorm.z);
+
+}
+
+
+/**************************************************************************
+* Name:  computeRotationQuaternion(float _rx, float _ry, float _rz)
+* Description: Creates a Quaternion associated with three components of
+*						a rotation (along x axis, along y axis and along z axis).
+* Inputs:
+*				- _rx : float, angle of the rotation along the x axis.
+*				- _ry : float, angle of the rotation along the y axis.
+*				- _rz : float, angle of the rotation along the z axis.
+* Returns:
+*				- Quaternion associated with the three angles defining a 3D rotation.
+**************************************************************************/
 Quaternion Quaternion::computeRotationQuaternion(float _rx, float _ry, float _rz)
 {
-	float halfrx = _rx / 2.0f;
-	float halfry = _ry / 2.0f;
-	float halfrz = _rz / 2.0f;
+    float halfrx = _rx / 2.0f;
+    float halfry = _ry / 2.0f;
+    float halfrz = _rz / 2.0f;
 
-	float cosrx = cosf(halfrx);
-	float sinrx = sinf(halfrx);
-	float cosry = cosf(halfry);
-	float sinry = sinf(halfry);
-	float cosrz = cosf(halfrz);
-	float sinrz = sinf(halfrz);
+    float cosrx = cosf(halfrx);
+    float sinrx = sinf(halfrx);
+    float cosry = cosf(halfry);
+    float sinry = sinf(halfry);
+    float cosrz = cosf(halfrz);
+    float sinrz = sinf(halfrz);
 
-	return Quaternion(cosrx*cosry*cosrz - sinrx*sinry*sinrz,
-		cosry*cosrz*sinrx + cosrx*sinry*sinrz,
-		cosrx*cosrz*sinry - cosry*sinrx*sinrz,
-		cosrx*cosry*sinrz + cosrz*sinrx*sinry);
+    return Quaternion(cosrx*cosry*cosrz - sinrx*sinry*sinrz,
+                      cosry*cosrz*sinrx + cosrx*sinry*sinrz,
+                      cosrx*cosrz*sinry - cosry*sinrx*sinrz,
+                      cosrx*cosry*sinrz + cosrz*sinrx*sinry);
 }
 
-void Quaternion::computeRotationQuaternion(float _angle, glm::vec3& _axis, Quaternion& _out)
+/**************************************************************************
+* Name:  computeRotationQuaternion(float _rx, float _ry, float _rz, Quaternion& _q)
+* Description: Sets the Quaternion _q components as above.
+* Inputs:
+*				- _rx : float, angle of the rotation along the x axis.
+*				- _ry : float, angle of the rotation along the y axis.
+*				- _rz : float, angle of the rotation along the z axis.
+*				- _q     : Quaternion whose components are set by the rotation defined
+*								by '_angle' and '_axis'.
+* Returns:
+*				- Quaternion associated with the three angles defining a 3D rotation.
+**************************************************************************/
+void Quaternion::computeRotationQuaternion(float _rx, float _ry, float _rz, Quaternion& _q)
 {
-	glm::vec3 axisNorm = glm::normalize(_axis);
-	float halfAngle = _angle / 2.0f;
-	float sinAngle = sin(halfAngle);
-	_out.set(cosf(halfAngle), sinAngle*_axis.x, sinAngle*_axis.y, sinAngle*_axis.z);
-}
+    float halfrx = _rx / 2.0f;
+    float halfry = _ry / 2.0f;
+    float halfrz = _rz / 2.0f;
 
-void Quaternion::computeRotationQuaternion(float _rx, float _ry, float _rz, Quaternion& _out)
-{
-	float halfrx = _rx / 2.0f;
-	float halfry = _ry / 2.0f;
-	float halfrz = _rz / 2.0f;
+    float cosrx = cosf(halfrx);
+    float sinrx = sinf(halfrx);
+    float cosry = cosf(halfry);
+    float sinry = sinf(halfry);
+    float cosrz = cosf(halfrz);
+    float sinrz = sinf(halfrz);
 
-	float cosrx = cosf(halfrx);
-	float sinrx = sinf(halfrx);
-	float cosry = cosf(halfry);
-	float sinry = sinf(halfry);
-	float cosrz = cosf(halfrz);
-	float sinrz = sinf(halfrz);
-
-	_out.set(cosrx*cosry*cosrz - sinrx*sinry*sinrz,
-		cosry*cosrz*sinrx + cosrx*sinry*sinrz,
-		cosrx*cosrz*sinry - cosry*sinrx*sinrz,
-		cosrx*cosry*sinrz + cosrz*sinrx*sinry);
+    _q.set(cosrx*cosry*cosrz - sinrx*sinry*sinrz,
+             cosry*cosrz*sinrx + cosrx*sinry*sinrz,
+             cosrx*cosrz*sinry - cosry*sinrx*sinrz,
+             cosrx*cosry*sinrz + cosrz*sinrx*sinry);
 }

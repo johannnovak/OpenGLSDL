@@ -15,7 +15,7 @@ Helpers::~Helpers()
 
 bool Helpers::loadFile(const char* _fileName, string& _out)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Loading file '"+ string(_fileName) +"'..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Loading file '"+ string(_fileName) +"'...");
 
     ifstream file(_fileName);
 	_out.clear();
@@ -31,12 +31,12 @@ bool Helpers::loadFile(const char* _fileName, string& _out)
 
 		file.close();
 
-        LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "File '"+ string(_fileName) +"' successfully loaded."));
+        LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "File '"+ string(_fileName) +"' successfully loaded.");
         return true;
 	}
 	else
 	{
-        LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::ERROR, "Could not open file '" + string(_fileName) +"'."));
+        LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_ERROR, "Could not open file '" + string(_fileName) +"'.");
         return false;
 	}
 }
@@ -79,4 +79,12 @@ float Helpers::prand()
 	}
 
 	return (float)rand() / (float)RAND_MAX;
+}
+
+std::string Helpers::uint32ToString(uint32 _value)
+{
+    std::stringstream ss;
+    ss << _value;
+    ss.str("");
+    return ss.str();
 }

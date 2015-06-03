@@ -13,40 +13,95 @@
 #include "AtmosphericParticleSystem.h"
 #include "FireParticleSystem.h"
 
+/**************************************************************************
+* Class: Game
+* Description: Class inheriting from GLWindow. It is where the scene is
+*					created, the shaders registered. It updates the simulation
+*					and make the GraphicsEngine render the Scene.
+*
+**************************************************************************/
 class Game : public GlWindow
 {
-    public:
-        Game();
-        ~Game();
-
-    protected:
-        /*!
-        *\brief Initialization des objets.
-        */
-        bool initializeObjects();
-
-        /*!
-        *\brief Rendu de la scène.
-        */
-        void renderGame(float _dt);
-
-        void updateGame(float _dt) ;
+/////////////////////////////// PRIVATE ///////////////////////////////////
     private:
-        Scene m_scene;
-        Shader m_shader;
-        GraphicEngine m_graphics;
+         /* Scene containing all objects of the world. */
+         Scene m_scene;
 
-        Camera* m_mainCamera;
+         /* Object used to render a Scene. */
+         GraphicEngine m_graphics;
 
-        SceneNode* m_importedObjectNode;
-        Object3D* m_importedObject;
+         /* Shader to use when telling the GraphicsEngine to do the rendering. */
+         Shader m_shader;
 
-        SceneNode* m_cubeNode;
-        Cube* m_cube;
+         /* Quaternion based Camera of the Scene. */
+         Camera* m_mainCamera;
 
-        ParticleSystem m_particleSystem;
-        AtmosphericParticleSystem m_atmosphericParticle;
-        FireParticleSystem m_fireParticle;
+         /* TODO */
+         SceneNode* m_importedObjectNode;
+         Object3D* m_importedObject;
 
+         SceneNode* m_cubeNode;
+         Cube* m_cube;
+
+         ParticleSystem m_particleSystem;
+         AtmosphericParticleSystem m_atmosphericParticle;
+         FireParticleSystem m_fireParticle;
+
+/////////////////////////////// PUBLIC ///////////////////////////////////
+    public:
+    //============================= LIFECYCLE =======================================
+
+         /**************************************************************************
+         * Name: Game()
+         * Description: Default constructor.
+         * Inputs: none
+         **************************************************************************/
+         Game();
+
+         /**************************************************************************
+         * Name: ~Game()
+         * Description: Default destructor.
+         * Inputs: none
+         **************************************************************************/
+         ~Game();
+
+/////////////////////////////// PROTECTED ///////////////////////////////////
+    protected:
+    //============================= OPERATIONS ==============================================
+
+         /**************************************************************************
+         * Name: initializeObjects()
+         * Description: Method used to initialize all of the objects of the scene
+         *						along with the shader attributes registering. All created
+         *						are added to the scene inside SceneNodes.
+         * Inputs: none
+         * Returns:
+         *			- True if no errors occurerd.
+         *			- False otherwise.
+         **************************************************************************/
+         bool initializeObjects();
+
+         /**************************************************************************
+         * Name: updateGame(float _dt)
+         * Description: Method used to update the different objects that composes
+         *						the scene. This is where the inputs can be tested
+         *						by the InputManager in order to move/delete objects,
+         *						stop the program, change parameters, etc ...
+         * Input:
+         *			- _dt : float, time interval since the last rendering.
+         * Returns: none
+         **************************************************************************/
+         void updateGame(float _dt) ;
+
+         /**************************************************************************
+         * Name: renderGame(float _dt)
+         * Description: Method used to do the rendering. It transmits shader variables
+         *					, tells the graphicsEngine to draw the scene, but also
+         *					draws other objects.
+         * Inputs:
+         *			- _dt : float, time interval since the last rendering.
+         * Returns: none
+         **************************************************************************/
+         void renderGame(float _dt);
 };
 #endif

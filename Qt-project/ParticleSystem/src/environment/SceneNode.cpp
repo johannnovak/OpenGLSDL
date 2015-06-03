@@ -37,7 +37,7 @@ SceneNode::~SceneNode()
     {
         delete node;
     }
-    m_childs.clear();
+    m_children.clear();
 }
 
 //============================= ATTRIBUTE ACCESSORS =====================================
@@ -261,7 +261,7 @@ glm::vec3 SceneNode::computeGlobalPosition() const
 {
     glm::vec4 pos = glm::vec4(m_position, 1.0f);
     if (m_parent != nullptr)
-        pos = m_parent->computeWorldMatrice() * pos;
+        pos = m_parent->computeWorldMatrix() * pos;
 
     return glm::vec3(pos.x, pos.y, pos.z);
 }

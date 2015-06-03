@@ -1,19 +1,28 @@
-#include "QTLogEventHandler.h"
+#include "QTLogEventHandler.h" // Implemented Class.
 
 #include <QScrollBar>
 #include <sstream>
 #include <time.h>
 
+/////////////////////////////// PUBLIC ///////////////////////////////////
+
+//============================= LIFECYCLE =======================================
+
+/**************************************************************************
+* Name:  ConsoleLogEventHandler()
+* Description: Default constructor.
+* Inputs: none
+**************************************************************************/
 QTLogEventHandler::QTLogEventHandler()
 {
-    m_masks.push_back(new LogEvent(LogEventType::QT_LOG_EVENT));
-    m_masks.push_back(new LogEvent(LogEventType::ALL_LOG_EVENT));
+    m_types.push_back(LogEventType::LogEventType_QT_LOG_EVENT);
+    m_types.push_back(LogEventType::LogEventType_ALL_LOG_EVENT);
 
-    m_logLevels.push_back(LogLevel::INFO);
-    m_logLevels.push_back(LogLevel::WARN);
-    m_logLevels.push_back(LogLevel::ERROR);
+    m_levels.push_back(LogLevel::LogLevel_INFO);
+    m_levels.push_back(LogLevel::LogLevel_WARN);
+    m_levels.push_back(LogLevel::LogLevel_ERROR);
 
-//    m_logLevels.push_back(LogLevel::DEBUG);
+//    m_levels.push_back(LogLevel::LogLevel_DEBUG);
 
     m_frontTag = "<font color='%1'>";
     m_errorColor = "#FF0000";
@@ -29,29 +38,43 @@ QTLogEventHandler::QTLogEventHandler()
     show();
 }
 
+/**************************************************************************
+* Name:  ~ConsoleLogEventHandler()
+* Description: Default destructor.
+* Inputs: none
+**************************************************************************/
 QTLogEventHandler::~QTLogEventHandler()
 {
 }
 
+//============================= OPERATIONS ==============================================
+
+/**************************************************************************
+* Name:  handleEvent(LogEvent& _event)
+* Description: Method used to handle a LogEvent. Prints the log inside the console in std::cout.
+* Inputs:
+*				- _event : LogEvent&, Event to log inside the console.
+* Returns: none
+**************************************************************************/
 void QTLogEventHandler::handleEvent(LogEvent& _event)
 {
     QString log;
 
     switch(_event.getLevel())
     {
-        case LogLevel::ERROR:
+        case LogLevel::LogLevel_ERROR:
             log += m_frontTag.arg(m_errorColor);
             break;
 
-        case LogLevel::WARN:
+        case LogLevel::LogLevel_WARN:
             log += m_frontTag.arg(m_warnColor);
             break;
 
-        case LogLevel::DEBUG:
+        case LogLevel::LogLevel_DEBUG:
             log += m_frontTag.arg(m_debugColor);
             break;
 
-        case LogLevel::INFO:
+        case LogLevel::LogLevel_INFO:
             log += m_frontTag.arg(m_infoColor);
             break;
 
@@ -76,11 +99,12 @@ void QTLogEventHandler::handleEvent(LogEvent& _event)
     verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-std::vector<LogEvent*>& QTLogEventHandler::getMasks()
-{
-    return m_masks;
-}
-
+/**************************************************************************
+* Name:  closeHandler()
+* Description: Method used to close the handler. Here, does nothing.
+* Inputs: none
+* Returns: none
+**************************************************************************/
 void QTLogEventHandler::closeHandler()
 {
     close();

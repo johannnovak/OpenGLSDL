@@ -9,35 +9,63 @@
 
 using namespace std;
 
+/////////////////////////////// PUBLIC ///////////////////////////////////
+
+//============================= LIFECYCLE =======================================
+
+/**************************************************************************
+* Name: Game()
+* Description: Default constructor.
+* Inputs: none
+**************************************************************************/
 Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Creating Game..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "Creating Game...");
 
     setWindowTitle(trUtf8("ParticleSystem"));
     show();
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Game created."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Game created.");
 }
 
 
+/**************************************************************************
+* Name: ~Game()
+* Description: Default destructor.
+* Inputs: none
+**************************************************************************/
 Game::~Game()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Destroying Game..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "Destroying Game...");
 
     delete m_mainCamera;
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Game destroyed."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Game destroyed.");
 }
 
+/////////////////////////////// PROTECTED ///////////////////////////////////
+
+//============================= OPERATIONS ==============================================
+
+/**************************************************************************
+* Name: initializeObjects()
+* Description: Method used to initialize all of the objects of the scene
+*						along with the shader attributes registering. All created
+*						are added to the scene inside SceneNodes.
+* Inputs: none
+* Returns:
+*			- True if no errors occurerd.
+*			- False otherwise.
+**************************************************************************/
 bool Game::initializeObjects()
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Initializing Objects..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "Initializing Objects...");
 
     m_particleSystem.initialize();
     m_atmosphericParticle.initialize();
     m_fireParticle.initialize();
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Loading Shaders..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Loading Shaders...");
 
     m_shader.load("Shaders/light_shader");
     m_shader.registerUniform("P", ShaderUniformType_PROJECTION);
@@ -50,9 +78,9 @@ bool Game::initializeObjects()
 
     m_graphics.setShader(&m_shader);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Loaded and set."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Loaded and set.");
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Creating world entities..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Creating world entities...");
 
     m_cube = new Cube();
 
@@ -83,25 +111,32 @@ bool Game::initializeObjects()
     m_scene.getRootNode()->addChild(cameraNode);
 /*    m_scene.getRootNode()->addChild(m_importedObjectNode);
 */
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "World entities created and added to the scene."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "World entities created and added to the scene.");
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "Object initialization successful."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "Object initialization successful.");
     return true;
 }
 
+/**************************************************************************
+* Name: updateGame(float _dt)
+* Description: Method used to update the different objects that composes
+*						the scene. This is where the inputs can be tested
+*						by the InputManager in order to move/delete objects,
+*						stop the program, change parameters, etc ...
+* Input:
+*			- _dt : float, time interval since the last rendering.
+* Returns: none
+**************************************************************************/
 void Game::updateGame(float _dt)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Updating scene..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Updating scene...");
 
     InputManager* inputManager = QTInputManager::getInstance();
     inputManager->resetMouseMotion();
 
-    if (LogManager::s_errorCount > 10 || inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
+    if (inputManager->isKeyDown(KeyId::IM_KEY_ESCAPE))
     {
-        if (LogManager::s_errorCount > 10)
-            LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::ERROR, "Too many errors, exiting the program."));
-        else
-            LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::INFO, "ESCAPE key pressed."));
+        LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "ESCAPE key pressed.");
 
         LogManager::closeHandlers();
 
@@ -109,7 +144,7 @@ void Game::updateGame(float _dt)
     }
 
     glm::vec3 forward, right, up;
-    glm::mat4 view = m_mainCamera->getSceneNode().computeWorldMatrice();
+    glm::mat4 view = m_mainCamera->getSceneNode().computeWorldMatrix();
 
     right.x = view[0].x;
     right.y = view[1].x;
@@ -171,12 +206,21 @@ void Game::updateGame(float _dt)
     m_fireParticle.update(_dt);
     m_atmosphericParticle.update(_dt);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Scene updated."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Scene updated.");
 }
 
+/**************************************************************************
+* Name: renderGame(float _dt)
+* Description: Method used to do the rendering. It transmits shader variables
+*					, tells the graphicsEngine to draw the scene, but also
+*					draws other objects.
+* Inputs:
+*			- _dt : float, time interval since the last rendering.
+* Returns: none
+**************************************************************************/
 void Game::renderGame(float _dt)
 {
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Rendering Scene..."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Rendering Scene...");
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -199,5 +243,5 @@ void Game::renderGame(float _dt)
     m_fireParticle.setMatrices(&glm::mat4(1)[0][0], &m_mainCamera->getView()[0][0], &m_mainCamera->getProjection()[0][0]);
     m_fireParticle.draw(_dt);
 
-    LogManager::pushEvent(new LogEvent(LogEventType::ALL_LOG_EVENT, LogLevel::DEBUG, "Scene rendered."));
+    LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Scene rendered.");
 }

@@ -1,9 +1,15 @@
-#pragma once
+#ifndef INPUTMANAGER_H
+#define INPUTMANAGER_H
 
 #include <string>
 
 #include "LogManager.h"
 
+/**************************************************************************
+* Enum: KeyId
+* Description: Enum that specifies the for each possible key input, an
+*						hexadecimal ID.
+**************************************************************************/
 enum KeyId
 {
 	IM_KEY_A = 0x00,
@@ -68,6 +74,11 @@ enum KeyId
 
 };
 
+/**************************************************************************
+* Enum: MouseButtonId
+* Description: Enum that specifies the for each possible mouse input, an
+*						hexadecimal ID.
+**************************************************************************/
 enum MouseButtonId
 {
 	IM_MOUSE_LEFT = 0x0,
@@ -77,47 +88,173 @@ enum MouseButtonId
 	IM_MOUSE_LAST
 };
 
+/**************************************************************************
+* Enum: InputManagerType
+* Description: Enum that lists all class that inherits InputManager (application
+*						specific, one for SDL, one for QT, etc ...).
+**************************************************************************/
 enum InputManagerType
 {
-	IM_TYPE_SDL = 0,
-
+    IM_TYPE_SDL = 0,
     IM_TYPE_QT = 1,
 
-	IM_TYPE_LAST
+    IM_TYPE_LAST
 };
 
+/**************************************************************************
+* Class: MouseMotion
+* Description: Class that represents the different characteristics of the
+*						motion of a mouse that are, its position on the screen
+*						and its associated speed vector.
+*
+**************************************************************************/
 class MouseMotion
 {
-public:
-	MouseMotion();
+/////////////////////////////// PUBLIC ///////////////////////////////////
+    public:
 
-    int dx;
-    int dy;
-    int x;
-	int y;
+        /* x position of the mouse. */
+        int x;
+        /* y position of the mouse. */
+        int y;
+
+        /* x component of the speed vector of the mouse. */
+        int dx;
+        /* y component of the speed vector of the mouse. */
+        int dy;
+
+  //============================= LIFECYCLE =======================================
+
+        /**************************************************************************
+        * Name:  MouseMotion()
+        * Description: Default constructor.
+        * Inputs: none
+        **************************************************************************/
+        MouseMotion();
 };
 
+/**************************************************************************
+* Class: InputManager
+* Description: Singleton class designed to implement an abstract and general InputManager.
+*						It has its own KeyIdentifiers for the keyboard and mouse and
+*						handles its motion.
+*
+**************************************************************************/
 class InputManager
 {
-public:
-	InputManager();
-	virtual ~InputManager();
+/////////////////////////////// PROTECTED ///////////////////////////////////
+    protected:
+        /* Singleton instance of the class. */
+        static InputManager* s_instance;
 
-public:
-    static InputManager* getInstance();
+/////////////////////////////// PUBLIC ///////////////////////////////////
+    public:
+    //============================= LIFECYCLE =======================================
 
-	static std::string IMTypeToStr(InputManagerType _type);
+        /**************************************************************************
+        * Name:  InputManager()
+        * Description: Default constructor.
+        * Inputs: none
+        **************************************************************************/
+        InputManager();
 
-public:
-	virtual bool isKeyDown(KeyId _keyId) = 0;
-	virtual bool isKeyUp(KeyId _keyId) = 0;
+        /**************************************************************************
+        * Name:  ~InputManager()
+        * Description: Default destructor.
+        * Inputs: none
+        **************************************************************************/
+        virtual ~InputManager();
 
-	virtual bool isMouseButtonDown(MouseButtonId _mouseId) = 0;
-	virtual bool isMouseButtonUp(MouseButtonId _mouseId) = 0;
+    //============================= ATTRIBUTE ACCESSORS =====================================
 
-	virtual MouseMotion& getMouseMotion() = 0;
-	virtual void resetMouseMotion() = 0;
+        /**************************************************************************
+        * Name:  getInstance()
+        * Description: Getter for the 's_instance' attribute.
+        * Inputs: none
+        * Returns:
+        *			- s_instance : InputManager*, instance of the class' singleton.
+        **************************************************************************/
+        static InputManager* getInstance();
 
-protected:
-	static InputManager* s_instance;
+        /**************************************************************************
+        * Name:  getMouseMotion()
+        * Description: Abstract getter for the 'm_mouseMotion' attribute the inherited class
+        *						has to possess.
+        * Inputs: none
+        * Returns:
+        *			- m_mouseMotion : MouseMotion&, reference on the MouseMotion attribute.
+        **************************************************************************/
+        virtual MouseMotion& getMouseMotion() = 0;
+
+    //============================= OPERATIONS ==============================================
+
+        /**************************************************************************
+        * Name:  resetMouseMotion()
+        * Description: Abstract method used to reset the mouse motion attributes to 0.
+        * Inputs: none
+        * Returns: none
+        **************************************************************************/
+        virtual void resetMouseMotion() = 0;
+
+        /**************************************************************************
+        * Name:  std::string IMTypeToStr(InputManagerType _type)
+        * Description: Method used to transform any InputManagerType into a string.
+        * Inputs:
+        *			- _type : InputManagerType, enum to return as a string.
+        * Returns:
+        *			- String value of the enum.
+        **************************************************************************/
+        static std::string IMTypeToStr(InputManagerType _type);
+
+    //============================= INQUIRY ==============================================
+
+        /**************************************************************************
+        * Name:  isKeyDown(KeyId _keyId)
+        * Description: Abstract method used to tell if a certain key is being pressed.
+        * Inputs:
+        *			- _keyId : KeyID, id of the key to check if it is pressed or not.
+        * Returns:
+        *			- True if the key associated with the KeyId is pressed.
+        *			- False otherwise.
+        **************************************************************************/
+        virtual bool isKeyDown(KeyId _keyId) = 0;
+
+        /**************************************************************************
+        * Name:  isKeyUp(KeyId _keyId)
+        * Description: Abstract method used to tell if a certain key is released.
+        * Inputs:
+        *			- _keyId : KeyID, id of the key to check if it is released or not.
+        * Returns:
+        *			- True if the key associated with the KeyId is released.
+        *			- False otherwise.
+        **************************************************************************/
+        virtual bool isKeyUp(KeyId _keyId) = 0;
+
+
+        /**************************************************************************
+        * Name:  isMouseButtonDown(MouseButtonId _mouseId)
+        * Description: Abstract method used to tell if a certain mouse button is pressed.
+        * Inputs:
+        *			- _mouseId : MouseButtonID, id of the mouse button to check if it is
+        *								pressed or not.
+        * Returns:
+        *			- True if the mouse button associated with the MouseButtonId is pressed.
+        *			- False otherwise.
+        **************************************************************************/
+        virtual bool isMouseButtonDown(MouseButtonId _mouseId) = 0;
+
+        /**************************************************************************
+        * Name:  isMouseButtonUp(MouseButtonId _mouseId)
+        * Description: Abstract method used to tell if a certain mouse button is released.
+        * Inputs:
+        *			- _mouseId : MouseButtonID, id of the mouse button to check if it is
+        *								released or not.
+        * Returns:
+        *			- True if the mouse button associated with the MouseButtonId is released.
+        *			- False otherwise.
+        **************************************************************************/
+        virtual bool isMouseButtonUp(MouseButtonId _mouseId) = 0;
+
 };
+
+#endif // INPUTMANAGER_H

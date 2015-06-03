@@ -1,38 +1,71 @@
 #include "ConsoleLogEventHandler.h"
 
-#include <iostream>
-#include <time.h>
 #include "LogManager.h"
 
+#include <iostream>
+#include <time.h>
+
+/////////////////////////////// PUBLIC ///////////////////////////////////
+
+//============================= LIFECYCLE =======================================
+
+/**************************************************************************
+* Name:  ConsoleLogEventHandler()
+* Description: Default constructor. Adds in 'm_types', LogEventType_ALL_LOG_EVENT
+*						to listen to any kind of LogEvent, and
+*						LogEventType_CONSOLE_LOG_EVENT because it is the console
+*						Log Handler. Adds all possible levels inside the 'm_levels'
+*						attribute.
+* Inputs: none
+**************************************************************************/
 ConsoleLogEventHandler::ConsoleLogEventHandler()
 {
-    m_masks.push_back(new LogEvent(LogEventType::CONSOLE_LOG_EVENT));
-    m_masks.push_back(new LogEvent(LogEventType::ALL_LOG_EVENT));
+    m_types.push_back(LogEventType::LogEventType_CONSOLE_LOG_EVENT);
+    m_types.push_back(LogEventType::LogEventType_ALL_LOG_EVENT);
 
-    m_logLevels.push_back(LogLevel::INFO);
-    m_logLevels.push_back(LogLevel::WARN);
-    m_logLevels.push_back(LogLevel::ERROR);
+    m_levels.push_back(LogLevel::LogLevel_INFO);
+    m_levels.push_back(LogLevel::LogLevel_WARN);
+    m_levels.push_back(LogLevel::LogLevel_ERROR);
 
-    m_logLevels.push_back(LogLevel::DEBUG);
+    m_levels.push_back(LogLevel::LogLevel_DEBUG);
 }
 
+/**************************************************************************
+* Name:  ~ConsoleLogEventHandler()
+* Description: Default destructor. Clears all attributes.
+* Inputs: none
+**************************************************************************/
 ConsoleLogEventHandler::~ConsoleLogEventHandler()
 {
-    m_masks.clear();
+    m_types.clear();
+    m_levels.clear();
 }
 
+//============================= OPERATIONS ==============================================
+
+/**************************************************************************
+* Name:  handleEvent(LogEvent& _event)
+* Description: Method used to handle a LogEvent. Prints the log inside the console in std::cout.
+* Inputs:
+*				- _event : LogEvent&, Event to log inside the console.
+* Returns: none
+**************************************************************************/
 void ConsoleLogEventHandler::handleEvent(LogEvent& _event)
 {
+    /* Useful to get the current time. */
     time_t currentTime = time(0);
     tm* localTime = localtime(&currentTime);
+
+    /* Prints  the log in the console. */
     std::cout << std::to_string(localTime->tm_hour).c_str() << ":" << std::to_string(localTime->tm_min).c_str() << ":" << std::to_string(localTime->tm_sec).c_str() << " - " << _event;
 }
 
-std::vector<LogEvent*>& ConsoleLogEventHandler::getMasks()
-{
-    return m_masks;
-}
-
+/**************************************************************************
+* Name:  closeHandler()
+* Description: Metho used to close the handler. Here, does nothing.
+* Inputs: none
+* Returns: none
+**************************************************************************/
 void ConsoleLogEventHandler::closeHandler()
 {
 }
