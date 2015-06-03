@@ -1,5 +1,5 @@
-#ifndef ABSTRACTPARTICLESYSTEM_H
-#define ABSTRACTPARTICLESYSTEM_H
+#ifndef __ABSTRACTPARTICLESYSTEM_H__
+#define __ABSTRACTPARTICLESYSTEM_H__
 
 #include "Shader.h"
 
@@ -187,4 +187,4 @@ class AbstractParticleSystem
         virtual void preDraw(float _dt) = 0;
 };
 
-#endif //  ABSTRACTPARTICLESYSTEM_H
+#endif //  __ABSTRACTPARTICLESYSTEM_H__

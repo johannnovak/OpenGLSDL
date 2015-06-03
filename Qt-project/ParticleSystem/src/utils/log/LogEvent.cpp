@@ -123,25 +123,25 @@ std::ostream& operator<<(std::ostream& _o, LogEvent& _event)
     /* Adds the associated string of the priority level. */
     switch (_event.m_level)
     {
-        case LogLevel::LogLevel_ERROR :
-            _o << "ERROR : ";
-            break;
+    case LogLevel::LogLevel_ERROR :
+        _o << "ERROR : ";
+        break;
 
-        case LogLevel::LogLevel_WARN :
-            _o << "WARN  : ";
-            break;
+    case LogLevel::LogLevel_WARN :
+        _o << "WARN  : ";
+        break;
 
-        case LogLevel::LogLevel_DEBUG :
-            _o << "DEBUG : ";
-            break;
+    case LogLevel::LogLevel_DEBUG :
+        _o << "DEBUG : ";
+        break;
 
-        case LogLevel::LogLevel_INFO :
-            _o << "INFO  : ";
-            break;
+    case LogLevel::LogLevel_INFO :
+        _o << "INFO  : ";
+        break;
 
-        default:
-            _o << "XXXX  : ";
-            break;
+    default:
+        _o << "XXXX  : ";
+        break;
     }
 
     /* Stores the content inside the ostream. */

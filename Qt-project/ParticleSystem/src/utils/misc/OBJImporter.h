@@ -1,5 +1,5 @@
-#ifndef OBJIMPORTER_H
-#define OBJIMPORTER_H
+#ifndef __OBJIMPORTER_H__
+#define __OBJIMPORTER_H__
 
 #include <iostream>
 #include <stdio.h>
@@ -86,4 +86,4 @@ private:
 	static void deleteObjParserObject(ObjParserObject& _obj);
 };
 
-#endif
+#endif // __HELPERS_H__

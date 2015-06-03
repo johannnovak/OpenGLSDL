@@ -4,7 +4,7 @@
 #include "InputManager.h"
 
 std::vector<LogEventHandler*> LogManager::s_eventHandlers;
-unsigned int LogManager::s_errorCount = 0;
+uint32 LogManager::s_errorCount = 0;
 
 /////////////////////////////// PUBLIC ///////////////////////////////////
 
@@ -93,9 +93,9 @@ void LogManager::unregisterLogEventHandler(LogEventHandler* _handler)
         return;
 
     int size = LogManager::s_eventHandlers.size();
-    for (uint32 i = size-1 ; i > -1; --i)
+    for (int32 i(size-1) ; i > -1; --i)
     {
-        if (i = size - 1)
+        if (i == size - 1)
         {
             delete LogManager::s_eventHandlers[i];
             LogManager::s_eventHandlers.pop_back();
@@ -105,7 +105,7 @@ void LogManager::unregisterLogEventHandler(LogEventHandler* _handler)
         else if (LogManager::s_eventHandlers[i] == _handler)
         {
             delete LogManager::s_eventHandlers[i];
-            for (int j(i); j < size - 2; ++j)
+            for (int32 j(i); j < size - 2; ++j)
                 LogManager::s_eventHandlers[i] = LogManager::s_eventHandlers[i+1];
             LogManager::s_eventHandlers.resize((size-1)*sizeof(LogEventHandler*));
         }

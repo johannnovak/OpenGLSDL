@@ -1,10 +1,9 @@
 ﻿#include "Game.h"
 #include "QTInputManager.h"
-
-#include <QApplication>
-#include "QTInputManager.h"
 #include "ConsoleLogEventHandler.h"
 #include "QTLogEventHandler.h"
+
+#include <QApplication>
 
 int main(int _argc, char* _argv[])
 {

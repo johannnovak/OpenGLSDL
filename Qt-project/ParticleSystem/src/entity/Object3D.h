@@ -1,5 +1,5 @@
-#ifndef OBJECT3D_H
-#define OBJECT3D_H
+#ifndef __OBJECT3D_H__
+#define __OBJECT3D_H__
 
 #include "Types.h"
 
@@ -21,10 +21,10 @@ class Object3D
 
     protected:
         GLushort* m_indices;
-        unsigned int m_indexCount;
+        uint32  m_indexCount;
 
         GLfloat* m_vertices;
-        unsigned int m_vertexCount;
+        uint32 m_vertexCount;
 
         GLfloat* m_normals;
         GLfloat* m_colors;
@@ -34,16 +34,16 @@ class Object3D
         ~Object3D();
 
         GLushort* getIndices();
-        unsigned int getIndiceCount();
+        uint32 getIndiceCount();
 
         GLfloat* getVertices();
-        unsigned int getVertexCount();
+        uint32 getVertexCount();
 
         GLfloat* getNormals();
         GLfloat* getUVs();
         GLfloat* getColors();
 
-        void setColor(float r, float g, float b);
+        void setColor(float32 r, float32 g, float32 b);
 
         virtual bool defineNormals();
         virtual bool defineUVs();
@@ -51,4 +51,4 @@ class Object3D
 
 };
 
-#endif
+#endif // __OBJECT3D_H__

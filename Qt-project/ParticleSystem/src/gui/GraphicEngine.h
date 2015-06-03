@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE_H
-#define GRAPHICENGINE_H
+#ifndef __GRAPHICENGINE_H__
+#define __GRAPHICENGINE_H__
 
 #include "Shader.h"
 #include "Object3D.h"
@@ -94,4 +94,4 @@ class GraphicEngine
         void drawSceneNode(SceneNode& _node, const glm::mat4& _world);
 };
 
-#endif // GRAPHICENGINE_H
+#endif // __GRAPHICENGINE_H__

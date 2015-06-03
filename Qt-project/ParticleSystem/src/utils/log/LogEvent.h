@@ -1,5 +1,5 @@
-#ifndef LOGEVENT_H
-#define LOGEVENT_H
+#ifndef __LOGEVENT_H__
+#define __LOGEVENT_H__
 
 #include "Types.h"
 
@@ -12,8 +12,8 @@
 enum LogEventType
 {
     LogEventType_CONSOLE_LOG_EVENT = 0, 	// LogEvent aimed at being output in the console.
-    LogEventType_QT_LOG_EVENT,      		// LogEvent aimed at being output in a QtPlainTextEdit.
-    LogEventType_ALL_LOG_EVENT      		// LogEvent aimed at being output in all registered Handlers.
+    LogEventType_QT_LOG_EVENT,      			// LogEvent aimed at being output in a QtPlainTextEdit.
+    LogEventType_ALL_LOG_EVENT      			// LogEvent aimed at being output in all registered Handlers.
 };
 
 /**************************************************************************
@@ -144,4 +144,4 @@ class LogEvent
 };
 
 
-#endif // LOGEVENT_H
+#endif // __LOGEVENT_H__

@@ -1,5 +1,5 @@
-#ifndef QTLOGEVENTHANDLER_H
-#define QTLOGEVENTHANDLER_H
+#ifndef __QTLOGEVENTHANDLER_H__
+#define __QTLOGEVENTHANDLER_H__
 
 #include "LogEventHandler.h"
 #include "QPlainTextEdit"
@@ -73,4 +73,4 @@ class QTLogEventHandler : public LogEventHandler, QPlainTextEdit
         void closeHandler();
 };
 
-#endif // QTLOGEVENTHANDLER_H
+#endif // __QTLOGEVENTHANDLER_H__

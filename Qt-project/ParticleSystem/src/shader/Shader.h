@@ -1,9 +1,9 @@
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef __SHADER_H__
+#define __SHADER_H__
 
-#include "GL/glew.h"
 #include "Helpers.h"
 
+#include "GL/glew.h"
 #include <unordered_map>
 #include <string>
 #include <sstream>
@@ -90,12 +90,12 @@ class Shader
          Shader();
 
          /**************************************************************************
-         * Name:  Shader(const char* _shaderName)
+         * Name:  Shader(const int8* _shaderName)
          * Description: Parametered constructor with the name associated to the Shader.
          * Inputs:
-         *			- _shaderName : const char*, Name associated with the Shader to create.
+         *			- _shaderName : const int8*, Name associated with the Shader to create.
          **************************************************************************/
-         Shader(const char* _shaderName);
+         Shader(const int8* _shaderName);
 
          /**************************************************************************
          * Name:  ~Shader()
@@ -127,7 +127,7 @@ class Shader
     //============================= OPERATIONS ==============================================
 
          /**************************************************************************
-         * Name:  load(const char* _shaderName)
+         * Name:  load(const int8* _shaderName)
          * Description: Complete loading of the file. It loads both .vs and .fs files
          *					then create the OpenGL associated program, creates the
          *					associated GLShader, pre-compiles the files to check errors,
@@ -139,7 +139,7 @@ class Shader
          *			- True if no errors have occurred during the loading.
          *			- false otherwise.
          **************************************************************************/
-         bool load(const char* _shaderName);
+         bool load(const int8* _shaderName);
 
          /**************************************************************************
          * Name:  activate()
@@ -151,7 +151,7 @@ class Shader
 
 
          /**************************************************************************
-         * Name:  getUniformLocation(const char* _name)
+         * Name:  getUniformLocation(const int8* _name)
          * Description: Returns the ID of the uniform shader variable associated
          *					with the '_name' parameter.
          * Inputs:
@@ -161,7 +161,7 @@ class Shader
          *			- The ID of the uniform shader attribute of the current Shader with
          *				the name '_name'.
          **************************************************************************/
-         GLuint getUniformLocation(const char* _name);
+         GLuint getUniformLocation(const int8* _name);
 
          /**************************************************************************
          * Name:  getUniformLocation(ShaderUniformType _type)
@@ -177,7 +177,7 @@ class Shader
          GLuint getUniformLocation(ShaderUniformType _type);
 
          /**************************************************************************
-         * Name:  getAttrLocation(const char* _name)
+         * Name:  getAttrLocation(const int8* _name)
          * Description: Returns the ID of the shader variable associated
          *					with the '_name' parameter.
          * Inputs:
@@ -187,7 +187,7 @@ class Shader
          *			- The ID of the shader attribute of the current Shader with
          *				the name '_name'.
          **************************************************************************/
-         GLuint getAttrLocation(const char* _name);
+         GLuint getAttrLocation(const int8* _name);
 
          /**************************************************************************
          * Name:  getAttrLocation(ShaderAttributeType _type)
@@ -204,7 +204,7 @@ class Shader
 
 
          /**************************************************************************
-         * Name:  registerUniform(const char* _name)
+         * Name:  registerUniform(const int8* _name)
          * Description: Registers in the Shader through glGetUniformLocation(), the
          *					uniform attribute named '_name'.
          * Inputs:
@@ -213,10 +213,10 @@ class Shader
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool registerUniform(const char* _name);
+         bool registerUniform(const int8* _name);
 
          /**************************************************************************
-         * Name:  registerUniform(const char* _name, ShaderUniformType _type)
+         * Name:  registerUniform(const int8* _name, ShaderUniformType _type)
          * Description: Registers in the Shader through glGetUniformLocation(), the
          *					uniform attribute named '_name' and stores it inside the
          *					'm_uniformTypes' attribute.
@@ -227,10 +227,10 @@ class Shader
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool registerUniform(const char* _name, ShaderUniformType _type);
+         bool registerUniform(const int8* _name, ShaderUniformType _type);
 
          /**************************************************************************
-         * Name:  registerAttribute(const char* _name)
+         * Name:  registerAttribute(const int8* _name)
          * Description: Registers in the Shader through glGetAttribLocation(), the
          *						attribute named '_name'.
          * Inputs:
@@ -239,10 +239,10 @@ class Shader
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool registerAttribute(const char* _name);
+         bool registerAttribute(const int8* _name);
 
          /**************************************************************************
-         * Name:  registerAttribute(const char* _name, ShaderUniformType _type)
+         * Name:  registerAttribute(const int8* _name, ShaderUniformType _type)
          * Description: Registers in the Shader through glGetAttribLocation(), the
          *						attribute named '_name' and stores it inside the
          *						'm_uniformTypes' attribute.
@@ -253,11 +253,11 @@ class Shader
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool registerAttribute(const char* _name, ShaderAttributeType _type);
+         bool registerAttribute(const int8* _name, ShaderAttributeType _type);
 
 
          /**************************************************************************
-         * Name:  transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboolean _transpose = GL_TRUE)
+         * Name:  transmitUniformMat4(const int8* _name, const GLfloat* _mat, GLboolean _transpose = GL_TRUE)
          * Description: Encapsulation of the OpenGL function glUniformMatrix4fv that registers the uniform
          *						attribute 'm_uniforms[_name]' as a 4x4 Matrix.
          * Inputs:
@@ -268,7 +268,7 @@ class Shader
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboolean _transpose = GL_TRUE);
+         bool transmitUniformMat4(const int8* _name, const GLfloat* _mat, GLboolean _transpose = GL_TRUE);
 
          /**************************************************************************
          * Name:  transmitUniformMat4(ShaderUniformType _type, const GLfloat* _mat, GLboolean _transpose = GL_TRUE)
@@ -285,70 +285,70 @@ class Shader
          bool transmitUniformMat4(ShaderUniformType _type, const GLfloat* _mat, GLboolean _transpose = GL_TRUE);
 
          /**************************************************************************
-         * Name:  transmitUniformVect3(const char* _name, const GLfloat* _vect)
+         * Name:  transmitUniformVect3(const int8* _name, const GLfloat* _vect)
          * Description: Encapsulation of the OpenGL function glUniform3fv that registers the uniform
          *						attribute 'm_uniforms[_name]' as a vector 3*1.
          * Inputs:
-         *			- _name	: const char*, name of the shader uniform attribute to be registered.
+         *			- _name	: const int8*, name of the shader uniform attribute to be registered.
          *			- _vect 	: Vector to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitUniformVect3(const char* _name, const GLfloat* _vect);
+         bool transmitUniformVect3(const int8* _name, const GLfloat* _vect);
 
          /**************************************************************************
-         * Name:  transmitUniformVect4(const char* _name, const GLfloat* _vect)
+         * Name:  transmitUniformVect4(const int8* _name, const GLfloat* _vect)
          * Description: Encapsulation of the OpenGL function glUniform4fv that registers the uniform
          *						attribute 'm_uniforms[_name]' as a vector 4*1.
          * Inputs:
-         *			- _name	: const char*, name of the shader uniform attribute to be registered.
+         *			- _name	: const int8*, name of the shader uniform attribute to be registered.
          *			- _vect 	: Vector to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitUniformVect4(const char* _name, const GLfloat* _vect);
+         bool transmitUniformVect4(const int8* _name, const GLfloat* _vect);
 
 
          /**************************************************************************
-         * Name:  transmitUniformInt(const char* _name, const GLint* _int)
+         * Name:  transmitUniformInt(const int8* _name, const GLint* _int)
          * Description: Encapsulation of the OpenGL function glUniform1i that registers the uniform
          *						attribute 'm_uniforms[_name]'.
          * Inputs:
-         *			- _name	: const char*, name of the shader uniform attribute to be registered.
+         *			- _name	: const int8*, name of the shader uniform attribute to be registered.
          *			- _int 	: Integer to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitUniformInt(const char* _name, const GLint _int);
+         bool transmitUniformInt(const int8* _name, const GLint _int);
 
          /**************************************************************************
-         * Name:  transmitUniformFloat(const char* _name, const GLfloat* _float)
+         * Name:  transmitUniformFloat(const int8* _name, const GLfloat* _float)
          * Description: Encapsulation of the OpenGL function glUniform1f that registers the uniform
          *						attribute 'm_uniforms[_name]'.
          * Inputs:
-         *			- _name		: const char*, of the shader uniform attribute to be registered.
+         *			- _name		: const int8*, of the shader uniform attribute to be registered.
          *			- _float 	: Float to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitUniformFloat(const char* _name, const GLint _float);
+         bool transmitUniformFloat(const int8* _name, const GLfloat _float);
 
 
          /**************************************************************************
-         * Name:  transmitAttrMat4(const char* _name, const GLfloat* _mat)
+         * Name:  transmitAttrMat4(const int8* _name, const GLfloat* _mat)
          * Description: Not implemented yet.
          * Inputs:
-         *			- _name	: const char*, name of the shader attribute to be registered.
+         *			- _name	: const int8*, name of the shader attribute to be registered.
          *			- _mat 	: Matrix to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitAttrMat4(const char* _name, const GLfloat* _mat);
+         bool transmitAttrMat4(const int8* _name, const GLfloat* _mat);
 
          /**************************************************************************
          * Name:  transmitAttrMat4((ShaderAttributeType _type, const GLfloat* _mat)
@@ -364,17 +364,17 @@ class Shader
 
 
          /**************************************************************************
-         * Name:  transmitAttrVect3(const char* _name, const GLfloat* _vect)
+         * Name:  transmitAttrVect3(const int8* _name, const GLfloat* _vect)
          * Description: Encapsulation of the OpenGL function glVertexAttribPointer that
          *						registers the attribute 'm_attributes[_name]'.
          * Inputs:
-         *			- _name	: const char*, name of the shader uniform attribute to be registered.
+         *			- _name	: const int8*, name of the shader uniform attribute to be registered.
          *			- _vect 	: Vector to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitAttrVect3(const char* _name, const GLfloat* _vect);
+         bool transmitAttrVect3(const int8* _name, const GLfloat* _vect);
 
          /**************************************************************************
          * Name:  transmitAttrVect3(ShaderAttributeType _type, const GLfloat* _vect)
@@ -391,17 +391,17 @@ class Shader
 
 
          /**************************************************************************
-         * Name:  transmitAttrVect4(const char* _name, const GLfloat* _vect)
+         * Name:  transmitAttrVect4(const int8* _name, const GLfloat* _vect)
          * Description: Encapsulation of the OpenGL function glVertexAttribPointer that
          *						registers the attribute 'm_attributes[_name]'.
          * Inputs:
-         *			- _name	: const char*, name of the shader uniform attribute to be registered.
+         *			- _name	: const int8*, name of the shader uniform attribute to be registered.
          *			- _vect 	: Vector to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitAttrVect4(const char* _name, const GLfloat* _vect);
+         bool transmitAttrVect4(const int8* _name, const GLfloat* _vect);
 
          /**************************************************************************
          * Name:  transmitAttrVect4(ShaderAttributeType _type, const GLfloat* _vect)
@@ -418,17 +418,17 @@ class Shader
 
 
          /**************************************************************************
-         * Name:  transmitAttrFloat(const char* _name, const GLfloat* _float)
+         * Name:  transmitAttrFloat(const int8* _name, const GLfloat* _float)
          * Description: Encapsulation of the OpenGL function glVertexAttribPointer that
          *						registers attribute 'm_uniforms[_name]'.
          * Inputs:
-         *			- _name	: const char*, name of the shader uniform attribute to be registered.
+         *			- _name	: const int8*, name of the shader uniform attribute to be registered.
          *			- _float 	: Float to transmit to the shader.
          * Returns:
          *			- True if no errors have occurred.
          *			- False otherwise.
          **************************************************************************/
-         bool transmitAttrFloat(const char* _name, const GLfloat* _float);
+         bool transmitAttrFloat(const int8* _name, const GLfloat* _float);
 
 
          /**************************************************************************
@@ -498,4 +498,4 @@ class Shader
          bool checkProgramError(GLuint _id, GLuint _type);
 };
 
-#endif
+#endif // __SHADER_H__

@@ -1,5 +1,5 @@
-#ifndef SHADERBANK_H
-#define SHADERBANK_H
+#ifndef __SHADERBANK_H__
+#define __SHADERBANK_H__
 
 #include "Shader.h"
 
@@ -40,17 +40,17 @@ class ShaderBank
     //============================= ATTRIBUTE ACCESSORS =====================================
 
         /**************************************************************************
-        * Name: getShader(const char* _name)
+        * Name: getShader(const int8* _name)
         * Description: Returns the Shader associated with the name. If the Shader
         *						doen't exist in the ShaderBank, it creates a new pointer
         *						on Shader, adds it to its own map and finally returns it.
         * Inputs:
-        *			- _name : const char*, name of the Shader to return.
+        *			- _name : const int8*, name of the Shader to return.
         * Returns:
         *			- shader : Pointer on Shader loaded from the name '_name'.
         **************************************************************************/
-        static Shader* getShader(const char* _name);
+        static Shader* getShader(const int8* _name);
 
 };
 
-#endif // SHADERBANK_H
+#endif // __SHADERBANK_H__

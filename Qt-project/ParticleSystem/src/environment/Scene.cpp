@@ -34,5 +34,5 @@ Scene::~Scene()
 **************************************************************************/
 SceneNode* Scene::getRootNode()
 {
-	return m_rootNode;
+    return m_rootNode;
 }

@@ -1,11 +1,12 @@
-#include <Game.h>
-#include <iostream>
-#include <vector>
+#include <Game.h> // Implemented class.
 
 #include "LogManager.h"
-#include "glm/glm.hpp"
 #include "QTInputManager.h"
 #include "OBJImporter.h"
+
+#include "glm/glm.hpp"
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -93,23 +94,23 @@ bool Game::initializeObjects()
 
     m_mainCamera = new Camera(*cameraNode);
 
-/*
-    m_importedObject = OBJImporter::importObject("Ressources/Room.obj");
+    /*
+      m_importedObject = OBJImporter::importObject("Ressources/Room.obj");
 
-    cout << "Room imported" << endl;
+      cout << "Room imported" << endl;
 
-    m_importedObject->setColor(1, 0, 0);
-    m_importedObjectNode = new SceneNode(m_scene.getRootNode());
-    m_importedObjectNode->setObject3D(m_importedObject);
-    m_importedObjectNode->setPosition(0, 0, 0);
+      m_importedObject->setColor(1, 0, 0);
+      m_importedObjectNode = new SceneNode(m_scene.getRootNode());
+      m_importedObjectNode->setObject3D(m_importedObject);
+      m_importedObjectNode->setPosition(0, 0, 0);
 
-    cout << "Room imported" << endl;
+      cout << "Room imported" << endl;
 */
 
 
     m_scene.getRootNode()->addChild(m_cubeNode);
     m_scene.getRootNode()->addChild(cameraNode);
-/*    m_scene.getRootNode()->addChild(m_importedObjectNode);
+    /*    m_scene.getRootNode()->addChild(m_importedObjectNode);
 */
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "World entities created and added to the scene.");
 
@@ -118,16 +119,16 @@ bool Game::initializeObjects()
 }
 
 /**************************************************************************
-* Name: updateGame(float _dt)
+* Name: updateGame(float32 _dt)
 * Description: Method used to update the different objects that composes
 *						the scene. This is where the inputs can be tested
 *						by the InputManager in order to move/delete objects,
 *						stop the program, change parameters, etc ...
 * Input:
-*			- _dt : float, time interval since the last rendering.
+*			- _dt : float32, time interval since the last rendering.
 * Returns: none
 **************************************************************************/
-void Game::updateGame(float _dt)
+void Game::updateGame(float32 _dt)
 {
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Updating scene...");
 
@@ -175,8 +176,8 @@ void Game::updateGame(float _dt)
     // rotate camera
     if (inputManager->isMouseButtonDown(IM_MOUSE_RIGHT))
     {
-        float dx = inputManager->getMouseMotion().dx;
-        float dy = inputManager->getMouseMotion().dy;
+        float32 dx = inputManager->getMouseMotion().dx;
+        float32 dy = inputManager->getMouseMotion().dy;
 
         m_mainCamera->getSceneNode().rotate(0.005f * dy, right);
         m_mainCamera->getSceneNode().rotate(-0.005f * dx , glm::vec3(0, 1, 0));
@@ -210,15 +211,15 @@ void Game::updateGame(float _dt)
 }
 
 /**************************************************************************
-* Name: renderGame(float _dt)
+* Name: renderGame(float32 _dt)
 * Description: Method used to do the rendering. It transmits shader variables
 *					, tells the graphicsEngine to draw the scene, but also
 *					draws other objects.
 * Inputs:
-*			- _dt : float, time interval since the last rendering.
+*			- _dt : float32, time interval since the last rendering.
 * Returns: none
 **************************************************************************/
-void Game::renderGame(float _dt)
+void Game::renderGame(float32 _dt)
 {
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Rendering Scene...");
 

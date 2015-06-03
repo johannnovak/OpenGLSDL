@@ -34,9 +34,7 @@ SceneNode::SceneNode(SceneNode* _parent) : m_children(), m_position(), m_rotatio
 SceneNode::~SceneNode()
 {
     for (SceneNode* node : m_children)
-    {
         delete node;
-    }
     m_children.clear();
 }
 
@@ -215,7 +213,7 @@ void SceneNode::translate(const glm::vec3& _vect)
 *			- _dz : float32, z coordinate to add to the position.
 * Returns: none
 **************************************************************************/
-void SceneNode::translate(float _dx, float _dy, float _dz)
+void SceneNode::translate(float32 _dx, float32 _dy, float32 _dz)
 {
     m_position.x += _dx;
     m_position.y += _dy;

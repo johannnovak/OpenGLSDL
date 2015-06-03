@@ -1,5 +1,5 @@
-#ifndef QTINPUTMANAGER_H
-#define QTINPUTMANAGER_H
+#ifndef __QTINPUTMANAGER_H__
+#define __QTINPUTMANAGER_H__
 
 #include "LogManager.h"
 #include "InputManager.h"
@@ -17,8 +17,7 @@
 *						and mouse events).
 *
 **************************************************************************/
-class QTInputManager :
-    public InputManager, public QWidget
+class QTInputManager : public InputManager, public QWidget
 {
 /////////////////////////////// PRIVATE ///////////////////////////////////
     private:
@@ -230,4 +229,4 @@ class QTInputManager :
         bool isMouseButtonUp(MouseButtonId _mouseId);
 };
 
-#endif // QTINPUTMANAGER_H
+#endif // __QTINPUTMANAGER_H__

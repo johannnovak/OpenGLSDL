@@ -17,13 +17,13 @@ Shader::Shader() : m_name(), m_attributes(), m_uniforms()
 {}
 
 /**************************************************************************
-* Name:  Shader(const char* _shaderName)
+* Name:  Shader(const int8* _shaderName)
 * Description: Parametered constructor with the name associated to the Shader.
 *						It loads the shader associated with '_shaderName'.
 * Inputs:
-*			- _shaderName : const char*, Name associated with the Shader to create.
+*			- _shaderName : const int8*, Name associated with the Shader to create.
 **************************************************************************/
-Shader::Shader(const char* _shaderName) : m_name(), m_attributes(), m_uniforms()
+Shader::Shader(const int8* _shaderName) : m_name(), m_attributes(), m_uniforms()
 {
     load(_shaderName);
 }
@@ -67,7 +67,7 @@ GLuint Shader::getProgram()
 //============================= OPERATIONS ==============================================
 
 /**************************************************************************
-* Name:  load(const char* _shaderName)
+* Name:  load(const int8* _shaderName)
 * Description: Complete loading of the file. It loads both .vs and .fs files
 *					then create the OpenGL associated program, creates the
 *					associated GLShader, pre-compiles the files to check errors,
@@ -79,71 +79,71 @@ GLuint Shader::getProgram()
 *			- True if no errors have occurred during the loading.
 *			- false otherwise.
 **************************************************************************/
-bool Shader::load(const char* _shaderName)
+bool Shader::load(const int8* _shaderName)
 {
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Loading Shader '"+ string(_shaderName) +"'...");
 
     /* Initializes the values of the types. */
-    for (unsigned int i = 0; i < ShaderAttributeType_LAST; ++i)
+    for (uint32 i = 0; i < ShaderAttributeType_LAST; ++i)
         m_attributeTypes[i] = -1;
-    for (unsigned int i = 0; i < ShaderUniformType_LAST; ++i)
+    for (uint32 i = 0; i < ShaderUniformType_LAST; ++i)
         m_uniformTypes[i] = -1;
 
     /* Gets the name as a string object. */
     m_name = string(_shaderName);
 
     /* Creates the .vs and .fs files string names. */
-    string vsFile = m_name + ".vs";
-    string fsFile = m_name + ".fs";
+    string vs_file = m_name + ".vs";
+    string fs_file = m_name + ".fs";
 
-    string vsStr, fsStr;
-    const char* vsPtr, *fsPtr;
+    string vs_str, fs_str;
+    const int8* vs_ptr, *fs_ptr;
 
     /* Loads the two shader files. */
-    Helpers::loadFile(vsFile.c_str(), vsStr);
-    Helpers::loadFile(fsFile.c_str(), fsStr);
+    Helpers::loadFile(vs_file.c_str(), vs_str);
+    Helpers::loadFile(fs_file.c_str(), fs_str);
 
-    vsPtr = vsStr.c_str();
-    fsPtr = fsStr.c_str();
+    vs_ptr = vs_str.c_str();
+    fs_ptr = fs_str.c_str();
 
     /* Creates a program and gets back the ID. */
     m_id = glCreateProgram();
 
     /* Creates the two shaders OpenGL side. */
-    GLuint vsId = glCreateShader(GL_VERTEX_SHADER);
-    GLuint fsId = glCreateShader(GL_FRAGMENT_SHADER);
+    GLuint vs_id = glCreateShader(GL_VERTEX_SHADER);
+    GLuint fs_id = glCreateShader(GL_FRAGMENT_SHADER);
 
     /* Compiling Vertex Shader. */
-    glShaderSource(vsId, 1, &vsPtr, NULL);
-    glCompileShader(vsId);
+    glShaderSource(vs_id, 1, &vs_ptr, NULL);
+    glCompileShader(vs_id);
 
     /* Checks and logs any error. */
-    if (!checkShaderError(vsId, GL_COMPILE_STATUS))
+    if (!checkShaderError(vs_id, GL_COMPILE_STATUS))
     {
         glDeleteProgram(m_id);
-        glDeleteShader(vsId);
-        glDeleteShader(fsId);
+        glDeleteShader(vs_id);
+        glDeleteShader(fs_id);
 
         return false;
     }
 
     /* Compiles Fragment Shader. */
-    glShaderSource(fsId, 1, &fsPtr, NULL);
-    glCompileShader(fsId);
+    glShaderSource(fs_id, 1, &fs_ptr, NULL);
+    glCompileShader(fs_id);
 
     /* Checks and logs any error. */
-    if (!checkShaderError(fsId, GL_COMPILE_STATUS))
+    if (!checkShaderError(fs_id, GL_COMPILE_STATUS))
     {
         glDeleteProgram(m_id);
-        glDeleteShader(vsId);
-        glDeleteShader(fsId);
+        glDeleteShader(vs_id);
+        glDeleteShader(fs_id);
 
         return false;
     }
 
     /* Attaches Shaders. */
-    glAttachShader(m_id, vsId);
-    glAttachShader(m_id, fsId);
+    glAttachShader(m_id, vs_id);
+    glAttachShader(m_id, fs_id);
 
     /* Links the program. */
     glLinkProgram(m_id);
@@ -152,14 +152,14 @@ bool Shader::load(const char* _shaderName)
     if (!checkProgramError(m_id, GL_LINK_STATUS))
     {
         glDeleteProgram(m_id);
-        glDeleteShader(vsId);
-        glDeleteShader(fsId);
+        glDeleteShader(vs_id);
+        glDeleteShader(fs_id);
 
         return false;
     }
 
-    vsPtr = nullptr;
-    fsPtr = nullptr;
+    vs_ptr = nullptr;
+    fs_ptr = nullptr;
 
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Shader '"+ string(_shaderName) +"' loaded.");
 
@@ -179,7 +179,7 @@ void Shader::activate()
 
 
 /**************************************************************************
-* Name:  getUniformLocation(const char* _name)
+* Name:  getUniformLocation(const int8* _name)
 * Description: Returns the ID of the uniform shader variable associated
 *					with the '_name' parameter.
 * Inputs:
@@ -189,7 +189,7 @@ void Shader::activate()
 *			- The ID of the uniform shader attribute of the current Shader with
 *				the name '_name'.
 **************************************************************************/
-GLuint Shader::getUniformLocation(const char* _name)
+GLuint Shader::getUniformLocation(const int8* _name)
 {
     string name(_name);
 
@@ -224,7 +224,7 @@ GLuint Shader::getUniformLocation(ShaderUniformType _type)
 }
 
 /**************************************************************************
-* Name:  getAttrLocation(const char* _name)
+* Name:  getAttrLocation(const int8* _name)
 * Description: Returns the ID of the shader variable associated
 *					with the '_name' parameter.
 * Inputs:
@@ -234,7 +234,7 @@ GLuint Shader::getUniformLocation(ShaderUniformType _type)
 *			- The ID of the shader attribute of the current Shader with
 *				the name '_name'.
 **************************************************************************/
-GLuint Shader::getAttrLocation(const char* _name)
+GLuint Shader::getAttrLocation(const int8* _name)
 {
     string name(_name);
 
@@ -269,7 +269,7 @@ GLuint Shader::getAttrLocation(ShaderAttributeType _type)
 }
 
 /**************************************************************************
-* Name:  registerUniform(const char* _name)
+* Name:  registerUniform(const int8* _name)
 * Description: Registers in the Shader through glGetUniformLocation(), the
 *					uniform attribute named '_name'.
 * Inputs:
@@ -278,7 +278,7 @@ GLuint Shader::getAttrLocation(ShaderAttributeType _type)
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::registerUniform(const char* _name)
+bool Shader::registerUniform(const int8* _name)
 {
     string name(_name);
 
@@ -300,7 +300,7 @@ bool Shader::registerUniform(const char* _name)
 }
 
 /**************************************************************************
-* Name:  registerUniform(const char* _name, ShaderUniformType _type)
+* Name:  registerUniform(const int8* _name, ShaderUniformType _type)
 * Description: Registers in the Shader through glGetUniformLocation(), the
 *					uniform attribute named '_name' and stores it inside the
 *					'm_uniformTypes' attribute.
@@ -311,7 +311,7 @@ bool Shader::registerUniform(const char* _name)
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::registerUniform(const char* _name, ShaderUniformType _type)
+bool Shader::registerUniform(const int8* _name, ShaderUniformType _type)
 {
     bool success = registerUniform(_name);
     if (success)
@@ -323,7 +323,7 @@ bool Shader::registerUniform(const char* _name, ShaderUniformType _type)
 }
 
 /**************************************************************************
-* Name:  registerAttribute(const char* _name)
+* Name:  registerAttribute(const int8* _name)
 * Description: Registers in the Shader through glGetAttribLocation(), the
 *						attribute named '_name'.
 * Inputs:
@@ -332,7 +332,7 @@ bool Shader::registerUniform(const char* _name, ShaderUniformType _type)
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::registerAttribute(const char* _name)
+bool Shader::registerAttribute(const int8* _name)
 {
     string name(_name);
 
@@ -354,7 +354,7 @@ bool Shader::registerAttribute(const char* _name)
 }
 
 /**************************************************************************
-* Name:  registerAttribute(const char* _name, ShaderUniformType _type)
+* Name:  registerAttribute(const int8* _name, ShaderUniformType _type)
 * Description: Registers in the Shader through glGetAttribLocation(), the
 *						attribute named '_name' and stores it inside the
 *						'm_uniformTypes' attribute.
@@ -365,7 +365,7 @@ bool Shader::registerAttribute(const char* _name)
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::registerAttribute(const char* _name, ShaderAttributeType _type)
+bool Shader::registerAttribute(const int8* _name, ShaderAttributeType _type)
 {
     bool registered = registerAttribute(_name);
     if (registered == true)
@@ -378,7 +378,7 @@ bool Shader::registerAttribute(const char* _name, ShaderAttributeType _type)
 }
 
 /**************************************************************************
-* Name:  transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboolean _transpose = GL_TRUE)
+* Name:  transmitUniformMat4(const int8* _name, const GLfloat* _mat, GLboolean _transpose = GL_TRUE)
 * Description: Encapsulation of the OpenGL function glUniformMatrix4fv that registers the uniform
 *						attribute 'm_uniforms[_name]' as a 4x4 Matrix.
 * Inputs:
@@ -389,7 +389,7 @@ bool Shader::registerAttribute(const char* _name, ShaderAttributeType _type)
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitUniformMat4(const char* _name, const GLfloat* _mat, GLboolean _transpose)
+bool Shader::transmitUniformMat4(const int8* _name, const GLfloat* _mat, GLboolean _transpose)
 {
     string name(_name);
 
@@ -433,17 +433,17 @@ bool Shader::transmitUniformMat4(ShaderUniformType _type, const GLfloat* _mat, G
 }
 
 /**************************************************************************
-* Name:  transmitUniformVect3(const char* _name, const GLfloat* _vect)
+* Name:  transmitUniformVect3(const int8* _name, const GLfloat* _vect)
 * Description: Encapsulation of the OpenGL function glUniform3fv that registers the uniform
 *						attribute 'm_uniforms[_name]' as a vector 3*1.
 * Inputs:
-*			- _name	: const char*, name of the shader uniform attribute to be registered.
+*			- _name	: const int8*, name of the shader uniform attribute to be registered.
 *			- _vect 	: Vector to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitUniformVect3(const char* _name, const GLfloat* _vect)
+bool Shader::transmitUniformVect3(const int8* _name, const GLfloat* _vect)
 {
     string name(_name);
 
@@ -458,17 +458,17 @@ bool Shader::transmitUniformVect3(const char* _name, const GLfloat* _vect)
 }
 
 /**************************************************************************
-* Name:  transmitUniformVect4(const char* _name, const GLfloat* _vect)
+* Name:  transmitUniformVect4(const int8* _name, const GLfloat* _vect)
 * Description: Encapsulation of the OpenGL function glUniform4fv that registers the uniform
 *						attribute 'm_uniforms[_name]' as a vector 4*1.
 * Inputs:
-*			- _name	: const char*, name of the shader uniform attribute to be registered.
+*			- _name	: const int8*, name of the shader uniform attribute to be registered.
 *			- _vect 	: Vector to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitUniformVect4(const char* _name, const GLfloat* _vect)
+bool Shader::transmitUniformVect4(const int8* _name, const GLfloat* _vect)
 {
     string name(_name);
 
@@ -483,17 +483,17 @@ bool Shader::transmitUniformVect4(const char* _name, const GLfloat* _vect)
 }
 
 /**************************************************************************
-* Name:  transmitUniformInt(const char* _name, const GLint* _int)
+* Name:  transmitUniformInt(const int8* _name, const GLint* _int)
 * Description: Encapsulation of the OpenGL function glUniform1i that registers the uniform
 *						attribute 'm_uniforms[_name]'.
 * Inputs:
-*			- _name	: const char*, name of the shader uniform attribute to be registered.
+*			- _name	: const int8*, name of the shader uniform attribute to be registered.
 *			- _int 	: Integer to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitUniformInt(const char* _name, const GLint _int)
+bool Shader::transmitUniformInt(const int8* _name, const GLint _int)
 {
     string name(_name);
 
@@ -508,17 +508,17 @@ bool Shader::transmitUniformInt(const char* _name, const GLint _int)
 }
 
 /**************************************************************************
-* Name:  transmitUniformFloat(const char* _name, const GLfloat* _float)
+* Name:  transmitUniformFloat(const int8* _name, const GLfloat* _float)
 * Description: Encapsulation of the OpenGL function glUniform1f that registers the uniform
 *						attribute 'm_uniforms[_name]'.
 * Inputs:
-*			- _name		: const char*, of the shader uniform attribute to be registered.
+*			- _name		: const int8*, of the shader uniform attribute to be registered.
 *			- _float 	: Float to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitUniformFloat(const char* _name, const GLint _float)
+bool Shader::transmitUniformFloat(const int8* _name, const GLfloat _float)
 {
     string name(_name);
 
@@ -533,16 +533,16 @@ bool Shader::transmitUniformFloat(const char* _name, const GLint _float)
 }
 
 /**************************************************************************
-* Name:  transmitAttrMat4(const char* _name, const GLfloat* _mat)
+* Name:  transmitAttrMat4(const int8* _name, const GLfloat* _mat)
 * Description: Not implemented yet.
 * Inputs:
-*			- _name	: const char*, name of the shader attribute to be registered.
+*			- _name	: const int8*, name of the shader attribute to be registered.
 *			- _mat 	: Matrix to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitAttrMat4(const char* _name, const GLfloat* _mat)
+bool Shader::transmitAttrMat4(const int8* _name, const GLfloat* _mat)
 {
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_ERROR, "transmitAttrMat4 is not implemented yet...");
     return false;
@@ -565,16 +565,16 @@ bool Shader::transmitAttrMat4(ShaderAttributeType _type, const GLfloat* _mat)
 }
 
 /**************************************************************************
-* Name:  transmitAttrMat4(const char* _name, const GLfloat* _mat)
+* Name:  transmitAttrMat4(const int8* _name, const GLfloat* _mat)
 * Description: Not implemented yet.
 * Inputs:
-*			- _name	: const char*, name of the shader uniform attribute to be registered.
+*			- _name	: const int8*, name of the shader uniform attribute to be registered.
 *			- _mat 	: Matrix to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitAttrVect3(const char* _name, const GLfloat* _vect)
+bool Shader::transmitAttrVect3(const int8* _name, const GLfloat* _vect)
 {
     string name(_name);
 
@@ -614,17 +614,17 @@ bool Shader::transmitAttrVect3(ShaderAttributeType _type, const GLfloat* _vect)
 
 
 /**************************************************************************
-* Name:  transmitAttrVect4(const char* _name, const GLfloat* _vect)
+* Name:  transmitAttrVect4(const int8* _name, const GLfloat* _vect)
 * Description: Encapsulation of the OpenGL function glVertexAttribPointer that
 *						registers the attribute 'm_attributes[_name]'.
 * Inputs:
-*			- _name	: const char*, name of the shader uniform attribute to be registered.
+*			- _name	: const int8*, name of the shader uniform attribute to be registered.
 *			- _vect 	: Vector to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitAttrVect4(const char* _name, const GLfloat* _vect)
+bool Shader::transmitAttrVect4(const int8* _name, const GLfloat* _vect)
 {
     string name(_name);
 
@@ -663,17 +663,17 @@ bool Shader::transmitAttrVect4(ShaderAttributeType _type, const GLfloat* _vect)
 }
 
 /**************************************************************************
-* Name:  transmitAttrFloat(const char* _name, const GLfloat* _float)
+* Name:  transmitAttrFloat(const int8* _name, const GLfloat* _float)
 * Description: Encapsulation of the OpenGL function glVertexAttribPointer that
 *						registers attribute 'm_uniforms[_name]'.
 * Inputs:
-*			- _name	: const char*, name of the shader uniform attribute to be registered.
+*			- _name	: const int8*, name of the shader uniform attribute to be registered.
 *			- _float 	: Float to transmit to the shader.
 * Returns:
 *			- True if no errors have occurred.
 *			- False otherwise.
 **************************************************************************/
-bool Shader::transmitAttrFloat(const char* _name, const GLfloat* _float)
+bool Shader::transmitAttrFloat(const int8* _name, const GLfloat* _float)
 {
     string name(_name);
 
@@ -761,13 +761,13 @@ void Shader::activateInternal()
 bool Shader::checkShaderError(GLuint _id, GLuint _type)
 {
     GLint status, logSize;
-    char* log = NULL;
+    int8* log = NULL;
 
     glGetShaderiv(_id, _type, &status);
     if (status != GL_TRUE)
     {
         glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &logSize);
-        log = new char[logSize + 1];
+        log = new int8[logSize + 1];
         glGetShaderInfoLog(_id, logSize, &logSize, log);
         log[logSize] = '\0';
         LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT,LogLevel::LogLevel_ERROR, "Error in fs/vs: " + string(log));
@@ -794,13 +794,13 @@ bool Shader::checkShaderError(GLuint _id, GLuint _type)
 bool Shader::checkProgramError(GLuint _id, GLuint _type)
 {
     GLint status, logSize;
-    char* log = NULL;
+    int8* log = NULL;
 
     glGetProgramiv(_id, _type, &status);
     if (status != GL_TRUE)
     {
         glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logSize);
-        log = new char[logSize + 1];
+        log = new int8[logSize + 1];
         glGetProgramInfoLog(_id, logSize, &logSize, log);
         log[logSize] = '\0';
         LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_ERROR, "Error in fs/vs: " + string(log));

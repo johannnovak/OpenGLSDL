@@ -1,5 +1,5 @@
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef __SCENE_H__
+#define __SCENE_H__
 
 #include <SceneNode.h>
 
@@ -49,4 +49,4 @@ class Scene
         SceneNode* getRootNode();
 };
 
-#endif // SCENE_H
+#endif // __SCENE_H__

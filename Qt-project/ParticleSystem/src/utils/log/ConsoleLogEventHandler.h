@@ -1,5 +1,5 @@
-#ifndef CONSOLELOGEVENTHANDLER_H
-#define CONSOLELOGEVENTHANDLER_H
+#ifndef __CONSOLELOGEVENTHANDLER_H__
+#define __CONSOLELOGEVENTHANDLER_H__
 
 #include "LogEventHandler.h"
 
@@ -49,4 +49,4 @@ class ConsoleLogEventHandler : public LogEventHandler
         void closeHandler();
 };
 
-#endif // CONSOLELOGEVENTHANDLER_H
+#endif // __CONSOLELOGEVENTHANDLER_H__

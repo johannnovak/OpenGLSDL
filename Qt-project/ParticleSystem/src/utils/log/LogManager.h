@@ -1,5 +1,5 @@
-#ifndef LOGMANAGER_H
-#define LOGMANAGER_H
+#ifndef __LOGMANAGER_H__
+#define __LOGMANAGER_H__
 
 #include "LogEventHandler.h"
 #include "LogEvent.h"
@@ -26,7 +26,7 @@ class LogManager
     public:
 
         /* Number of errors which have occured since the beginning of the program. */
-        static unsigned int s_errorCount;
+        static uint32 s_errorCount;
 
     //============================= LIFECYCLE ======================================
 
@@ -97,4 +97,4 @@ class LogManager
 
 };
 
-#endif
+#endif // __LOGMANAGER_H__

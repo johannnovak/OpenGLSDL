@@ -1,5 +1,5 @@
-#ifndef QUATERNION_H
-#define QUATERNION_H
+#ifndef __QUATERNION_H__
+#define __QUATERNION_H__
 
 #include "Types.h"
 
@@ -19,16 +19,16 @@ class Quaternion
     public:
 
          /* w component of the quaternion. */
-         float m_a;
+         float32 m_a;
 
          /* x component of the quaternion. */
-         float m_b;
+         float32 m_b;
 
          /* y component of the quaternion. */
-         float m_c;
+         float32 m_c;
 
          /* z component of the quaternion. */
-         float m_d;
+         float32 m_d;
 
 /////////////////////////////// PUBLIC ///////////////////////////////////
     public:
@@ -42,16 +42,16 @@ class Quaternion
         Quaternion();
 
         /**************************************************************************
-        * Name:  Quaternion(float _a, float _b, float _c, float _d)
+        * Name:  Quaternion(float32 _a, float32 _b, float32 _c, float32 _d)
         * Description: Parametered constructor defining the 4 components of the 4
         *						components of a quaternion.
         * Inputs:
-        *				- _a : w component of the Quaternion.
-        *				- _b : x component of the Quaternion.
-        *				- _c : y component of the Quaternion.
-        *				- _d : z component of the Quaternion.
+        *				- _a : float32, w component of the Quaternion.
+        *				- _b : float32, x component of the Quaternion.
+        *				- _c : float32, y component of the Quaternion.
+        *				- _d : float32, z component of the Quaternion.
         **************************************************************************/
-        Quaternion(float _a, float _b, float _c, float _d);
+        Quaternion(float32 _a, float32 _b, float32 _c, float32 _d);
 
         /**************************************************************************
         * Name: ~Quaternion()
@@ -63,16 +63,16 @@ class Quaternion
     //============================= ATTRIBUTE ACCESSORS =====================================
 
         /**************************************************************************
-        * Name: set(float _a, float _b, float _c, float _d)
+        * Name: set(float32 _a, float32 _b, float32 _c, float32 _d)
         * Description: Setter for all 4 components of the quaternions.
         * Inputs:
-        *				- _a : w component of the Quaternion.
-        *				- _b : x component of the Quaternion.
-        *				- _c : y component of the Quaternion.
-        *				- _d : z component of the Quaternion.
+        *				- _a : float32, w component of the Quaternion.
+        *				- _b : float32, x component of the Quaternion.
+        *				- _c : float32, y component of the Quaternion.
+        *				- _d : float32, z component of the Quaternion.
         *	 Returns : none
         **************************************************************************/
-        void set(float _a, float _b, float _c, float _d);
+        void set(float32 _a, float32 _b, float32 _c, float32 _d);
 
     //============================= OPERATORS ==============================================
 
@@ -165,7 +165,7 @@ class Quaternion
         **************************************************************************/
         friend std::ostream& operator<<(std::ostream& _out, const Quaternion& _q)
         {
-            _out << "[ " << q.m_a << " " << q.m_b << " " << q.m_c << " " << q.m_d << " ]";
+            _out << "[ " << _q.m_a << " " << _q.m_b << " " << _q.m_c << " " << _q.m_d << " ]";
             return _out;
         }
 
@@ -184,14 +184,14 @@ class Quaternion
         void invert();
 
         /**************************************************************************
-        * Name: rotate(float _angle, glm::vec3& _axis)
+        * Name: rotate(float32 _angle, glm::vec3& _axis)
         * Description: Rotation of a Quaternion.
         * Inputs:
-        *				- _angle : float, angle to rotate with.
+        *				- _angle : float32, angle to rotate with.
         *				- _axis  : glm::vec3&, axis to rotate around.
         * Returns: none.
         **************************************************************************/
-        void rotate(float _angle, glm::vec3& _axis);
+        void rotate(float32 _angle, glm::vec3& _axis);
 
         /**************************************************************************
         * Name:  normalize()
@@ -221,12 +221,12 @@ class Quaternion
         *				- _q : const Quaternion&, quaternion from which the quared norm is
         *							returned.
         * Returns:
-        *				- float reprensenting the squared norm of the quaternion.
+        *				- float32 reprensenting the squared norm of the quaternion.
         **************************************************************************/
-        static float normSquared(const Quaternion& _q);
+        static float32 normSquared(const Quaternion& _q);
 
         /**************************************************************************
-        * Name: computeRotationQuaternion(float _angle, glm::vec3& _axis)
+        * Name: computeRotationQuaternion(float32 _angle, glm::vec3& _axis)
         * Description: Creates a Quaternion associated with a rotation composed
         *						from the angle '_angle' around the axis '_axis'.
         * Inputs:
@@ -235,10 +235,10 @@ class Quaternion
         * Returns:
         *				- Quaternion rotation around '_axis' with an angle '_angle'.
         **************************************************************************/
-        static Quaternion computeRotationQuaternion(float _angle, glm::vec3& _axis);
+        static Quaternion computeRotationQuaternion(float32 _angle, glm::vec3& _axis);
 
         /**************************************************************************
-        * Name: computeRotationQuaternion(float _angle, glm::vec3& _axis, Quaternion& _q)
+        * Name: computeRotationQuaternion(float32 _angle, glm::vec3& _axis, Quaternion& _q)
         * Description: Sets the Quaternion _q rotation as above.
         * Inputs:
         *				- _angle : angle the returned Quaternion is associated with.
@@ -247,10 +247,10 @@ class Quaternion
         *								by '_angle' and '_axis'.
         * Returns: none
         **************************************************************************/
-        static void computeRotationQuaternion(float _angle, glm::vec3& _axis, Quaternion& _q);
+        static void computeRotationQuaternion(float32 _angle, glm::vec3& _axis, Quaternion& _q);
 
         /**************************************************************************
-        * Name:  quat_rotate(float _angle, glm::vec3& _axis)
+        * Name:  quat_rotate(float32 _angle, glm::vec3& _axis)
         * Description: Creates a Quaternion associated with a rotation composed
         *						from the angle '_angle' around the axis '_axis'.
         * Inputs:
@@ -259,34 +259,34 @@ class Quaternion
         * Returns:
         *				- Quaternion rotation around '_axis' with an angle '_angle'.
         **************************************************************************/
-        static Quaternion quat_rotate(float _angle, glm::vec3& _axis);
+        static Quaternion quat_rotate(float32 _angle, glm::vec3& _axis);
 
         /**************************************************************************
-        * Name:  computeRotationQuaternion(float _rx, float _ry, float _rz)
+        * Name:  computeRotationQuaternion(float32 _rx, float32 _ry, float32 _rz)
         * Description: Creates a Quaternion associated with three components of
         *						a rotation (along x axis, along y axis and along z axis).
         * Inputs:
-        *				- _rx : float, angle of the rotation along the x axis.
-        *				- _ry : float, angle of the rotation along the y axis.
-        *				- _rz : float, angle of the rotation along the z axis.
+        *				- _rx : float32, angle of the rotation along the x axis.
+        *				- _ry : float32, angle of the rotation along the y axis.
+        *				- _rz : float32, angle of the rotation along the z axis.
         * Returns:
         *				- Quaternion associated with the three angles defining a 3D rotation.
         **************************************************************************/
-        static Quaternion computeRotationQuaternion(float _rx, float _ry, float _rz);
+        static Quaternion computeRotationQuaternion(float32 _rx, float32 _ry, float32 _rz);
 
         /**************************************************************************
-        * Name:  computeRotationQuaternion(float _rx, float _ry, float _rz, Quaternion& _q)
+        * Name:  computeRotationQuaternion(float32 _rx, float32 _ry, float32 _rz, Quaternion& _q)
         * Description: Sets the Quaternion _q components as above.
         * Inputs:
-        *				- _rx : float, angle of the rotation along the x axis.
-        *				- _ry : float, angle of the rotation along the y axis.
-        *				- _rz : float, angle of the rotation along the z axis.
-        *				- _q     : Quaternion whose components are set by the rotation defined
+        *				- _rx : float32, angle of the rotation along the x axis.
+        *				- _ry : float32, angle of the rotation along the y axis.
+        *				- _rz : float32, angle of the rotation along the z axis.
+        *				- _q  : Quaternion whose components are set by the rotation defined
         *								by '_angle' and '_axis'.
         * Returns:
         *				- Quaternion associated with the three angles defining a 3D rotation.
         **************************************************************************/
-        static void computeRotationQuaternion(float _rx, float _ry, float _rz, Quaternion& _q);
+        static void computeRotationQuaternion(float32 _rx, float32 _ry, float32 _rz, Quaternion& _q);
 };
 
-#endif
+#endif // __QUATERNION_H__

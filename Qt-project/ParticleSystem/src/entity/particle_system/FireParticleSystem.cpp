@@ -62,7 +62,7 @@ void FireParticleSystem::initialize()
 
     /* Initializes all particles of the system. */
     m_particles = new Particle[m_particleCount];
-    for (unsigned int i = 0; i < m_particleCount; ++i)
+    for (uint32 i = 0; i < m_particleCount; ++i)
         initializeParticle(m_particles[i]);
 
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "ParticleSystem initialized.");
@@ -91,10 +91,10 @@ void FireParticleSystem::initializeParticle(Particle& _particle)
     _particle.z = 0;
 
     /* Sets the direction of the particle on x and z with a
-     * proportionality relation with the speed (and :
-     * -0.0005 < speed < 0.0005, 0 < t < 1),
-     * dx = t*v   and   dy = (1-t)*v
-     */
+      * proportionality relation with the speed (and :
+      * -0.0005 < speed < 0.0005, 0 < t < 1),
+      * dx = t*v   and   dy = (1-t)*v
+      */
     float32 speed = Helpers::prand() * 0.002f - 0.001f;
     float32 perc = Helpers::prand();
     _particle.dx = speed * perc;

@@ -13,72 +13,72 @@ Helpers::~Helpers()
 {
 }
 
-bool Helpers::loadFile(const char* _fileName, string& _out)
+bool Helpers::loadFile(const int8* _fileName, string& _out)
 {
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Loading file '"+ string(_fileName) +"'...");
 
     ifstream file(_fileName);
-	_out.clear();
+    _out.clear();
 
-	if (file.is_open())
-	{
-		file.seekg(0, std::ios::end);
-		_out.reserve(file.tellg());
-		file.seekg(0, std::ios::beg);
+    if (file.is_open())
+    {
+        file.seekg(0, std::ios::end);
+        _out.reserve(file.tellg());
+        file.seekg(0, std::ios::beg);
 
-		_out.assign((std::istreambuf_iterator<char>(file)),
-			std::istreambuf_iterator<char>());
+        _out.assign((std::istreambuf_iterator<int8>(file)),
+                    std::istreambuf_iterator<int8>());
 
-		file.close();
+        file.close();
 
         LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "File '"+ string(_fileName) +"' successfully loaded.");
         return true;
-	}
-	else
-	{
+    }
+    else
+    {
         LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_ERROR, "Could not open file '" + string(_fileName) +"'.");
         return false;
-	}
+    }
 }
 
-vector<string>* Helpers::splitString(const char* _src, const char _split, bool _includeEmptyString)
+vector<string>* Helpers::splitString(const int8* _src, const int8 _split, bool _includeEmptyString)
 {
-	vector<string>* result = new vector<string>();
-	string temp = "";
-	for (unsigned int i = 0; _src[i] != '\0'; ++i)
-	{
-		if (_src[i] == _split)
-		{
-			if (!temp.empty() || _includeEmptyString)
-			{
-				result->push_back(temp);
-			}
-			temp = "";
-		}
-		else
-		{
-			temp += _src[i];
-		}
-	}
+    vector<string>* result = new vector<string>();
+    string temp = "";
+    for (uint32 i = 0; _src[i] != '\0'; ++i)
+    {
+        if (_src[i] == _split)
+        {
+            if (!temp.empty() || _includeEmptyString)
+            {
+                result->push_back(temp);
+            }
+            temp = "";
+        }
+        else
+        {
+            temp += _src[i];
+        }
+    }
 
-	if (temp[0] != _split)
-	{
-		if (!temp.empty() || _includeEmptyString)
-			result->push_back(temp);
-	}
+    if (temp[0] != _split)
+    {
+        if (!temp.empty() || _includeEmptyString)
+            result->push_back(temp);
+    }
 
-	return result;
+    return result;
 }
 
-float Helpers::prand()
+float32 Helpers::prand()
 {
-	if (!s_randInit)
-	{
-		srand(time(NULL));
-		s_randInit = true;
-	}
+    if (!s_randInit)
+    {
+        srand(time(NULL));
+        s_randInit = true;
+    }
 
-	return (float)rand() / (float)RAND_MAX;
+    return (float32)rand() / (float32)RAND_MAX;
 }
 
 std::string Helpers::uint32ToString(uint32 _value)

@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef __GAME_H__
+#define __GAME_H__
 
 #include "Shader.h"
 #include "GlWindow.h"
@@ -82,26 +82,26 @@ class Game : public GlWindow
          bool initializeObjects();
 
          /**************************************************************************
-         * Name: updateGame(float _dt)
+         * Name: updateGame(float32 _dt)
          * Description: Method used to update the different objects that composes
          *						the scene. This is where the inputs can be tested
          *						by the InputManager in order to move/delete objects,
          *						stop the program, change parameters, etc ...
          * Input:
-         *			- _dt : float, time interval since the last rendering.
+         *			- _dt : float32, time interval since the last rendering.
          * Returns: none
          **************************************************************************/
-         void updateGame(float _dt) ;
+         void updateGame(float32 _dt) ;
 
          /**************************************************************************
-         * Name: renderGame(float _dt)
+         * Name: renderGame(float32 _dt)
          * Description: Method used to do the rendering. It transmits shader variables
          *					, tells the graphicsEngine to draw the scene, but also
          *					draws other objects.
          * Inputs:
-         *			- _dt : float, time interval since the last rendering.
+         *			- _dt : float32, time interval since the last rendering.
          * Returns: none
          **************************************************************************/
-         void renderGame(float _dt);
+         void renderGame(float32 _dt);
 };
-#endif
+#endif // __GAME_H__

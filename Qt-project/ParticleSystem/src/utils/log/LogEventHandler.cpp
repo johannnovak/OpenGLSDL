@@ -1,4 +1,4 @@
-#include "LogEventHandler.h"
+#include "LogEventHandler.h" // Implemented Class.
 
 
 /////////////////////////////// PUBLIC ///////////////////////////////////

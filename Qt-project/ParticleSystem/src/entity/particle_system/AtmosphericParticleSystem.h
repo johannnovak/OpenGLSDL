@@ -1,5 +1,5 @@
-#ifndef ATMOSPHERICPARTICLESYSTEM_H
-#define ATMOSPHERICPARTICLESYSTEM_H
+#ifndef __ATMOSPHERICPARTICLESYSTEM_H__
+#define __ATMOSPHERICPARTICLESYSTEM_H__
 
 #include "ParticleSystem.h"
 
@@ -44,4 +44,4 @@ class AtmosphericParticleSystem : public ParticleSystem
       virtual void initializeParticle(Particle& _particle);
 };
 
-#endif // ATMOSPHERICPARTICLESYSTEM_H
+#endif // __ATMOSPHERICPARTICLESYSTEM_H__

@@ -44,7 +44,7 @@ AbstractParticleSystem::~AbstractParticleSystem()
 **************************************************************************/
 void AbstractParticleSystem::setView(GLfloat* _view)
 {
-	m_view = _view;
+    m_view = _view;
 }
 
 /**************************************************************************
@@ -57,7 +57,7 @@ void AbstractParticleSystem::setView(GLfloat* _view)
 **************************************************************************/
 void AbstractParticleSystem::setProjection(GLfloat* _projection)
 {
-	m_projection = _projection;
+    m_projection = _projection;
 }
 
 /**************************************************************************
@@ -70,7 +70,7 @@ void AbstractParticleSystem::setProjection(GLfloat* _projection)
 **************************************************************************/
 void AbstractParticleSystem::setWorld(GLfloat* _world)
 {
-	m_world = _world;
+    m_world = _world;
 }
 
 /**************************************************************************
@@ -87,7 +87,7 @@ void AbstractParticleSystem::setWorld(GLfloat* _world)
 **************************************************************************/
 void AbstractParticleSystem::setMatrices(GLfloat* _world, GLfloat* _view, GLfloat* _projection)
 {
-	setWorld(_world);
-	setView(_view);
-	setProjection(_projection);
+    setWorld(_world);
+    setView(_view);
+    setProjection(_projection);
 }

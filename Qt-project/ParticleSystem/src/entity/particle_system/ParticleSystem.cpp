@@ -71,33 +71,33 @@ void ParticleSystem::initialize()
 
     /* Initializes all particles of the system. */
     m_particles = new Particle[m_particleCount];
-    for (unsigned int i = 0; i < m_particleCount; ++i)
+    for (uint32 i = 0; i < m_particleCount; ++i)
         initializeParticle(m_particles[i]);
 
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "ParticleSystem initialized.");
 }
 
 /**************************************************************************
-* Name: update()
+* Name: update(float32 _dt)
 * Description: Method used to update the particle system and so resets
 *						all dead particles.
 * Inputs:
-*			-_dt : float, time difference when the last update occured.
+*			-_dt : float32, time difference when the last update occured.
 * Returns: none
 **************************************************************************/
-void ParticleSystem::update(float _dt)
+void ParticleSystem::update(float32 _dt)
 {
     /* Adds update time to the global time. */
     m_globalTime += _dt;
 
     /* For all Particles, if they are dead, they are re-initialized. */
-    for (unsigned int i = 0; i < m_particleCount; ++i)
+    for (uint32 i = 0; i < m_particleCount; ++i)
         if (m_particles[i].ttl + m_particles[i].spawnTime <= m_globalTime)
             initializeParticle(m_particles[i]);
 }
 
 /**************************************************************************
-* Name: draw()
+* Name: draw(float32 _dt)
 * Description: Method used to draw the particle system. It first activate the
 *						transmits the shader, then it transmits the different
 *						uniform variables, gets the different attributes and
@@ -105,10 +105,10 @@ void ParticleSystem::update(float _dt)
 *						'Particle' structure defining the number of floats to skip
 *						between the different Particles to draw.
 * Inputs:
-*			-_dt : float, time difference when the last rendering occured.
+*			-_dt : float32, time difference when the last rendering occured.
 * Returns: none
 **************************************************************************/
-void ParticleSystem::draw(float _dt)
+void ParticleSystem::draw(float32 _dt)
 {
     /* Activates the shader and transmits the uniform variables. */
     m_shader->activate();
@@ -185,12 +185,12 @@ void ParticleSystem::initializeParticle(Particle& _particle)
 }
 
 /**************************************************************************
-* Name: preDraw()
+* Name: preDraw(float32 _dt)
 * Description: Method used to perform some pre-computations before
 *					calling the 'draw' method.
 * Inputs:
-*			-_dt : float, time difference when the last rendering occured.
+*			-_dt : float32, time difference when the last rendering occured.
 * Returns: none
 **************************************************************************/
-void ParticleSystem::preDraw(float)
+void ParticleSystem::preDraw(float32)
 {}

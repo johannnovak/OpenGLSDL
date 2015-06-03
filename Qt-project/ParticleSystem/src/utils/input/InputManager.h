@@ -1,9 +1,9 @@
-#ifndef INPUTMANAGER_H
-#define INPUTMANAGER_H
-
-#include <string>
+#ifndef __INPUTMANAGER_H__
+#define __INPUTMANAGER_H__
 
 #include "LogManager.h"
+
+#include <string>
 
 /**************************************************************************
 * Enum: KeyId
@@ -114,14 +114,14 @@ class MouseMotion
     public:
 
         /* x position of the mouse. */
-        int x;
+        int32 x;
         /* y position of the mouse. */
-        int y;
+        int32 y;
 
         /* x component of the speed vector of the mouse. */
-        int dx;
+        int32 dx;
         /* y component of the speed vector of the mouse. */
-        int dy;
+        int32 dy;
 
   //============================= LIFECYCLE =======================================
 
@@ -257,4 +257,4 @@ class InputManager
 
 };
 
-#endif // INPUTMANAGER_H
+#endif // __INPUTMANAGER_H__

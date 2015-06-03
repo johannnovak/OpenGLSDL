@@ -1,5 +1,5 @@
-#ifndef PARTICLESYSTEM_H
-#define PARTICLESYSTEM_H
+#ifndef __PARTICLESYSTEM_H__
+#define __PARTICLESYSTEM_H__
 
 #include "AbstractParticleSystem.h"
 #include "ShaderBank.h"
@@ -64,23 +64,23 @@ class ParticleSystem : public AbstractParticleSystem
       virtual void initialize();
 
       /**************************************************************************
-      * Name: update()
+      * Name: update(float32 _dt)
       * Description: Method used to update the particle system and so update
       *					all particles' state (direction, speed, acceleration, etc...).
       * Inputs:
-      *			-_dt : float, time difference when the last update occured.
+      *			-_dt : float32, time difference when the last update occured.
       * Returns: none
       **************************************************************************/
-      void update(float _dt);
+      void update(float32 _dt);
 
       /**************************************************************************
-      * Name: draw()
+      * Name: draw(float32 _dt)
       * Description: Method used to draw the particle system.
       * Inputs:
       *			-_dt : float, time difference when the last rendering occured.
       * Returns: none
       **************************************************************************/
-      void draw(float _dt);
+      void draw(float32 _dt);
 
 
 /////////////////////////////// PROTECTED ///////////////////////////////////
@@ -96,14 +96,14 @@ class ParticleSystem : public AbstractParticleSystem
       virtual void initializeParticle(Particle& _particle);
 
       /**************************************************************************
-      * Name: preDraw()
+      * Name: preDraw(float32 _dt)
       * Description: Method used to perform some pre-computations before
       *					calling the 'draw' method.
       * Inputs:
-      *			-_dt : float, time difference when the last rendering occured.
+      *			-_dt : float32, time difference when the last rendering occured.
       * Returns: none
       **************************************************************************/
-      virtual void preDraw(float _dt);
+      virtual void preDraw(float32 _dt);
 };
 
-#endif // PARTICLESYSTEM_H
+#endif // __PARTICLESYSTEM_H__

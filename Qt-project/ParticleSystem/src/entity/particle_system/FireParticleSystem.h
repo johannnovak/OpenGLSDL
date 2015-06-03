@@ -1,5 +1,5 @@
-#ifndef FIREPARTICLESYSTEM_H
-#define FIREPARTICLESYSTEM_H
+#ifndef __FIREPARTICLESYSTEM_H__
+#define __FIREPARTICLESYSTEM_H__
 
 #include "ParticleSystem.h"
 
@@ -55,4 +55,4 @@ class FireParticleSystem : 	public ParticleSystem
         void initializeParticle(Particle& _particle);
 };
 
-#endif // FIREPARTICLESYSTEM_H
+#endif // __FIREPARTICLESYSTEM_H__

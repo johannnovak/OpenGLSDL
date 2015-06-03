@@ -1,19 +1,20 @@
-#pragma once
-
-#include <glm/glm.hpp>
+#ifndef __CUBE_H__
+#define __CUBE_H__
 
 #include "Object3D.h"
 
-class Cube :
-	public Object3D
+#include <glm/glm.hpp>
+
+class Cube : public Object3D
 {
 public:
-	Cube();
-	~Cube();
+    Cube();
+    ~Cube();
 
 public:
-	bool defineNormals();
-	bool defineUVs();
-	bool defineColors();
+    bool defineNormals();
+    bool defineUVs();
+    bool defineColors();
 };
 
+#endif // __CUBE_H__

@@ -43,13 +43,13 @@ void AtmosphericParticleSystem::initializeParticle(Particle& _particle)
     _particle.ttl = (Helpers::prand() * 3000.0f) + 8500.0f;
 
     /* Creates the circular caracteristics of the Particle. */
-    float r = Helpers::prand() * 100.0f;
-    float angle1 = Helpers::prand() * 2 * M_PI - M_PI;
-    float angle2 = Helpers::prand() * 2 * M_PI - M_PI;
+    float32 r = Helpers::prand() * 100.0f;
+    float32 angle1 = Helpers::prand() * 2 * M_PI - M_PI;
+    float32 angle2 = Helpers::prand() * 2 * M_PI - M_PI;
 
     /* Sets the position of the Particle according to the radius
-     * and the two angles calculated previously
-     */
+        * and the two angles calculated previously
+        */
     _particle.x = cosf(angle1)*sinf(angle2)*r;
     _particle.y = sinf(angle1)*sinf(angle2)*r + 2.0f;
     _particle.z = cosf(angle2) * r;

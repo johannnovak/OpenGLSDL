@@ -1,5 +1,5 @@
-#ifndef SCENENODE_H
-#define SCENENODE_H
+#ifndef __SCENENODE_H__
+#define __SCENENODE_H__
 
 #include "Object3D.h"
 #include "Quaternion.h"
@@ -200,7 +200,7 @@ class SceneNode
         *			- _dz : float32, z coordinate to add to the position.
         * Returns: none
         **************************************************************************/
-        void translate(float _dx, float _dy, float _dz);
+        void translate(float32 _dx, float32 _dy, float32 _dz);
 
         /**************************************************************************
         * Name: computeWorldMatrix(float32 _dx, float32 _dy, float32 _dz)
@@ -246,4 +246,4 @@ class SceneNode
         void removeChild(SceneNode* _child);
 };
 
-#endif
+#endif // __SCENENODE_H__

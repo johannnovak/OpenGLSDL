@@ -22,7 +22,7 @@ QTLogEventHandler::QTLogEventHandler()
     m_levels.push_back(LogLevel::LogLevel_WARN);
     m_levels.push_back(LogLevel::LogLevel_ERROR);
 
-//    m_levels.push_back(LogLevel::LogLevel_DEBUG);
+    //    m_levels.push_back(LogLevel::LogLevel_DEBUG);
 
     m_frontTag = "<font color='%1'>";
     m_errorColor = "#FF0000";
@@ -62,38 +62,38 @@ void QTLogEventHandler::handleEvent(LogEvent& _event)
 
     switch(_event.getLevel())
     {
-        case LogLevel::LogLevel_ERROR:
-            log += m_frontTag.arg(m_errorColor);
-            break;
+    case LogLevel::LogLevel_ERROR:
+        log += m_frontTag.arg(m_errorColor);
+        break;
 
-        case LogLevel::LogLevel_WARN:
-            log += m_frontTag.arg(m_warnColor);
-            break;
+    case LogLevel::LogLevel_WARN:
+        log += m_frontTag.arg(m_warnColor);
+        break;
 
-        case LogLevel::LogLevel_DEBUG:
-            log += m_frontTag.arg(m_debugColor);
-            break;
+    case LogLevel::LogLevel_DEBUG:
+        log += m_frontTag.arg(m_debugColor);
+        break;
 
-        case LogLevel::LogLevel_INFO:
-            log += m_frontTag.arg(m_infoColor);
-            break;
+    case LogLevel::LogLevel_INFO:
+        log += m_frontTag.arg(m_infoColor);
+        break;
 
-        default:
-            log += m_frontTag.arg(m_defaultColor);
-            break;
+    default:
+        log += m_frontTag.arg(m_defaultColor);
+        break;
     }
 
-    std::ostringstream eventStringStream;
-    eventStringStream << _event;
-    time_t currentTime = time(0);
-    tm* localTime = localtime(&currentTime);
-    log += std::to_string(localTime->tm_hour).c_str();
+    std::ostringstream event_string_stream;
+    event_string_stream << _event;
+    time_t current_time = time(0);
+    tm* local_time = localtime(&current_time);
+    log += std::to_string(local_time->tm_hour).c_str();
     log += ":";
-    log += std::to_string(localTime->tm_min).c_str();
+    log += std::to_string(local_time->tm_min).c_str();
     log += ":";
-    log += std::to_string(localTime->tm_sec).c_str();
+    log += std::to_string(local_time->tm_sec).c_str();
     log += " - ";
-    log += eventStringStream.rdbuf()->str().c_str() + m_backTag;
+    log += event_string_stream.rdbuf()->str().c_str() + m_backTag;
     appendHtml(log);
 
     verticalScrollBar()->setValue(verticalScrollBar()->maximum());

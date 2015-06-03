@@ -1,5 +1,5 @@
-#ifndef LOGEVENTHANDLER_H
-#define LOGEVENTHANDLER_H
+#ifndef __LOGEVENTHANDLER_H__
+#define __LOGEVENTHANDLER_H__
 
 #define LOGMANAGER_ERROR_LIMIT 10
 
@@ -102,4 +102,4 @@ class LogEventHandler
         virtual void closeHandler() = 0;
 };
 
-#endif // LOGEVENTHANDLER_H
+#endif // __LOGEVENTHANDLER_H__

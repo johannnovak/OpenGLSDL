@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef __CAMERA_H__
+#define __CAMERA_H__
 
 #include "SceneNode.h"
 
@@ -118,4 +118,4 @@ class Camera
 
 };
 
-#endif // CAMERA_H
+#endif // __CAMERA_H__

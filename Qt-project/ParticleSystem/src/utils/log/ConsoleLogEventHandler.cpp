@@ -53,16 +53,16 @@ ConsoleLogEventHandler::~ConsoleLogEventHandler()
 void ConsoleLogEventHandler::handleEvent(LogEvent& _event)
 {
     /* Useful to get the current time. */
-    time_t currentTime = time(0);
-    tm* localTime = localtime(&currentTime);
+    time_t current_time = time(0);
+    tm* local_time = localtime(&current_time);
 
     /* Prints  the log in the console. */
-    std::cout << std::to_string(localTime->tm_hour).c_str() << ":" << std::to_string(localTime->tm_min).c_str() << ":" << std::to_string(localTime->tm_sec).c_str() << " - " << _event;
+    std::cout << std::to_string(local_time->tm_hour).c_str() << ":" << std::to_string(local_time->tm_min).c_str() << ":" << std::to_string(local_time->tm_sec).c_str() << " - " << _event;
 }
 
 /**************************************************************************
 * Name:  closeHandler()
-* Description: Metho used to close the handler. Here, does nothing.
+* Description: Method used to close the handler. Here, does nothing.
 * Inputs: none
 * Returns: none
 **************************************************************************/

@@ -356,16 +356,16 @@ MouseButtonId QTInputManager::QTMouseEventToMouseButtonId(QMouseEvent* _event)
 {
     switch (_event->button())
     {
-        case Qt::LeftButton:
-            return IM_MOUSE_LEFT;
-        case Qt::RightButton:
-            return IM_MOUSE_RIGHT;
-        case Qt::MiddleButton:
-            return IM_MOUSE_MIDDLE;
+    case Qt::LeftButton:
+        return IM_MOUSE_LEFT;
+    case Qt::RightButton:
+        return IM_MOUSE_RIGHT;
+    case Qt::MiddleButton:
+        return IM_MOUSE_MIDDLE;
 
-        default:
-            LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_ERROR, "Unable to handle mouse button.");
-            return IM_MOUSE_LEFT;
+    default:
+        LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_ERROR, "Unable to handle mouse button.");
+        return IM_MOUSE_LEFT;
     }
 }
 
@@ -384,10 +384,10 @@ MouseButtonId QTInputManager::QTMouseEventToMouseButtonId(QMouseEvent* _event)
 **************************************************************************/
 bool QTInputManager::isKeyDown(KeyId _keyId)
 {
-	if (_keyId < IM_KEY_LAST)
-		return m_keyPressed[_keyId];
+    if (_keyId < IM_KEY_LAST)
+        return m_keyPressed[_keyId];
 
-	return false;
+    return false;
 }
 
 /**************************************************************************
