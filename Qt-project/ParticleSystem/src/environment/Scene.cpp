@@ -36,3 +36,8 @@ SceneNode* Scene::getRootNode()
 {
     return m_rootNode;
 }
+
+std::vector<ParticleSystem*> &Scene::getAllParticleSystems()
+{
+	
+}

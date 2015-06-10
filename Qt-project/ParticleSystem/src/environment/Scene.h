@@ -51,7 +51,7 @@ class Scene
         SceneNode* getRootNode();
 
     //============================= OPERATIONS =====================================
-        std::vector<ParticleSystem> getAllParticleSystems();
+        std::vector<ParticleSystem*> &getAllParticleSystems();
 };
 
 #endif // __SCENE_H__
