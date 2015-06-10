@@ -24,7 +24,7 @@ Game::Game(): m_scene(), m_graphics(), m_mainCamera(nullptr), m_particleSystem()
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_INFO, "Creating Game...");
 
     setWindowTitle(trUtf8("ParticleSystem"));
-    show();
+    //show();
 
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Game created.");
 }
@@ -142,6 +142,7 @@ void Game::updateGame(float32 _dt)
         LogManager::closeHandlers();
 
         close();
+        parentWidget()->parentWidget()->parentWidget()->close();
     }
 
     glm::vec3 forward, right, up;
@@ -245,4 +246,16 @@ void Game::renderGame(float32 _dt)
     m_fireParticle.draw(_dt);
 
     LogManager::pushEvent(LogEventType::LogEventType_ALL_LOG_EVENT, LogLevel::LogLevel_DEBUG, "Scene rendered.");
+}
+
+
+/**************************************************************************
+* Name: getScene()
+* Description: Getter for the 'm_scene' attribute.
+* Inputs: none
+* Returns: 'm_scene' attribute.
+**************************************************************************/
+Scene Game::getScene()
+{
+    return m_scene;
 }

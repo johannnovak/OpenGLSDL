@@ -108,6 +108,7 @@ HEADERS += 		src/Game.h \
                 src/utils/misc/Helpers.h \
                 src/utils/misc/OBJImporter.h \
                 opengl/glm/glm.hpp\
+    src/gui/qt_framework/MainWindow.h
 
 # Source files
 SOURCES += 	src/main.cpp \
@@ -139,3 +140,7 @@ SOURCES += 	src/main.cpp \
                 src/utils/maths/RandomNumberGenerator.cpp \
                 src/utils/misc/Helpers.cpp \
                 src/utils/misc/OBJImporter.cpp \
+    src/gui/qt_framework/MainWindow.cpp
+
+FORMS += \
+    src/gui/qt_framework/MainWindow.ui

@@ -3,6 +3,8 @@
 
 #include <SceneNode.h>
 
+#include <vector>
+#include <ParticleSystem.h>
 
 /**************************************************************************
 * Class: Scene
@@ -47,6 +49,9 @@ class Scene
         *			- m_rootNode : SceneNode*, pointer on the root SceneNode of the Scene.
         **************************************************************************/
         SceneNode* getRootNode();
+
+    //============================= OPERATIONS =====================================
+        std::vector<ParticleSystem> getAllParticleSystems();
 };
 
 #endif // __SCENE_H__

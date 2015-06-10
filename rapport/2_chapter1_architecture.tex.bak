@@ -4,6 +4,7 @@
   \subsection{Définition}
    Une scène n'est rien de plus qu'un arbre composé d'un noeud racine\footnote{On appellera dans le rapport le noeud racine, root node.} qui lui est composé de zéro à plusieurs autres noeuds, etc\ldots Ces noeuds sont appelés dans notre projet des SceneNode\footnote{\textbf{SceneNode} : Noeud de scène}. Chaque SceneNode possède comme attribut sa position locale et ses matrices projectives locales. De plus, à un noeud est associé un Object3D\footnote{Nom de la classe représentant n'importe quel objet ayant une représentation 3D sous OpenGL.}  unique qui est dessiné lorsque le noeud est dessiné. \\
 \indent Évidemment, tous les objets à dessiner doivent être ajoutés à un noeud
+%TODO
   \subsection{Diagramme de classe}
   \subsection{Avantages}
  \section{Les systèmes de particules}
@@ -28,7 +29,7 @@
    
      \begin{figure}[H]
       \centering
-%      \includegraphics[scale = 0.5]{img/classDiagram}
+%TODO      \includegraphics[scale = 0.5]{img/classDiagram}
       \caption{Diagramme de classe de l'architecture du moteur.}
       \label{fig:arc_class_diagram}
      \end{figure}
@@ -36,20 +37,64 @@
 \indent Comme le schéma ci-dessus le montre, nous avons une classe mère abstraite \textit{AbstractParticleSystem} qui s'occupe des matrices projectives et du shader à utiliser. %TODO
    \paragraph{Remarque} Nous avons choisi de pas implémenter 'Particule' en tant que classe mais en tant que structure car cette dernière n'est qu'au final un tableau encapsulé. Ainsi il est possible d'accéder à chaque attribut de la particule via l'opérateur '[]'. Ce choix nous est utile lorsque nous transmettons les attributs de la particule au shader, nous utilisons le paramètre de 'stride' de la fonction \textit{glVertexAttribPointer} qui permet de préciser la taille à parcourir lors de chaque appel.
  \section{La boucle de simulation}
-  Notre simulation possède trois états :
+  Notre simulation possède quatre états :
    \begin{itemize}
-    \item[1] la situation initial avant le lancement de la simulation
-    \item[2] dès que la boucle de jeu est lancée, il faut mettre à jour tous les objets de la scène;
-    \item[3] après mise à jour, il faut les dessiner à l'écran. (La simulation passe ainsi de l'état 2 à l'état 3 indéfiniment)
+    \item[\textbf{1)}] la situation initial avant le lancement de la simulation
+    \item[\textbf{2)}] dès que la boucle de jeu est lancée, il faut mettre à jour tous les objets de la scène;
+    \item[\textbf{3)}] après mise à jour, il faut les dessiner à l'écran. (La simulation passe ainsi de l'état 2 à l'état 3 indéfiniment)
+    \item[\textbf{4)}] lorsque que la simulation est arr\^{e}tée, toutes les données sont détruites et les shaders sont déchargés.
    \end{itemize}
    ~\\
-\indent Nous avons utilisé le framework utilisé en TP, c'est-à-dire les classes \textit{GLWindow} et \textit{AbstractFramework} (cependant des légères modifications ont été apportées). C'est la classe Game qui s'occupe de gérer l'initialisation de tous les objets lors de la situation initial, et lorsque l'application est lancée, l'update et le draw. Le timer qu'utilise QT est paramétré à 16 millisecondes, ce qui rend un affichage qui tourne à 60 FPS\footnote{\textbf{FPS} : \textbf{F}rame \textbf{P}er \textbf{Second}, image par seconde.}
+   
+     \begin{figure}[H]
+      \centering
+%TODO      \includegraphics[scale = 0.5]{img/classDiagram}
+      \caption{Diagramme de transition de la simulation.}
+      \label{fig:sim_state_diagram}
+     \end{figure}
+	~\\
+   
+\indent Nous avons utilisé le framework utilisé en TP, c'est-à-dire les classes \textit{GLWindow} et \textit{AbstractFramework} (cependant des légères modifications ont été apportées). C'est la classe Game qui s'occupe de gérer l'initialisation de tous les objets lors de la situation initial, et lorsque l'application est lancée, l'update et le draw. Le timer qu'utilise QT est paramétré à 16 millisecondes, ce qui rend un affichage qui tourne à 60 FPS\footnote{\textbf{FPS} : \textbf{F}rame \textbf{P}er \textbf{Second}, image par seconde.} Nous ne parlerons pas de la destruction de notre programme car cela ne concerne pas la simulation en elle-m\^{e}me.
   \subsection{Situation initiale}
    Lorsque que la simulation est lancée, le framework s'occupe d'initialiser les librairies OpenGL tandis que notre classe principale elle se charge d'initialiser tous les objets de la scène : elle les créer, les paramètre si besoin est et les ajoute dans un nouveau SceneNode qui est ajouté à la scène. De plus elle charge les shader qui sont nécessaire au bon fonctionnement du programme. Les fichiers sont lus par pair\footnote{Un shader est composé d'un 'Vertex shader' traitant les problèmes de positionnement et d'un 'Fragment shader' se chargeant de la couleur des pixels à afficher.}, et sont testés pour voir s'ils ne contiennent aucune erreur (qui peut survenir du code shader lui-m\^{e}me ou lorsque le code est associé\footnote{Ou aussi dit "linké".} avec le programme).
   \subsection{Mise à jour des objets}
-   	
+   	C'est pendant cette étape que sont lues les inputs utilisateurs, que la matrice Vue est mise à jour ainsi que tous les objets de la scène.  Un paramètre est requis cependant pour mener à bien cette tâche, il est nécessaire d'avoir l'intervalle de temps qui sépare l'update courante avec la dernière update. Grâce à cette durée, la position de chaque objets de la scène est recalculée dynamiquement. \\
+\indent Concernant les systèmes de particules, la mise à jour sert principalement à incrémenter la durée depuis laquelle ils ont été créés. Ce qui permet alors de calculer pour chaque particule le temps qui leur reste à vivre (et s'il dépasse leur TTL, il faut les supprimer).
   \subsection{Rendering à l'écran}
+   Une fois que chaque objet à sa position et ses matrices projectives mis à jour, il faut les dessiner à l'écran. C'est lors de cette étape que sont activés les shaders à utiliser, que les variables des shaders sont transmises et que les vertices de chaque objets sont envoyés pour permettre leur affichage sur l'écran.
  \section{Des utilitaires très pratiques}
+  Nous avons créé des utilitaires qui ne suivent pas la continuité du projet mais qui en revanche nous ont faciliter la réalisation de certaines tâches ou l'accès à certaines informations (utile pour les phases de debug).
+
   \subsection{Un importateur d'objets créés sous 3ds Max}
+   %TODO
   \subsection{Une gestion générique des inputs utilisateurs}
+   Chaque librairie graphique permet, selon une certaine façon, de gérer des inputs utilisateurs. Nous avons alors pensé à réaliser un singleton \textit{InputManager} qui resterait générique et qui permettrait aux autres classes du programme de connaître à n'importe quel moment quelles inputs sont en train d'être réalisées. Elle définit ses propre énumérations 'KeyID' et 'MouseButtonId', et des classes filles propres aux applications sont censées transformer les inputs propres aux applications (par exemple les QKeyEvent ou les QMouseEvent) en 'KeyId' et en 'MouseButtonId'. \\
+   
+     \begin{figure}[H]
+      \centering
+%TODO      \includegraphics[scale = 0.5]{img/classDiagram}
+      \caption{Diagramme de classe de l'InputManager.}
+      \label{fig:inman_class_diagram}
+     \end{figure}
+	~\\
+	   
+   Remplacer Qt pour la SDL par exemple ne nécessite pas de changer le code lors de tests d'inputs utilisateurs. Il suffit juste de créer une classe qui hérite de \textit{InputManager} pour transformer les événements d'input utilisateurs SDL dans nos propres énumérations.
+   
+   
   \subsection{Un système de log avancé}
+   L'affichage de l'information est primordial pour à la fois connaître l'état des variables du programme mais également pour connaître s'il y a eu un bug où il est apparu. L'afficha en console reste limité ce qui nous a incité à créer notre propre système de log. Voici le diagramme de classe associé à ce système : 
+   
+     \begin{figure}[H]
+      \centering
+%TODO      \includegraphics[scale = 0.5]{img/classDiagram}
+      \caption{Diagramme de classe du LogManager.}
+      \label{fig:logman_class_diagram}
+     \end{figure}
+	~\\
+\indent Ce système est composé d'un \textit{LogManager} qui possède une liste de \textit{LogEventHandler} à qui il renvoie chaque \textit{LogEvent} qui lui est envoyé. Les Handlers peuvent logger l'événement à condition :
+	\begin{itemize}
+	 \item[$\rightarrow$] qu'il ait la possibilité de logger un tel \textit{LogEventType};
+	 \item[$\rightarrow$] qu'il ait la bonne priorité de log (\textit{LogLevel}) dans ses attributs.
+	\end{itemize}
+	~\\
+	L'utilité de la classe \textit{LogEventHandler} repose sur le fait qu'elle soit générique et qu'il est donc possible de créer autant de Handler que possible avec chacun leur spécificités. Nous avons créé par exemple un \textit{ConsoleLogEventHandler} qui ne log que dans la console ou bien un \textit{QTLogEventHandler} qui log dans un widget QT.
